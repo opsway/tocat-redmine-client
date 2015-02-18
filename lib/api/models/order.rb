@@ -1,6 +1,6 @@
 class TocatOrder < ActiveResource::Base
 
-  self.site = RedmineTocat.settings[:host]
+  self.site = RedmineTocatClient.settings[:host]
   self.collection_name = 'order'
 
   class << self

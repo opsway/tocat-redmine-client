@@ -2,6 +2,8 @@ Rails.configuration.to_prepare do
   # all internal files MUST be described here
   # classes
   require 'api/models/ticket'
+  require 'api/models/order'
+
   # patches
   require 'api/patches/active_resource_errors'
   # hooks

@@ -1,6 +1,6 @@
 class TocatTicket < ActiveResource::Base
 
-  self.site = RedmineTocat.settings[:host]
+  self.site = RedmineTocatClient.settings[:host]
   self.collection_name = 'ticket'
 
   class << self
