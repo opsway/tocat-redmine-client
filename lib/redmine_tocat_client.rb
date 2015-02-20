@@ -4,10 +4,12 @@ Rails.configuration.to_prepare do
   require 'api/models/ticket'
   require 'api/models/order'
   require 'api/models/invoice'
-
+  require 'api/models/user'
 
   # patches
   require 'api/patches/active_resource_errors'
+  require 'patches/user'
+
   # hooks
 
 end

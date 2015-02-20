@@ -1,1 +1,21 @@
-invoices
+<h2> <%= l(:label_name)%> </h2>
+<div class = 'autoscroll'>
+  <table class = 'list issues'>
+    <thead>
+      <tr>
+        <td class = 'external_id'>
+          #
+        </td>
+      </tr>
+    </thead>
+    <tbody>
+      <%@invoices.each do |invoice| %>
+        <tr class = '<%= cycle('odd', 'even')%>'>
+          <td class = 'name'>
+            <%= link_to invoice.id, controller: "tocat", action: "show_invoice", invoice_id: invoice.id %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  <table>
+</div>

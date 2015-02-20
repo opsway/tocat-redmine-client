@@ -69,5 +69,4 @@ module TocatHelper
   def link_to_task(task)
     return link_to "#{task.external_id} - $ #{task.budget}", ''
   end
-
 end

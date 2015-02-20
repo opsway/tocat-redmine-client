@@ -1,10 +1,9 @@
 <%= render partial: 'tocat/orders/action_menu'%>
 <h2><%= l(:label_order_heading) + " #{@order.id}" %> </h2>
-<div class="<%= @issue.css_classes %> details">
+<div class="issue details">
   <div class="subject"><h3><%= @order.name %></h3></div>
   <table class="attributes">
     <%= order_fields_rows do |rows|
-      binding.pry
 
       if @order.attributes.include? 'invoiced_budget'
         rows.left l(:field_invoiced_budget), @order.invoiced_budget, :class => 'invoiced_budget'
@@ -70,48 +69,7 @@
         <%= get_paid_icon(invoice) + " " + @order.get_invoice.external_id %></br>
       <% end %>
     </div>
-
-
-
-  <% if !@issue.leaf? || User.current.allowed_to?(:manage_subtasks, @project) %>
-    <hr />
-    <div id="issue_tree">
-      <div class="contextual">
-        <%= link_to_new_subtask(@issue) if User.current.allowed_to?(:manage_subtasks, @project) %>
-      </div>
-      <p><strong><%=l(:label_subtask_plural)%></strong></p>
-      DESENDENTS TREE</div>
-  <% end %>
-  <% if @relations.present? || User.current.allowed_to?(:manage_issue_relations, @project) %>
-    <hr />
-    <div id="relations">
-      RELATIONS</div>
-  <% end %>
 </div>
-<% if @changesets.present? %>
-  <div id="issue-changesets">
-    <h3><%=l(:label_associated_revisions)%></h3>
-    CHANGESETS</div>
-<% end %>
-<% if @journals.present? %>
-  <div id="history">
-    <h3><%=l(:label_history)%></h3>
-    HISTIRY</div>
-<% end %>
 <div style="clear: both;"><%= render partial: 'tocat/orders/action_menu'%></div>
 <div style="clear: both;"></div>
-<% if @issue.editable? %>
-  <div id="update" style="display:none;">
-    <h3><%= l(:button_edit) %></h3>
-    EDIt  </div>
-<% end %>
-<% other_formats_links do |f| %>
-  <%= f.link_to 'Atom', :url => {:key => User.current.rss_key} %>
-  <%= f.link_to 'PDF' %>
-<% end %>
-<% html_title "#{@issue.tracker.name} ##{@issue.id}: #{@issue.subject}" %>
-
-<% content_for :header_tags do %>
-  <%= auto_discovery_link_tag(:atom, {:format => 'atom', :key => User.current.rss_key}, :title => "#{@issue.project} - #{@issue.tracker} ##{@issue.id}: #{@issue.subject}") %>
-<% end %>
-<%= context_menu issues_context_menu_path %>
+<% html_title "Tocat - Order #{@order.id}" %>

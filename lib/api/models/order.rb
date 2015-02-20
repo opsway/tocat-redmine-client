@@ -18,6 +18,7 @@ class TocatOrder < ActiveResource::Base
   end
 
   def get_suborders
+    #TODO REFACTOR!!!
     suborders = []
     get(:suborder).each do |suborder|
       suborders << TocatOrder.find(suborder['id'])
@@ -26,6 +27,7 @@ class TocatOrder < ActiveResource::Base
   end
 
   def get_tasks
+    #TODO REFACTOR!!!
     tasks = []
     all_tasks = TocatTicket.all
     unless all_tasks.nil?

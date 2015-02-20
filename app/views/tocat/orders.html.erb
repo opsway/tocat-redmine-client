@@ -1,26 +1,25 @@
-<h2> Orders </h2>
-<!-- TODO make translations for ru -->
+<h2> <%= l(:label_name)%> </h2>
 <div class = 'autoscroll'>
-  <table class = 'list'>
+  <table class = 'list issues'>
     <thead>
       <tr>
         <td class = 'name'>
-          name
+          <%= l(:label_name)%>
         </td>
         <td class = 'invoiced_budget'>
-          invoiced_budget
+          <%= l(:label_invoiced_budget)%>
         </td>
         <td class = 'allocatable_budget'>
-          allocatable_budget
+          <%= l(:label_allocatable_budget)%>
         </td>
         <td class = 'free_budget'>
-          free_budget
+          <%= l(:label_free_budget)%>
         </td>
       </tr>
     </thead>
     <tbody>
       <%@orders.each do |order| %>
-        <tr>
+        <tr class = '<%= cycle('odd', 'even')%> issue'>
           <td class = 'name'>
             <%= link_to order.name, controller: "tocat", action: "show_order", order_id: order.id %>
           </td>
