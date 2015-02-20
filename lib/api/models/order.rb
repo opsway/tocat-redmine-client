@@ -46,4 +46,15 @@ class TocatOrder < ActiveResource::Base
     end
     nil
   end
+
+  def editable?
+    true
+  end
+
+  protected
+
+  def to_json(options = {})
+    self.attributes[:team] = {:id => attributes[:team]}
+    self.attributes.to_json(options)
+  end
 end

@@ -70,6 +70,14 @@
       <% end %>
     </div>
 </div>
-<div style="clear: both;"><%= render partial: 'tocat/orders/action_menu'%></div>
 <div style="clear: both;"></div>
+<%= render partial: 'tocat/orders/action_menu'%>
+<div style="clear: both;"></div>
+<% if @order.editable? %>
+  <div id="update" style="display:none;">
+  <h3><%= l(:button_edit) %></h3>
+  <%= render :partial => 'tocat/orders/edit' %>
+  </div>
+<% end %>
+
 <% html_title "Tocat - Order #{@order.id}" %>

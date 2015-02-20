@@ -5,6 +5,8 @@ Rails.configuration.to_prepare do
   require 'api/models/order'
   require 'api/models/invoice'
   require 'api/models/user'
+  require 'api/models/team'
+
 
   # patches
   require 'api/patches/active_resource_errors'

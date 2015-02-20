@@ -7,7 +7,30 @@ class TocatController < ApplicationController
   include QueriesHelper
   before_filter :check_for_setup
 
+  def update_order
+    @order = TocatOrder.find(params[:order_id])
+    if @order.update_attributes(params[:order])
+      flash[:notice] = l(:notice_successful_update)
+      respond_to do |format|
+        format.html { redirect_back_or_default({:action => 'show_order', :id => @order}) }
+        format.js do
+          render :update do |page|
+            page.replace_html 'order-form', :partial => 'tocat/orders/edit', :locals => {:order => @order}
+          end
+        end
+      end
+    else
+      respond_to do |format|
+        @order_old = @order
+        @groups = TocatTeam.all
+        @order = TocatOrder.find(params[:order_id])
+        format.html { render :template => 'tocat/orders/edit' }
+      end
+    end
+  end
+
   def show_order
+    @groups = TocatTeam.all
     @order = TocatOrder.find(params[:order_id])
     respond_to do |format|
       format.html { render :template => 'tocat/orders/show_order' }

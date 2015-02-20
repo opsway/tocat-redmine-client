@@ -1,0 +1,30 @@
+<%= labelled_form_for @order, :html => {:id => 'order-form', :multipart => true} do |f| %>
+    <%= error_messages_for @order_old if @order_old.present?%>
+    <div class="box">
+      <fieldset class="tabular"><legend><%= l(:label_change_properties) %></legend>
+      <div id="all_attributes">
+        <%= labelled_fields_for :order, @order do |f| %>
+          <p><%= f.text_field :name, :size => 80, :maxlength => 255, :required => true %></p>
+          <p><%#= f.text_field :description, :size => 80, :maxlength => 255 %></p>
+
+          <p>
+            <%= f.label_for_field :description %>
+            <%= link_to_function image_tag('edit.png'), '$(this).hide(); $("#order_description_and_toolbar").show()' %>
+            <%= content_tag 'span', :id => "order_description_and_toolbar", :style => 'display:none' do %>
+              <%= f.text_area :description,
+                             :cols => 60,
+                             :rows => 10,
+                             :accesskey => accesskey(:edit),
+                             :class => 'wiki-edit',
+                             :no_label => true %>
+            <% end %>
+          </p>
+          <p><%= f.select :team, options_for_select(@groups.collect {|t| [t.name, t.id]}, selected: @order.get_team.id), {:required => true} %></p>
+          <p><%= f.number_field :invoiced_budget, :class => 'invoiced_budget', :step => 0.5 %></p>
+          <p><%= f.number_field :allocatable_budget, :class => 'allocatable_budget', :step => 0.5 %></p>
+        <% end %>
+      </div>
+      </fieldset>
+    <%= submit_tag l(:button_submit) %>
+    | <%= link_to l(:button_cancel), {}, :onclick => "$('#update').hide(); return false;" %>
+<% end %>
