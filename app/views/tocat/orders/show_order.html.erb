@@ -1,0 +1,117 @@
+<%= render partial: 'tocat/orders/action_menu'%>
+<h2><%= l(:label_order_heading) + " #{@order.id}" %> </h2>
+<div class="<%= @issue.css_classes %> details">
+  <div class="subject"><h3><%= @order.name %></h3></div>
+  <table class="attributes">
+    <%= order_fields_rows do |rows|
+      binding.pry
+
+      if @order.attributes.include? 'invoiced_budget'
+        rows.left l(:field_invoiced_budget), @order.invoiced_budget, :class => 'invoiced_budget'
+      end
+
+      if @order.attributes.include? 'allocatable_budget'
+        rows.left l(:field_allocatable_budget), @order.allocatable_budget, :class => 'allocatable_budget'
+      end
+
+      if @order.attributes.include? 'paid'
+        rows.right l(:field_paid), @order.paid, :class => 'paid'
+      end
+
+      if @order.attributes.include? 'free_budget'
+        rows.left l(:field_free_budget), @order.free_budget, :class => 'free-budget'
+      end
+
+      if @order.attributes.include? 'completed'
+        rows.right l(:field_completed), @order.completed, :class => 'completed'
+      end
+
+      if @order.attributes.include? 'team'
+        rows.left l(:field_team), @order.get_team.name, :class => 'team'
+      end
+
+      rows.left l(:field_fmr), @order.fmr, :class => 'fmr'
+
+    end %>
+  </table>
+    <hr />
+    <% if @order.description? %>
+      <div class="description">
+        <p><strong><%=l(:field_description)%></strong></p>
+        <div class="wiki">
+          <%= @order.description %>
+        </div>
+      </div>
+    <% end %>
+
+    <hr />
+    <div id="orders_tree">
+      <div class="contextual"><%= link_to l(:button_add), '' %></div>
+      <p><strong><%=l(:label_suborder_plural)%></strong></p>
+      <% @order.get_suborders.each do |order| %>
+        <%= link_to order.name, controller: "tocat", action: "show_order", order_id: order.id %></br>
+      <% end %>
+    </div>
+    <hr />
+    <div id="tasks_tree">
+      <div class="contextual"><%= link_to l(:button_add), '' %></div>
+      <p><strong><%=l(:label_issue_plural)%></strong></p>
+      <% @order.get_tasks.each do |task| %>
+        <%= link_to_task(task) %> </br>
+        <!-- TODO add redmine method to tasks -->
+      <% end %>
+      </div>
+    <hr />
+    <div id="invoice">
+      <% invoice = @order.get_invoice %>
+      <div class="contextual"><%= link_to_new_invoice(@order) %></div>
+      <p><strong><%=l(:label_invoice)%></strong></p>
+      <% if invoice.present? %>
+        <%= get_paid_icon(invoice) + " " + @order.get_invoice.external_id %></br>
+      <% end %>
+    </div>
+
+
+
+  <% if !@issue.leaf? || User.current.allowed_to?(:manage_subtasks, @project) %>
+    <hr />
+    <div id="issue_tree">
+      <div class="contextual">
+        <%= link_to_new_subtask(@issue) if User.current.allowed_to?(:manage_subtasks, @project) %>
+      </div>
+      <p><strong><%=l(:label_subtask_plural)%></strong></p>
+      DESENDENTS TREE</div>
+  <% end %>
+  <% if @relations.present? || User.current.allowed_to?(:manage_issue_relations, @project) %>
+    <hr />
+    <div id="relations">
+      RELATIONS</div>
+  <% end %>
+</div>
+<% if @changesets.present? %>
+  <div id="issue-changesets">
+    <h3><%=l(:label_associated_revisions)%></h3>
+    CHANGESETS</div>
+<% end %>
+<% if @journals.present? %>
+  <div id="history">
+    <h3><%=l(:label_history)%></h3>
+    HISTIRY</div>
+<% end %>
+<div style="clear: both;"><%= render partial: 'tocat/orders/action_menu'%></div>
+<div style="clear: both;"></div>
+<% if @issue.editable? %>
+  <div id="update" style="display:none;">
+    <h3><%= l(:button_edit) %></h3>
+    EDIt  </div>
+<% end %>
+<% other_formats_links do |f| %>
+  <%= f.link_to 'Atom', :url => {:key => User.current.rss_key} %>
+  <%= f.link_to 'PDF' %>
+<% end %>
+<% html_title "#{@issue.tracker.name} ##{@issue.id}: #{@issue.subject}" %>
+
+<% content_for :header_tags do %>
+  <%= auto_discovery_link_tag(:atom, {:format => 'atom', :key => User.current.rss_key}, :title => "#{@issue.project} - #{@issue.tracker} ##{@issue.id}: #{@issue.subject}") %>
+<% end %>
+<%= context_menu issues_context_menu_path %>

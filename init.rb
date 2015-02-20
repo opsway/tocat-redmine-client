@@ -12,8 +12,13 @@ Redmine::Plugin.register :redmine_tocat_client do
   },
            :partial => 'settings/tocat_settings'
 
-  menu :top_menu, :tocat, { :controller => 'tocat', :action => 'index' }, :caption => 'Tocat' # TODO add transalate for ru
+  menu :top_menu, :tocat, { :controller => 'tocat', :action => 'my_tocat' }, :caption => 'Tocat' # TODO add transalate for ru
 
+  Redmine::MenuManager.map :tocat_menu do |menu|
+    menu.push :tocat, { :controller => 'tocat', :action => 'my_tocat' }, :caption => :label_my_tocat
+    menu.push :orders, { :controller => 'tocat', :action => 'orders' }, :caption => :label_order_plural
+    menu.push :invoices, { :controller => 'tocat', :action => 'invoices' }, :caption => :label_invoice_plural
+  end
 end
 
 require_dependency 'redmine_tocat_client'

@@ -1,3 +1,17 @@
 # English strings go here for Rails i18n
 en:
-  # my_label: "My label"
+  label_order_heading: 'Order'
+  field_invoiced_budget: 'Invoiced Budget'
+  field_paid: 'Paid'
+  field_completed: 'Completed'
+  field_allocatable_budget: 'Allocatable Budget'
+  field_free_budget: 'Budget left'
+  field_team: 'Team'
+  field_fmr: 'FMR'
+  label_suborder_plural: 'SubOrders'
+  label_invoice: 'Invoice'
+  button_split: 'Split'
+  button_complete: 'Complete'
+  label_my_tocat: 'My Tocat'
+  label_order_plural: 'Orders'
+  label_invoice_plural: 'Invoices'

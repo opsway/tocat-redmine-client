@@ -3,6 +3,8 @@ Rails.configuration.to_prepare do
   # classes
   require 'api/models/ticket'
   require 'api/models/order'
+  require 'api/models/invoice'
+
 
   # patches
   require 'api/patches/active_resource_errors'

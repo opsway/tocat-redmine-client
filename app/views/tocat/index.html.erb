@@ -1,5 +1,11 @@
-<% tocat_tabs = [{:name => 'Orders', :partial => 'tocat/orders', :label => :label_orders},
+<div id="main-menu">
+
+<%= render_menu(:tocat_menu) %>
+</div>
+</hr>
+
+<%# tocat_tabs = [{:name => 'Orders', :partial => 'tocat/orders/orders', :label => :label_orders},
                   {:name => 'Invoices', :partial => 'tocat/invoices', :label => :label_invoices},
                   {:name => 'My TOCAT', :partial => 'tocat/my_tocat', :label => :label_my_tocat}]   %>
 
-<%= render_tabs tocat_tabs %>
+<%#= render_tabs tocat_tabs %>

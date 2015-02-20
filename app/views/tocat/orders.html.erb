@@ -1,0 +1,40 @@
+<h2> Orders </h2>
+<!-- TODO make translations for ru -->
+<div class = 'autoscroll'>
+  <table class = 'list'>
+    <thead>
+      <tr>
+        <td class = 'name'>
+          name
+        </td>
+        <td class = 'invoiced_budget'>
+          invoiced_budget
+        </td>
+        <td class = 'allocatable_budget'>
+          allocatable_budget
+        </td>
+        <td class = 'free_budget'>
+          free_budget
+        </td>
+      </tr>
+    </thead>
+    <tbody>
+      <%@orders.each do |order| %>
+        <tr>
+          <td class = 'name'>
+            <%= link_to order.name, controller: "tocat", action: "show_order", order_id: order.id %>
+          </td>
+          <td class = 'invoiced_budget'>
+            <%= order.invoiced_budget %>
+          </td>
+          <td class = 'allocatable_budget'>
+            <%= order.allocatable_budget %>
+          </td>
+          <td class = 'free_budget'>
+            <%= order.free_budget %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  <table>
+</div>
