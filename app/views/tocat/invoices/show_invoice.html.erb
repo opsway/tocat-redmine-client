@@ -11,7 +11,7 @@
     <div id="orders_tree">
       <div class="contextual"><%= link_to l(:button_add), '' %></div>
       <p><strong><%=l(:label_order_plural)%></strong></p>
-      <% @invoice.get_orders.each do |order| %>
+      <% @invoice.orders.each do |order| %>
         <%= link_to order.name, controller: "tocat", action: "show_order", order_id: order.id %></br>
       <% end %>
     </div>

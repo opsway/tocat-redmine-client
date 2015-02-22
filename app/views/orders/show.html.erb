@@ -33,8 +33,8 @@
 
     end %>
   </table>
-    <hr />
     <% if @order.description? %>
+    <hr />
       <div class="description">
         <p><strong><%=l(:field_description)%></strong></p>
         <div class="wiki">
@@ -47,7 +47,7 @@
     <div id="orders_tree">
       <div class="contextual"><%= link_to l(:button_add), '' %></div>
       <p><strong><%=l(:label_suborder_plural)%></strong></p>
-      <% @order.get_suborders.each do |order| %>
+      <% @order.sub_orders.each do |order| %>
         <%= link_to order.name, action: "show", order_id: order.id %></br>
       <% end %>
     </div>
@@ -55,7 +55,7 @@
     <div id="tasks_tree">
       <div class="contextual"><%= link_to l(:button_add), '' %></div>
       <p><strong><%=l(:label_issue_plural)%></strong></p>
-      <% @order.get_tasks.each do |task| %>
+      <% @order.tasks.each do |task| %>
         <%= link_to_task(task) %> </br>
         <!-- TODO add redmine method to tasks -->
       <% end %>
