@@ -1,4 +1,4 @@
-<%= render partial: 'tocat/orders/action_menu'%>
+<%= render partial: 'action_menu' %>
 <h2><%= l(:label_order_heading) + " #{@order.id}" %> </h2>
 <div class="issue details">
   <div class="subject"><h3><%= @order.name %></h3></div>
@@ -48,7 +48,7 @@
       <div class="contextual"><%= link_to l(:button_add), '' %></div>
       <p><strong><%=l(:label_suborder_plural)%></strong></p>
       <% @order.get_suborders.each do |order| %>
-        <%= link_to order.name, controller: "tocat", action: "show_order", order_id: order.id %></br>
+        <%= link_to order.name, action: "show", order_id: order.id %></br>
       <% end %>
     </div>
     <hr />
@@ -71,12 +71,12 @@
     </div>
 </div>
 <div style="clear: both;"></div>
-<%= render partial: 'tocat/orders/action_menu'%>
+<%= render partial: 'action_menu' %>
 <div style="clear: both;"></div>
 <% if @order.editable? %>
   <div id="update" style="display:none;">
   <h3><%= l(:button_edit) %></h3>
-  <%= render :partial => 'tocat/orders/edit' %>
+  <%= render :partial => 'edit' %>
   </div>
 <% end %>
 

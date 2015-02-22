@@ -1,6 +1,6 @@
 class TocatInvoice < ActiveResource::Base
   self.site = RedmineTocatClient.settings[:host]
-  self.collection_name = 'invoice'
+  self.collection_name = 'invoices'
 
   def get_orders
     #TODO REFACTOR!!!

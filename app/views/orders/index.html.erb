@@ -1,0 +1,67 @@
+<div class="contextual">
+  <%= link_to l(:button_new_order), new_order_path, :class => 'icon icon-add' %> <!-- [TODO] ADD USER PREMISSION VALIDATION -->
+</div>
+
+<h2> <%= l(:label_name)%> </h2>
+
+
+<%= form_tag("/tocat/orders", method: "get") do %>
+  <%= hidden_field_tag 'set_filter', '1' %>
+  <fieldset id="filters" class="collapsible">
+    <legend onclick="toggleFieldset(this);"><%= l(:label_filter_plural) %></legend>
+    <div>
+      <%= render :partial => 'orders/filters' %>
+    </div>
+    <%= submit_tag(l(:button_apply)) %>
+    <%= link_to l(:button_clear), { :set_filter => 1 }, :class => 'icon icon-reload'  %>
+    <hr/>
+  </fieldset>
+<% end %>
+
+
+<div class = 'autoscroll'>
+  <table class = 'list issues'>
+
+    <thead><tr>
+          <%= sort_header_tag('name', :caption => l(:label_name)) %>
+          <%= sort_header_tag('invoiced_budget', :caption => l(:label_invoiced_budget)) %>
+          <%= sort_header_tag('allocatable_budget', :caption => l(:label_allocatable_budget)) %>
+          <%= sort_header_tag('free_budget', :caption => l(:label_free_budget)) %>
+        </tr></thead>
+    <!-- <thead>
+      <tr>
+        <td class = 'name'>
+          <%= l(:label_name)%>
+        </td>
+        <td class = 'invoiced_budget'>
+          <%= l(:label_invoiced_budget)%>
+        </td>
+        <td class = 'allocatable_budget'>
+          <%= l(:label_allocatable_budget)%>
+        </td>
+        <td class = 'free_budget'>
+          <%= l(:label_free_budget)%>
+        </td>
+      </tr>
+    </thead> -->
+    <tbody>
+      <%@orders.each do |order| %>
+        <tr class = '<%= cycle('odd', 'even')%> issue'>
+          <td class = 'name'>
+            <%= link_to order.name, order_path(order) %>
+          </td>
+          <td class = 'invoiced_budget'>
+            <%= order.invoiced_budget %>
+          </td>
+          <td class = 'allocatable_budget'>
+            <%= order.allocatable_budget %>
+          </td>
+          <td class = 'free_budget'>
+            <%= order.free_budget %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  <table>
+    <p class="pagination"><%= pagination_links_full @order_pages, @order_count %></p>
+</div>

@@ -16,8 +16,8 @@ Redmine::Plugin.register :redmine_tocat_client do
 
   Redmine::MenuManager.map :tocat_menu do |menu|
     menu.push :tocat, { :controller => 'tocat', :action => 'my_tocat' }, :caption => :label_my_tocat
-    menu.push :orders, { :controller => 'tocat', :action => 'orders' }, :caption => :label_order_plural
-    menu.push :invoices, { :controller => 'tocat', :action => 'invoices' }, :caption => :label_invoice_plural
+    menu.push :orders, { :controller => 'orders', :action => 'index' }, :caption => :label_order_plural
+    #menu.push :invoices, { :controller => 'tocat', :action => 'invoices' }, :caption => :label_invoice_plural
   end
 end
 

@@ -1,0 +1,20 @@
+<table style="width:100%">
+  <tbody>
+    <tr>
+      <td>
+      <table id="filters-table">
+        <tbody>
+          <tr class="filter" id="name">
+            <td><%= label_tag(:name, l(:label_name)) %></td>
+            <td><%= text_field_tag(:name) %></td>
+          </tr>
+          <tr class="filter" id="paid">
+            <td><%= label_tag(:paid, l(:label_paid)) %></td>
+            <td><%= select_tag(:paid, options_for_select([[l(:label_yes), true], [l(:label_no), false]], selected: params[:paid]), include_blank: true) %></td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+    </tr>
+  </tbody>
+</table>

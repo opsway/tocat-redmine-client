@@ -1,7 +1,17 @@
 class TocatOrder < ActiveResource::Base
   unloadable
   self.site = RedmineTocatClient.settings[:host]
-  self.collection_name = 'order'
+  self.collection_name = 'orders'
+  add_response_method :http_response
+
+
+  schema do
+    attribute 'id', :integer
+    attribute 'name', :string
+    attribute 'description', :text
+    attribute 'team', :string
+    decimal 'invoiced_budget', 'allocatable_budget', 'free_budget'
+  end
 
   def self.find_by_name(name)
     all_records = Team.all

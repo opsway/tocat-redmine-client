@@ -12,6 +12,6 @@ en:
   label_invoice: 'Invoice'
   button_split: 'Split'
   button_complete: 'Complete'
-  label_my_tocat: 'My Tocat'
+  label_my_tocat: 'My TOCAT'
   label_order_plural: 'Orders'
   label_invoice_plural: 'Invoices'

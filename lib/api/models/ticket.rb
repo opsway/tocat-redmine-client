@@ -1,6 +1,6 @@
 class TocatTicket < ActiveResource::Base
   self.site = RedmineTocatClient.settings[:host]
-  self.collection_name = 'task'
+  self.collection_name = 'tasks'
 
   def self.find_by_name(name)
     all_records = Team.all

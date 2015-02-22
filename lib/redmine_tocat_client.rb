@@ -11,6 +11,7 @@ Rails.configuration.to_prepare do
   # patches
   require 'api/patches/active_resource_errors'
   require 'patches/user'
+  require 'patches/group'
 
   # hooks
 
