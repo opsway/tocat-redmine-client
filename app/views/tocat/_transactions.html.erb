@@ -1,0 +1,27 @@
+<div class = "transactionsContainer"  style = "height: 300px">
+  <%if transactions%>
+      <div class="autoscroll">
+        <table class="list transactions">
+          <label><%=	l(:label_transactions)  %></label>
+          <thead>
+          <tr>
+            <th>#</th>
+            <th><%=	l(:label_comment)  %></th>
+            <th><%=	l(:label_total)  %></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% transactions.first(10).each do |t|%>
+              <tr class="<%= cycle("odd", "even") %>">
+                <td> <%= t.id%> </td>
+                <td> <%= t.comment%> </td>
+                <td nowrap> <%= t.total%> </td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+  <%else%>
+      <div><%=	l(:label_no_data_)  %></div>
+  <% end %>
+</div>

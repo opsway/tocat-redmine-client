@@ -1,6 +1,6 @@
 class OrdersController < ApplicationController
   unloadable
-  before_filter :find_order, :except => [:new, :create, :index]
+  before_filter :find_order, :except => [:new, :create, :index, :create_suborder]
   before_filter :find_groups, :except => [:index]
   before_filter :check_for_setup
   layout 'tocat_base'
@@ -9,6 +9,12 @@ class OrdersController < ApplicationController
 
   def new
     @order = TocatOrder.new
+    @order.name = params[:name] if params[:name].present?
+    @order.description = params[:description] if params[:description].present?
+    @order.allocatable_budget = params[:allocatable_budget] if params[:allocatable_budget].present?
+    @order.invoiced_budget = params[:invoiced_budget] if params[:invoiced_budget].present?
+    @order.team = params[:team] if params[:team].present?
+    @order.parent_order = params[:split] if params[:split].present?
   end
 
   def destroy
@@ -26,9 +32,33 @@ class OrdersController < ApplicationController
       end
     rescue ActiveResource::ResourceInvalid => @e
       respond_to do |format|
-        binding.pry
         flash[:notice] = @order.errors
         format.html { redirect_back_or_default({:action => 'show', id: @order})}
+      end
+    end
+  end
+
+  def create_suborder
+    parent = TocatOrder.find(params[:order][:parent_order])
+    query = params[:order]
+    query[:team] = { id: params[:order][:team] }
+    begin
+      @order = TocatOrder.post("#{parent.id}/suborder", query)
+    rescue => error
+      flash[:error] = JSON.parse(error.response.body)['message']
+      query[:split] = params[:order][:parent_order]
+      respond_to do |format|
+        format.html { redirect_to :action => 'new', params: query }
+      end
+      return
+    end
+    flash[:notice] = l(:notice_successful_created)
+    respond_to do |format|
+      format.html { redirect_back_or_default({:action => 'show', :id => @order}) }
+      format.js do
+        render :update do |page|
+          page.replace_html 'order-form', :partial => 'tocat/orders/edit', :locals => {:order => @order}
+        end
       end
     end
   end
@@ -99,6 +129,7 @@ class OrdersController < ApplicationController
   end
 
   def show
+    @parent = @order.parent
   end
 
   private

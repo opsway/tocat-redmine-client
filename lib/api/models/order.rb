@@ -7,6 +7,7 @@ class TocatOrder < ActiveResource::Base
 
   schema do
     attribute 'id', :integer
+    attribute 'parent_order', :string
     attribute 'name', :string
     attribute 'description', :text
     attribute 'team', :string
@@ -21,6 +22,12 @@ class TocatOrder < ActiveResource::Base
 
   def get_team
     Group.where(lastname: team.name).first
+  end
+
+  def parent
+    !parent_order.attributes.empty? ?
+      TocatOrder.find(parent_order.id) :
+      nil
   end
 
   def fmr

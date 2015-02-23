@@ -1,4 +1,9 @@
-<%= labelled_form_for @order,url: orders_path, :html => {:id => 'order-form', :multipart => true} do |f| %>
+<% if @order.parent_order.present?
+    url = suborder_path
+  else
+    url = orders_path
+  end %>
+<%= labelled_form_for @order, url: url, :html => {:id => 'order-form', :multipart => true} do |f| %>
     <div class="box">
       <fieldset class="tabular"><legend><%= l(:label_change_properties) %></legend>
       <div id="all_attributes">
@@ -17,9 +22,17 @@
                              :no_label => true %>
             <% end %>
           </p>
-          <p><%= f.select :team, options_for_select(@groups.collect {|t| [t.name, t.tocat.id]}), {:required => true} %></p>
+          <p><%= f.select :team, options_for_select(@groups.collect {|t| [t.name, t.tocat.id]}, selected: @order.team), {:required => true} %></p>
           <p><%= f.number_field :invoiced_budget, :class => 'invoiced_budget', :step => 0.5, :required => true %></p>
           <p><%= f.number_field :allocatable_budget, :class => 'allocatable_budget', :step => 0.5, :required => true %></p>
+          <% if @order.parent_order.present?%>
+            <p>
+              <%= f.select :parent_order, options_for_select(TocatOrder.all.collect {|o| [o.name, o.id]}, selected: @order.parent_order),{}, disabled: true %>
+              <%= f.hidden_field :parent_order, value: @order.parent_order %>
+            </p>
+          <% else %>
+            <p><%= f.select :parent_order, options_for_select(TocatOrder.all.collect {|o| [o.name, o.id]}), {} %></p>
+          <% end %>
         <% end %>
       </div>
       </fieldset>

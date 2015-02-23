@@ -6,3 +6,4 @@ match '/tocat' => 'tocat#my_tocat', as: :my_tocat, via: [:get]
 #match '/tocat/invoices/:invoice_id' => 'tocat#show_invoice', as: :show_invoice, via: [:get]
 
 resources :orders, path: '/tocat/orders'
+match '/tocat/orders/new_suborder' => 'orders#create_suborder', as: :suborder, via: [:post, :put]

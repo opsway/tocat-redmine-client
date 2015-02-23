@@ -29,6 +29,10 @@
         rows.left l(:field_team), @order.get_team.name, :class => 'team'
       end
 
+      if @parent.present?
+        rows.right l(:field_parent_order),  link_to(@parent.name, order_path(@parent)), :class => 'parent_order'
+      end
+
       rows.left l(:field_fmr), @order.fmr, :class => 'fmr'
 
     end %>
@@ -44,13 +48,15 @@
     <% end %>
 
     <hr />
-    <div id="orders_tree">
-      <div class="contextual"><%= link_to l(:button_add), '' %></div>
-      <p><strong><%=l(:label_suborder_plural)%></strong></p>
-      <% @order.sub_orders.each do |order| %>
-        <%= link_to order.name, action: "show", order_id: order.id %></br>
-      <% end %>
-    </div>
+    <% unless @parent.present?%>
+      <div id="orders_tree">
+        <div class="contextual"><%= link_to l(:button_add), new_order_path(split: @order.id) %></div>
+        <p><strong><%=l(:label_suborder_plural)%></strong></p>
+        <% @order.sub_orders.each do |order| %>
+          <%= link_to order.name, action: "show", order_id: order.id %></br>
+        <% end %>
+      </div>
+    <% end %>
     <hr />
     <div id="tasks_tree">
       <div class="contextual"><%= link_to l(:button_add), '' %></div>

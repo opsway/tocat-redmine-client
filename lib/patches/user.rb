@@ -17,7 +17,6 @@ module RedmineTocatClient
   end
 end
 
-
 unless User.included_modules.include?(RedmineTocatClient::Patches::UserPatch)
   User.send(:include, RedmineTocatClient::Patches::UserPatch)
 end
