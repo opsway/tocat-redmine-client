@@ -1,0 +1,42 @@
+<%= render partial: 'action_menu' %>
+<h2><%= l(:label_invoice_heading) + " #{@invoice.id}" %> </h2>
+<div class="issue details">
+  <div class="subject"><h3><%= @invoice.external_id %></h3></div>
+  <table class="attributes">
+    <%= invoice_fields_rows do |rows|
+
+      if @invoice.attributes.include? 'client'
+        rows.left l(:field_client), @invoice.client, :class => 'client'
+      end
+
+      if @invoice.attributes.include? 'total'
+        rows.left l(:field_total), @invoice.total, :class => 'total'
+      end
+
+      if @invoice.attributes.include? 'paid'
+        rows.right l(:field_paid), get_paid_icon(@invoice), :class => 'paid'
+      end
+
+    end %>
+  </table>
+    <hr />
+    <hr />
+    <div id="orders_tree">
+      <div class="contextual"><%= link_to l(:button_add), new_order_path %></div>
+      <p><strong><%=l(:label_order_plural)%></strong></p>
+      <% @invoice.orders.each do |order| %>
+        <%= link_to_order(order) %> </br>
+      <% end %>
+      </div>
+</div>
+<div style="clear: both;"></div>
+<%= render partial: 'action_menu' %>
+<div style="clear: both;"></div>
+<% if @invoice.editable? %>
+  <div id="update" style="display:none;">
+  <h3><%= l(:button_edit) %></h3>
+  <%#= render :partial => 'edit' %>
+  </div>
+<% end %>
+
+<% html_title "Tocat - Inovice #{@invoice.id}" %>

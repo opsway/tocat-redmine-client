@@ -6,4 +6,7 @@ match '/tocat' => 'tocat#my_tocat', as: :my_tocat, via: [:get]
 #match '/tocat/invoices/:invoice_id' => 'tocat#show_invoice', as: :show_invoice, via: [:get]
 
 resources :orders, path: '/tocat/orders'
+resources :invoices, path: '/tocat/invoices'
 match '/tocat/orders/new_suborder' => 'orders#create_suborder', as: :suborder, via: [:post, :put]
+match '/tocat/invoices/:id/paid' => 'invoices#set_paid', as: :invoice_paid, via: [:post, :put]
+match '/tocat/invoices/:id/paid' => 'invoices#set_unpaid', as: :invoice_paid, via: [:delete]

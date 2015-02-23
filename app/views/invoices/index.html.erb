@@ -1,0 +1,48 @@
+<div class="contextual">
+  <%= link_to l(:button_new_invoice), new_invoice_path, :class => 'icon icon-add' %> <!-- [TODO] ADD USER PREMISSION VALIDATION -->
+</div>
+
+<h2> <%= l(:label_invoice_plural)%> </h2>
+
+
+<%= form_tag("/tocat/invoices", method: "get") do %>
+  <%= hidden_field_tag 'set_filter', '1' %>
+  <fieldset id="filters" class="collapsible">
+    <legend onclick="toggleFieldset(this);"><%= l(:label_filter_plural) %></legend>
+    <div>
+      <%= render :partial => 'invoices/filters' %>
+    </div>
+    <%= submit_tag(l(:button_apply)) %>
+    <%= link_to l(:button_clear), { :set_filter => 1 }, :class => 'icon icon-reload'  %>
+    <hr/>
+  </fieldset>
+<% end %>
+
+<p class="pagination"><%= pagination_links_full @invoice_pages, @invoice_count %></p>
+<div class = 'autoscroll'>
+  <table class = 'list'>
+
+    <thead><tr>
+          <%= sort_header_tag('external_id', :caption => l(:label_external_id)) %>
+          <%= sort_header_tag('total', :caption => l(:label_total)) %>
+          <%= sort_header_tag('paid', :caption => l(:label_paid)) %>
+        </tr></thead>
+
+    <tbody>
+      <%@invoices.each do |invoice| %>
+        <tr class = '<%= cycle('odd', 'even')%> issue'>
+          <td class = 'external_id'>
+            <%= link_to invoice.external_id, invoice_path(invoice) %>
+          </td>
+          <td class = 'total'>
+            <%= invoice.total %>
+          </td>
+          <td class = 'paid'>
+            <%= get_paid_icon(invoice) %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  <table>
+</div>
+<p class="pagination"><%= pagination_links_full @invoice_pages, @invoice_count %></p>
