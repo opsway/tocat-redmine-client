@@ -35,6 +35,14 @@ class TocatController < ApplicationController
         @balance_transactions << t :
         @income_tranactions << t
     end
+    transactions = TocatTransaction.get_transactions_for_team(@team_tocat.id)
+    @team_balance_transactions = []
+    @team_income_transactions = []
+    transactions.each do |t|
+      t.type == 'balance' ?
+        @team_balance_transactions << t :
+        @team_income_transactions << t
+    end
     respond_to do |format|
       format.html { render :template => 'tocat/my_tocat' }
     end

@@ -1,101 +1,103 @@
-<% unless @issue.new_record?%>
-  <fieldset id='orders' class="tabular"><legend><%= l(:label_change_orders) %></legend>
-    <% unless @@orders_errors.empty? %>
-      <div id="errorExplanation">
-        <ul>
-          <% @@orders_errors.each do |message|%>
-            <li><%= message %></li>
-          <% end %>
-        </ul>
+<% if User.current.allowed_to?(:edit_orders, nil, global:true) %>
+  <% unless @issue.new_record? %>
+    <fieldset id='orders' class="tabular"><legend><%= l(:label_change_orders) %></legend>
+      <% unless @@orders_errors.empty? %>
+        <div id="errorExplanation">
+          <ul>
+            <% @@orders_errors.each do |message|%>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <%= hidden_field_tag :budgets %>
+      <div id='hidden_select' style='display:none'>
+        <span><span class='edit'><%= select_tag "orders", options_from_collection_for_select(@orders, "id", "name") %> - <%= number_field_tag "budget", ``, min: 0.5, step: 0.5, onkeyup:"if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"%></span>
+              <span class='view' style='display:none'>
+                <a href='/tocat/orders/'> </a> - <span class='budget_val'></span>
+              </span>
+              <span class='accept icon icon-checked edit' style='cursor:pointer;' onclick='save_order(this)'></span>
+              <span class='accept icon icon-edit view' style='cursor:pointer; display:none;' onclick='edit_order(this)'></span>
+              <span onclick='delete_order(this)' style='cursor:pointer' class='delete icon icon-del'></span>
+              </br></span>
       </div>
-    <% end %>
-    <%= hidden_field_tag :budgets %>
-    <div id='hidden_select' style='display:none'>
-      <span><span class='edit'><%= select_tag "orders", options_from_collection_for_select(@orders, "id", "name") %> - <%= number_field_tag "budget", ``, min: 0.5, step: 0.5, onkeyup:"if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"%></span>
-            <span class='view' style='display:none'>
-              <a href='/tocat/orders/'> </a> - <span class='budget_val'></span>
-            </span>
-            <span class='accept icon icon-checked edit' style='cursor:pointer;' onclick='save_order(this)'></span>
-            <span class='accept icon icon-edit view' style='cursor:pointer; display:none;' onclick='edit_order(this)'></span>
-            <span onclick='delete_order(this)' style='cursor:pointer' class='delete icon icon-del'></span>
-            </br></span>
-    </div>
-    <% @issue.budgets.each do |r| %>
-    <span>
-      <span class='view' style='display:inline'><%= link_to r.order_name, action: "show", order_id: r.order_id %> - <span class='budget_val'><%= r.budget %></span></span>
-        <span class='edit' style="display:none"><%= select_tag "orders", options_from_collection_for_select(@orders, "id", "name", selected: r.order_id), disabled: true %> - <%= number_field_tag "budget", r.budget, min: 0.5, step: 0.5, onkeyup: "if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" %> </span>
-        <span class='accept icon icon-checked edit' style='cursor:pointer; display:none;' onclick='save_order(this)'></span>
-        <span class='accept icon icon-edit view' style='cursor:pointer' onclick='edit_order(this)'></span>
-        <span onclick='delete_order(this)' style='cursor:pointer' class='delete icon icon-del'></span></br>
-    </span>
-    <% end %>
-    <%= link_to 'Add new order', '#', id:'add_field', onclick: 'add_new_order();return false;' %></br>
+      <% @issue.budgets.each do |r| %>
+      <span>
+        <span class='view' style='display:inline'><%= link_to r.order_name, action: "show", order_id: r.order_id %> - <span class='budget_val'><%= r.budget %></span></span>
+          <span class='edit' style="display:none"><%= select_tag "orders", options_from_collection_for_select(@orders, "id", "name", selected: r.order_id), disabled: true %> - <%= number_field_tag "budget", r.budget, min: 0.5, step: 0.5, onkeyup: "if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')" %> </span>
+          <span class='accept icon icon-checked edit' style='cursor:pointer; display:none;' onclick='save_order(this)'></span>
+          <span class='accept icon icon-edit view' style='cursor:pointer' onclick='edit_order(this)'></span>
+          <span onclick='delete_order(this)' style='cursor:pointer' class='delete icon icon-del'></span></br>
+      </span>
+      <% end %>
+      <%= link_to 'Add new order', '#', id:'add_field', onclick: 'add_new_order();return false;' %></br>
 
-  </fieldset>
+    </fieldset>
 
 
-  <script>
-  var temp_budgets = document.querySelectorAll('#budget');
-  var budgets = {};
-  var budgets_field = document.querySelectorAll('#budgets')[0];
+    <script>
+    var temp_budgets = document.querySelectorAll('#budget');
+    var budgets = {};
+    var budgets_field = document.querySelectorAll('#budgets')[0];
 
-  for (var i = 0; i < temp_budgets.length; i++) {
-    if(!(temp_budgets[i].value == '')){
-      console.l;
-      var order = +temp_budgets[i].parentElement.querySelectorAll('#orders')[0].value;
-      var budget = +temp_budgets[i].value;
+    for (var i = 0; i < temp_budgets.length; i++) {
+      if(!(temp_budgets[i].value == '')){
+        console.l;
+        var order = +temp_budgets[i].parentElement.querySelectorAll('#orders')[0].value;
+        var budget = +temp_budgets[i].value;
+        budgets[order] = budget;
+      }
+    }
+    budgets_field.value = JSON.stringify(budgets);
+
+    function add_new_order(e){
+      var parent = document.querySelectorAll('#orders')[0];
+      var link = document.querySelectorAll('#add_field')[0];
+      var select = document.querySelectorAll('#hidden_select')[0].children[0].cloneNode(true);
+      parent.insertBefore(select, link);
+    }
+    function delete_order(e){
+      var parent = e.parentElement;
+      var edit = parent.querySelectorAll(".edit")
+      var order = +edit[0].querySelectorAll('#orders')[0].value;
+      e.parentElement.remove()
+      delete budgets[order];
+      budgets_field.value = JSON.stringify(budgets);
+    }
+    function save_order(e){
+      var parent = e.parentElement;
+      var edit = parent.querySelectorAll(".edit")
+      var view = parent.querySelectorAll(".view")
+      var order = +edit[0].querySelectorAll('#orders')[0].value;
+      var budget = +edit[0].querySelectorAll('#budget')[0].value;
+      for (var i = 0; i < edit.length; i++) {
+        edit[i].style.display = 'none';
+      }
+      view[0].children[0].href += edit[0].children[0].value
+      view[0].children[0].text = edit[0].children[0].options[ edit[0].children[0].selectedIndex ].text
+      txt = document.createTextNode(edit[0].children[1].value);
+      view[0].children[1].innerText = txt.textContent;
+      for (var i = 0; i < view.length; i++) {
+        view[i].style.display = 'inline';
+      }
       budgets[order] = budget;
-    }
-  }
-  budgets_field.value = JSON.stringify(budgets);
+      budgets_field.value = JSON.stringify(budgets);
 
-  function add_new_order(e){
-    var parent = document.querySelectorAll('#orders')[0];
-    var link = document.querySelectorAll('#add_field')[0];
-    var select = document.querySelectorAll('#hidden_select')[0].children[0].cloneNode(true);
-    parent.insertBefore(select, link);
-  }
-  function delete_order(e){
-    var parent = e.parentElement;
-    var edit = parent.querySelectorAll(".edit")
-    var order = +edit[0].querySelectorAll('#orders')[0].value;
-    e.parentElement.remove()
-    delete budgets[order];
-    budgets_field.value = JSON.stringify(budgets);
-  }
-  function save_order(e){
-    var parent = e.parentElement;
-    var edit = parent.querySelectorAll(".edit")
-    var view = parent.querySelectorAll(".view")
-    var order = +edit[0].querySelectorAll('#orders')[0].value;
-    var budget = +edit[0].querySelectorAll('#budget')[0].value;
-    for (var i = 0; i < edit.length; i++) {
-      edit[i].style.display = 'none';
     }
-    view[0].children[0].href += edit[0].children[0].value
-    view[0].children[0].text = edit[0].children[0].options[ edit[0].children[0].selectedIndex ].text
-    txt = document.createTextNode(edit[0].children[1].value);
-    view[0].children[1].innerText = txt.textContent;
-    for (var i = 0; i < view.length; i++) {
-      view[i].style.display = 'inline';
+    function edit_order(e){
+      console.log("das")
+      var parent = e.parentElement;
+      var edit = parent.querySelectorAll(".edit")
+      var view = parent.querySelectorAll(".view")
+      for (var i = 0; i < edit.length; i++) {
+        edit[i].style.display = 'inline';
+      }
+      for (var i = 0; i < view.length; i++) {
+        view[i].style.display = 'none';
+      }
+      budgets[order] = budget;
+      budgets_field.value = JSON.stringify(budgets);
     }
-    budgets[order] = budget;
-    budgets_field.value = JSON.stringify(budgets);
-
-  }
-  function edit_order(e){
-    console.log("das")
-    var parent = e.parentElement;
-    var edit = parent.querySelectorAll(".edit")
-    var view = parent.querySelectorAll(".view")
-    for (var i = 0; i < edit.length; i++) {
-      edit[i].style.display = 'inline';
-    }
-    for (var i = 0; i < view.length; i++) {
-      view[i].style.display = 'none';
-    }
-    budgets[order] = budget;
-    budgets_field.value = JSON.stringify(budgets);
-  }
-  </script>
+    </script>
+  <% end %>
 <% end %>
