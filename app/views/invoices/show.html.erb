@@ -19,24 +19,18 @@
 
     end %>
   </table>
-    <hr />
+  <% if User.current.allowed_to?(:show_orders, nil, global:true) %>
     <hr />
     <div id="orders_tree">
-      <div class="contextual"><%= link_to l(:button_add), new_order_path %></div>
+      <div class="contextual"><%= link_to l(:button_add), new_order_path if User.current.allowed_to?(:create_orders, nil, global:true) %></div>
       <p><strong><%=l(:label_order_plural)%></strong></p>
-      <% @invoice.orders.each do |order| %>
-        <%= link_to_order(order) %> </br>
-      <% end %>
-      </div>
+      <%= render :partial => 'orders' if @invoice.orders.present? %>
+    </div>
+  <% end %>
 </div>
 <div style="clear: both;"></div>
 <%= render partial: 'action_menu' %>
 <div style="clear: both;"></div>
-<% if @invoice.editable? %>
-  <div id="update" style="display:none;">
-  <h3><%= l(:button_edit) %></h3>
-  <%#= render :partial => 'edit' %>
-  </div>
-<% end %>
+
 
 <% html_title "Tocat - Inovice #{@invoice.id}" %>

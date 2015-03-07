@@ -1,0 +1,29 @@
+<div class = 'autoscroll'>
+  <table class = 'list issues'>
+    <thead><tr>
+          <td><%= l(:label_name) %></td>
+          <td><%= l(:label_invoiced_budget) %></td>
+          <td><%= l(:label_allocatable_budget) %></td>
+          <td><%= l(:label_free_budget) %></td>
+        </tr>
+    </thead>
+    <tbody>
+      <%@invoice.orders.each do |order| %>
+        <tr class = '<%= cycle('odd', 'even')%> issue'>
+          <td class = 'name'>
+            <%= link_to order.name, order_path(order.id) %>
+          </td>
+          <td class = 'invoiced_budget'>
+            <%= order.invoiced_budget %>
+          </td>
+          <td class = 'allocatable_budget'>
+            <%= order.allocatable_budget %>
+          </td>
+          <td class = 'free_budget'>
+            <%= order.free_budget %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

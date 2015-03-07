@@ -1,0 +1,25 @@
+<%= labelled_form_for @invoice, url: invoices_path,
+                                :html => {:id => 'inovice-form',
+                                          :multipart => true} do |f| %>
+    <%= error_messages_for @invoice_old if @invoice_old.present?%>
+    <div class="box">
+      <fieldset class="tabular">
+        <legend><%= @invoice.new_record? ? l(:label_new_invoice) : l(:label_change_properties) %></legend>
+        <div id="all_attributes">
+          <%= labelled_fields_for :invoice, @invoice do |f| %>
+            <p>
+              <%= f.text_field :client, :size => 80,
+                                :maxlength => 255, :required => true %>
+            </p>
+            <p>
+              <%= f.text_field :external_id, :size => 80,
+                               :maxlength => 255, :required => true %>
+            </p>
+          <% end %>
+        </div>
+      </fieldset>
+    </div>
+    <%= submit_tag l(:button_submit) %>
+    | <%= link_to l(:button_cancel), {},
+                    :onclick => "$('#update').hide(); return false;" %>
+<% end %>

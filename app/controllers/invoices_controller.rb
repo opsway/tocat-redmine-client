@@ -1,7 +1,7 @@
 class InvoicesController < ApplicationController
   unloadable
 
-  before_filter :find_invoice, :except => [:new, :create, :index, :create_suborder]
+  before_filter :find_invoice, :except => [:new, :create, :index]
   before_filter :check_for_setup
   layout 'tocat_base'
   helper :sort
@@ -10,16 +10,30 @@ class InvoicesController < ApplicationController
 
 
   def new
+    @invoice = TocatInvoice.new
   end
 
 
   def create
+    @invoice = TocatInvoice.new(params[:invoice])
+    if @invoice.save
+      flash[:notice] = l(:notice_successful_created)
+      respond_to do |format|
+        format.html { redirect_back_or_default({:action => 'show', :id => @invoice}) }
+        format.js do
+          render :update do |page|
+            page.replace_html 'invoice-form', :partial => 'tocat/invoices/edit', :locals => {:invoice => @invoice}
+          end
+        end
+      end
+    else
+      @invoice_old = @invoice
+      @invoice.reload
+      respond_to do |format|
+        format.html { render :template => 'invoices/edit' }
+      end
+    end
   end
-
-
-  def update
-  end
-
 
   def edit
   end
@@ -52,9 +66,23 @@ class InvoicesController < ApplicationController
 
 
   def set_paid
+    respond_to do |format|
+      if @invoice.set_paid
+
+      else
+
+      end
+    end
   end
 
   def set_unpaid
+    respond_to do |format|
+      if @invoice.set_unpaid
+
+      else
+
+      end
+    end
   end
 
   private
