@@ -21,9 +21,14 @@ module RedmineTocatClient
           budgets = []
           tocat.get(:budget).each do |record|
             params = {}
-            record.each do |r|
-              params[r.first] = r.second
-            end
+            order = TocatOrder.find(record['order_id'])
+            params[:id] = order.id
+            params[:budget] = record['budget']
+            params[:name] = order.name
+            params[:allocatable_budget] = order.allocatable_budget
+            params[:free_budget] = order.free_budget
+            params[:paid] = order.paid
+            params[:invoiced_budget] = order.invoiced_budget
             budgets << OpenStruct.new(params)
           end
           budgets

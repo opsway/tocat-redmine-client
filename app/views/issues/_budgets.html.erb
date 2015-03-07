@@ -1,15 +1,6 @@
 <% if User.current.allowed_to?(:edit_orders, nil, global:true) %>
   <% unless @issue.new_record? %>
     <fieldset id='orders' class="tabular"><legend><%= l(:label_change_orders) %></legend>
-      <% unless @@orders_errors.empty? %>
-        <div id="errorExplanation">
-          <ul>
-            <% @@orders_errors.each do |message|%>
-              <li><%= message %></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
       <%= hidden_field_tag :budgets %>
       <div id='hidden_select' style='display:none'>
         <span><span class='edit'><%= select_tag "orders", options_from_collection_for_select(@orders, "id", "name") %> - <%= number_field_tag "budget", ``, min: 0.5, step: 0.5, onkeyup:"if (/\D/g.test(this.value)) this.value = this.value.replace(/\D/g,'')"%></span>

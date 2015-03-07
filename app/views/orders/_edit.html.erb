@@ -1,4 +1,9 @@
-<%= labelled_form_for @order,url: orders_path, :html => {:id => 'order-form', :multipart => true} do |f| %>
+<%if @order.new_record?
+    url = orders_path
+  else
+    url = order_path(@order.id)
+  end %>
+<%= labelled_form_for @order, url: url, :html => {:id => 'order-form', :multipart => true} do |f| %>
     <%= error_messages_for @order_old if @order_old.present?%>
     <div class="box">
       <fieldset class="tabular"><legend><%= l(:label_change_properties) %></legend>

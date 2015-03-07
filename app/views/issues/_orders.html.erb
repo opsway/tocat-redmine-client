@@ -5,10 +5,12 @@
           <td><%= l(:label_invoiced_budget) %></td>
           <td><%= l(:label_allocatable_budget) %></td>
           <td><%= l(:label_free_budget) %></td>
+          <td><%= l(:label_budget) %></td>
+          <td><%= l(:label_paid) %></td>
         </tr>
     </thead>
     <tbody>
-      <%@invoice.orders.each do |order| %>
+      <%@issue.budgets.each do |order| %>
         <tr class = '<%= cycle('odd', 'even')%> issue'>
           <td class = 'name'>
             <%= link_to order.name, order_path(order.id) %>
@@ -21,6 +23,12 @@
           </td>
           <td class = 'free_budget'>
             <%= order.free_budget %>
+          </td>
+          <td class = 'budget'>
+            <%= order.budget %>
+          </td>
+          <td class = 'paid'>
+            <%= order.paid ? image_tag('true.png') : image_tag('false.png') %>
           </td>
         </tr>
       <% end %>

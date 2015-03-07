@@ -3,8 +3,6 @@
   <div id="orders_tree">
     <div class="contextual"><%= link_to l(:button_add), new_order_path if User.current.allowed_to?(:create_orders, nil, global:true) %></div>
     <p><strong><%=l(:label_order_plural)%></strong></p>
-    <% @issue.orders.each do |order| %>
-    <%= render :partial => 'orders' if @invoice.orders.present? %>
-    <% end %>
+    <%= render :partial => 'orders' if @issue.orders.present? %>
   </div>
 <% end %>
