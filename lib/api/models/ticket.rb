@@ -18,8 +18,17 @@ class TocatTicket < ActiveResource::Base
     end
   end
 
-  def set_budgets!(budgets)
-    post(:budget, '', {budget: [budgets]}.to_json)
+  def set_budgets(budgets)
+    params = []
+    JSON.parse(budgets).each do |budget|
+      params << { 'order_id' => budget[0].to_i , 'budget' => budget[1] }
+    end
+    begin
+      post(:budget, '', {budget: params}.to_json)
+    rescue => error
+      return false, JSON.parse(error.response.body)['message']
+    end
+    return true, nil
   end
 
   def redmine
