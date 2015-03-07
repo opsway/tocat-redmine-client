@@ -1,0 +1,67 @@
+<fieldset id='orders' class="tabular"><legend><%= l(:label_change_orders) %></legend>
+  <%= hidden_field_tag :budgets %>
+  <div id='hidden_select' style='display:none'>
+    <span><span class='edit'><%= select_tag "orders", options_from_collection_for_select(@orders, "id", "name") %> - <%= text_field_tag "budget" %></span>
+          <span class='view' style='display:none'><a href='/tocat/orders/'> </a> - <span class='budget_val'></span></span>
+          <span class='accept icon icon-checked edit' style='cursor:pointer' onclick='save_order(this)'></span>
+          <span class='accept icon icon-edit view' style='cursor:pointer' onclick='edit_order(this)'></span>
+          <span onclick='delete_order(this)' style='cursor:pointer' class='delete icon icon-del'></span></br></span>
+  </div>
+  <% @issue.budgets.each do |r| %>
+    <%= link_to r.order_name, action: "show", order_id: r.order_id %> - <%= r.budget %>
+    <span class='accept icon icon-edit edit' style='cursor:pointer' onclick='save_order(this)'></span>
+    <span onclick='delete_order()' style='cursor:pointer' class='delete icon icon-del'></span></br>
+    <%= hidden_field_tag :budget, {order_id: r.order_id, budget: r.budget}.to_json %>
+  <% end %>
+  <%= link_to 'Add new order', '#', id:'add_field', onclick: 'add_new_order();return false;' %></br>
+
+</fieldset>
+
+
+<script>
+var temp_budgets = document.querySelectorAll('#budget');
+var budgets = [];
+for (var i = 0; i < temp_budgets.length; i++) {
+    budgets.push(temp_budgets[i].value)
+}
+document.querySelectorAll('#budgets')[0].value = budgets
+
+function add_new_order(e){
+  var parent = document.querySelectorAll('#orders')[0];
+  var link = document.querySelectorAll('#add_field')[0];
+  var select = document.querySelectorAll('#hidden_select')[0].children[0].cloneNode(true);
+  parent.insertBefore(select, link);
+}
+function save_order(e){
+  var parent = e.parentElement;
+  var edit = parent.querySelectorAll(".edit")
+  var view = parent.querySelectorAll(".view")
+  for (var i = 0; i < edit.length; i++) {
+    edit[i].style.display = 'none';
+  }
+  view[0].children[0].href += edit[0].children[0].value
+  view[0].children[0].text = edit[0].children[0].options[ edit[0].children[0].selectedIndex ].text
+  txt = document.createTextNode(edit[0].children[1].value);
+  view[0].children[1].innerText = txt.textContent;
+  console.log()
+  for (var i = 0; i < view.length; i++) {
+    view[i].style.display = 'inline';
+  }
+}
+function edit_order(e){
+  var parent = e.parentElement;
+  var edit = parent.querySelectorAll(".edit")
+  var view = parent.querySelectorAll(".view")
+  for (var i = 0; i < edit.length; i++) {
+    edit[i].style.display = 'inline';
+  }
+  // view[0].children[0].href += edit[0].children[0].value
+  // view[0].children[0].text = edit[0].children[0].options[ edit[0].children[0].selectedIndex ].text
+  // txt = document.createTextNode(edit[0].children[1].value);
+  // view[0].children[1].innerText = txt.textContent;
+  // console.log()
+  for (var i = 0; i < view.length; i++) {
+    view[i].style.display = 'none';
+  }
+}
+</script>

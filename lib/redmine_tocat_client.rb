@@ -10,9 +10,13 @@ Rails.configuration.to_prepare do
   # patches
   require 'api/patches/active_resource_errors'
   require 'patches/user'
+  require 'patches/issues_controller'
   require 'patches/group'
+  require 'patches/issue'
 
   # hooks
+  require 'hooks/view_issue_hook'
+
 
 end
 

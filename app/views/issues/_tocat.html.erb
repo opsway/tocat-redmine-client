@@ -1,0 +1,8 @@
+<hr/>
+<div id="orders_tree">
+  <div class="contextual"><%= link_to l(:button_add), new_order_path %></div>
+  <p><strong><%=l(:label_order_plural)%></strong></p>
+  <% @issue.orders.each do |order| %>
+    <%= link_to order.name, action: "show", order_id: order.id %></br>
+  <% end %>
+</div>
