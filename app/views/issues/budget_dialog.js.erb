@@ -1,0 +1,19 @@
+document.getElementById('ajax-modal').innerHTML = '<%= escape_javascript(render(:partial => 'issues/budget_dialog', :locals => { :teams => @teams })) %>';
+showModal('ajax-modal', 350);
+$( document ).ready(function() {
+  var orders = JSON.parse($('#teams').val())
+  $('#orders').on('change', function() {
+    $('#free_budget').text(orders[this.value]);
+    $("#budget").prop('disabled',false);
+    $("#budget").prop('max',orders[this.value]);
+  });
+  $('#new_order').on('submit',function(e){
+    e.preventDefault();
+    var data = {
+                budget:$("#budget").val(),
+                order_id:$('#orders').val(),
+                issue_id:<%= @issue.id %>
+                }
+    createBudget(data);
+  });
+});

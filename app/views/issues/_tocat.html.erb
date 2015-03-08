@@ -3,6 +3,28 @@
   <div id="orders_tree">
     <div class="contextual"><%= link_to l(:button_add), new_order_path if User.current.allowed_to?(:create_orders, nil, global:true) %></div>
     <p><strong><%=l(:label_order_plural)%></strong></p>
-    <%= render :partial => 'orders' if @issue.orders.present? %>
+    <span id = 'orders_box'><%= render :partial => 'orders' %></span>
   </div>
+
+
+  <script charset="utf-8">
+  function createBudget(data){
+    $.ajax({
+      type: "POST",
+      url: "<%= tocat_budget_path %>",
+      data: data,
+      success: function(data) {
+        document.getElementById('orders_box').innerHTML = data.responseText;
+        var orders = JSON.parse($('#teams').val())
+        hideModal();
+      },
+      error: function(data) {
+        document.getElementById('orders_box').innerHTML = data.responseText;
+        var orders = JSON.parse($('#teams').val())
+        hideModal();
+      },
+      dataType: 'JSON'
+    });
+  };
+  </script>
 <% end %>

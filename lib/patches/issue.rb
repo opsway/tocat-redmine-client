@@ -17,21 +17,46 @@ module RedmineTocatClient
           tocat.get_orders
         end
 
-        def budgets
-          budgets = []
-          tocat.get(:budget).each do |record|
-            params = {}
-            order = TocatOrder.find(record['order_id'])
-            params[:id] = order.id
-            params[:budget] = record['budget']
-            params[:name] = order.name
-            params[:allocatable_budget] = order.allocatable_budget
-            params[:free_budget] = order.free_budget
-            params[:paid] = order.paid
-            params[:invoiced_budget] = order.invoiced_budget
-            budgets << OpenStruct.new(params)
+        def available_orders
+          @orders_data = {}
+          orders_ = []
+          all_orders = TocatOrder.all
+          presented_orders = orders.collect(&:id)
+          all_orders.each do |order|
+            unless presented_orders.include? order.id
+              orders_ << order
+            end
           end
-          budgets
+          orders_
+        end
+
+        def get_balance_for_order(id)
+          budgets.each do |record|
+            return record.budget if record.id == id
+          end
+        end
+
+        def available_orders_as_json
+          @orders_data = {}
+          orders_ = []
+          all_orders = TocatOrder.all
+          presented_orders = orders.collect(&:id)
+          all_orders.each do |order|
+            unless presented_orders.include? order.id
+              orders_ << order
+            end
+          end
+          orders_.collect { |t| @orders_data[t.id] = t.free_budget}
+          return @orders_data.to_json
+        end
+
+        def budgets
+          status, payload = TocatTicket.get_budgets(tocat.id)
+          if status
+            return payload
+          else
+            return []
+          end
         end
       end
     end

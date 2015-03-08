@@ -24,3 +24,6 @@ en:
   button_new_order: 'Add new order'
   label_paid: 'Paid'
   field_parent_order: 'Parent Order'
+  label_select_order: 'Select Order'
+  label_budget: 'Ticket Budget'
+  label_free_budget_on_issue_page: 'Free Budget'

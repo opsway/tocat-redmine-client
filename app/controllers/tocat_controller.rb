@@ -7,6 +7,49 @@ class TocatController < ApplicationController
   include QueriesHelper
   before_filter :check_for_setup
 
+  def budget_dialog
+    @issue = Issue.find(params[:issue_id])
+    if params[:order_id].present?
+      order_ = TocatOrder.find(params[:order_id])
+      order = {}
+      order[:id] = order_.id
+      order[:balance] = @issue.get_balance_for_order(order_.id)
+      order[:free_budget] = order_.free_budget
+      @order = OpenStruct.new(order)
+    end
+    @teams = TocatTeam.available_for_issue(@issue).collect{ |g| [g.id, g.name] }
+    @orders = TocatOrder.all
+    return render template: 'issues/budget_dialog'
+    # see http://stackoverflow.com/questions/9025338/rails-upgrade-to-3-1-changing-ajax-handling-from-render-update-to-respond-t
+  end
+
+  def save_budget_dialog
+    @issue = Issue.find(params[:issue_id])
+    budgets = []
+    status, payload = TocatTicket.get_budgets(@issue.tocat.id)
+    return render :status => :bad_request unless status
+    payload.each do |budget|
+      if budget.id == params[:order_id].to_i
+        budgets << { order_id:budget.id, budget:params[:budget] }
+      else
+        budgets << { order_id:budget.id, budget:budget.budget }
+      end
+    end
+    unless payload.collect(&:id).include? params[:order_id].to_i
+      budgets << { order_id:params[:order_id].to_i, budget:params[:budget].to_i }
+    end
+    binding.pry
+    status, errors = TocatTicket.set_budgets(@issue.tocat.id, budgets)
+    if status
+      data = render_to_string :partial => 'issues/orders'
+      respond_to do |format|
+        format.js {   render( :text => data, :status => :ok ) }
+      end
+    else
+      render :json =>  errors, :status => :bad_request
+    end
+  end
+
 
   def show_invoice
     @invoice = TocatInvoice.find(params[:invoice_id])

@@ -1,37 +1,83 @@
 <div class = 'autoscroll'>
-  <table class = 'list issues'>
-    <thead><tr>
-          <td><%= l(:label_name) %></td>
-          <td><%= l(:label_invoiced_budget) %></td>
-          <td><%= l(:label_allocatable_budget) %></td>
-          <td><%= l(:label_free_budget) %></td>
-          <td><%= l(:label_budget) %></td>
-          <td><%= l(:label_paid) %></td>
-        </tr>
-    </thead>
-    <tbody>
-      <%@issue.budgets.each do |order| %>
-        <tr class = '<%= cycle('odd', 'even')%> issue'>
-          <td class = 'name'>
-            <%= link_to order.name, order_path(order.id) %>
-          </td>
-          <td class = 'invoiced_budget'>
-            <%= order.invoiced_budget %>
-          </td>
-          <td class = 'allocatable_budget'>
-            <%= order.allocatable_budget %>
-          </td>
-          <td class = 'free_budget'>
-            <%= order.free_budget %>
-          </td>
-          <td class = 'budget'>
-            <%= order.budget %>
-          </td>
-          <td class = 'paid'>
-            <%= order.paid ? image_tag('true.png') : image_tag('false.png') %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <%= hidden_field_tag 'teams', @issue.available_orders_as_json  %>
+  <% records = @issue.budgets %>
+  <% if records.present? %>
+    <table class = 'list issues'>
+      <thead><tr>
+            <td><%= l(:label_name) %></td>
+            <td><%= l(:label_invoiced_budget) %></td>
+            <td><%= l(:label_allocatable_budget) %></td>
+            <td><%= l(:label_free_budget) %></td>
+            <td><%= l(:label_budget) %></td>
+            <td><%= l(:label_paid) %></td>
+            <td></td>
+            <td></td>
+          </tr>
+      </thead>
+      <tbody>
+        <%@issue.budgets.each do |order| %>
+          <tr id='<%= order.id %>' class = '<%= cycle('odd', 'even')%> issue'>
+            <td class = 'name'>
+              <%= link_to order.name, order_path(order.id) %>
+            </td>
+            <td class = 'invoiced_budget'>
+              <%= order.invoiced_budget %>
+            </td>
+            <td class = 'allocatable_budget'>
+              <%= order.allocatable_budget %>
+            </td>
+            <td class = 'free_budget'>
+              <%= order.free_budget %>
+            </td>
+            <td class = 'budget'>
+              <%= order.budget %>
+            </td>
+            <td class = 'paid'>
+              <%= order.paid ? image_tag('true.png') : image_tag('false.png') %>
+            </td>
+            <td><span class='icon icon-edit' style='cursor:pointer;' onclick='edit_order(this)'></span></td>
+            <td><span class='icon icon-del' style='cursor:pointer;' onclick='delete_order(this)'></span></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <% end %>
 </div>
+
+<span class="new_budget" style=" background: url(../images/bullet_add.png) no-repeat 0 50%; padding-left: 15px;">
+  <span onclick="budget_dialog()" style="cursor: pointer;"><%= l(:label_new_budget) %></span>
+</span>
+
+<script>
+  function edit_order(e){
+    $.ajax('<%= tocat_budget_path %>', {
+      asynchronous: true,
+      method: 'get',
+      data: {
+        'issue_id': <%= @issue.id%>,
+        'order_id': +e.parentElement.parentElement.id
+      }
+    });
+  }
+
+  function delete_order(e){
+    $.ajax('<%= tocat_budget_path %>', {
+      asynchronous: true,
+      method: 'delete',
+      data: {
+        'issue_id': <%= @issue.id%>,
+        'order_id': +e.parentElement.parentElement.id
+      }
+    });
+  }
+
+  function budget_dialog(){
+    $.ajax('<%= tocat_budget_path %>', {
+      asynchronous: true,
+      method: 'get',
+      data: {
+        'issue_id': <%= @issue.id%>
+      }
+    });
+  }
+</script>
