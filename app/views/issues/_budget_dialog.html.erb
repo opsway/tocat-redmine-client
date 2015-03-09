@@ -1,5 +1,5 @@
 <div class='modal'>
-  <h3 class="title"><%= l(:field_select_order) %></h3>
+  <h3 class="title"><%= l(:label_select_order) %></h3>
   <form id = "new_order">
     <div class='order_selector'>
       <p>
@@ -24,8 +24,8 @@
       </p>
     </div>
     <p class="buttons">
-      <%= submit_tag l(:button_close), :name => nil, :onclick => "hideModal();return false;", :type => 'button' %>
-      <%= submit_tag l(:button_save), :name => nil, :onclick => "save_budget(this);return false;", :type => 'button' %>
+      <%#= submit_tag l(:button_close), :name => nil, :onclick => "hideModal();return false;", :type => 'button' %>
+      <%#= submit_tag l(:button_save), :name => nil, :onclick => "save_budget(this);return false;", :type => 'button' %>
     </p>
   </form>
 </div>
