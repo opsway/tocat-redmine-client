@@ -21,7 +21,7 @@
         var orders = JSON.parse($('#teams').val())
       },
       error: function(data) {;
-        alert(data);
+        alert(data.responseText);
       },
       dataType: 'JSON'
     });
@@ -59,7 +59,7 @@
           hideModal();
         },
         error: function(data) {;
-          alert(data);
+          alert(data.responseText);
         },
         dataType: 'JSON'
       });

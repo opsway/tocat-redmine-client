@@ -18,7 +18,7 @@ class TocatController < ApplicationController
         format.js {   render( :text => data, :status => :ok ) }
       end
     else
-      render :json =>  errors, :status => :bad_request
+      render :json =>  errors.response.body, :status => :bad_request
     end
   end
 
@@ -62,7 +62,7 @@ class TocatController < ApplicationController
         format.js {   render( :text => data, :status => :ok ) }
       end
     else
-      render :json =>  errors, :status => :bad_request
+      render :json =>  errors.response.body, :status => :bad_request
     end
   end
 
@@ -83,7 +83,7 @@ class TocatController < ApplicationController
         format.js {   render( :text => data, :status => :ok ) }
       end
     else
-      render :json =>  errors, :status => :bad_request
+      render :json =>  errors.response.body, :status => :bad_request
     end
   end
 
