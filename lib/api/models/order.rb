@@ -34,7 +34,7 @@ class TocatOrder < ActiveResource::Base
   end
 
   def get_team
-    Group.where(lastname: team.name).first
+    team
   end
 
   def parent
