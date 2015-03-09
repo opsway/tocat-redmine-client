@@ -13,12 +13,24 @@ module RedmineTocatClient
           task
         end
 
+        def available_resolvers
+          if tocat.orders.present?
+            users = []
+            team = TocatOrder.find(tocat.orders.first.id).team.name
+            TocatUser.all.each {|u| users << u if u.team.name == team}
+          else
+            users =  TocatUser.all
+          end
+          users
+        end
+
         def orders
           tocat.get_orders
         end
 
         def available_orders
-          @orders_data = {}
+          # FIXME add team to /orders serializer on server
+          orders = []
           orders_ = []
           all_orders = TocatOrder.all
           presented_orders = orders.collect(&:id)
@@ -27,7 +39,15 @@ module RedmineTocatClient
               orders_ << order
             end
           end
-          orders_
+          if tocat.attributes.include? 'resolver' && tocat.resolver.id.present?
+            team = TocatUser.find(tocat.resolver.id).team.name
+            orders_.each do |order|
+              orders << order if TocatOrder.find(order.id).team.name == team
+            end
+          else
+            orders = orders_
+          end
+          orders
         end
 
         def get_balance_for_order(id)

@@ -7,12 +7,12 @@
         <% if @order.present?%>
           <%= select_tag "orders", options_from_collection_for_select(@orders, "id", "name", selected:@order.id), disabled: true %>
         <% else %>
-          <%= select_tag "orders", options_from_collection_for_select(@issue.available_orders, "id", "name") %>
+          <%= select_tag "orders", options_from_collection_for_select(@issue.available_orders, "id", "name"), include_blank: true %>
         <% end %>
       </p>
       <p>
         <%= label_tag 'free_budget', l(:label_free_budget_on_issue_page) %>
-        <span id='free_budget'><%= @order.free_budget if @order.present? %></span>
+        <span id='free_budget'><%= @order.free_budget + @order.balance if @order.present? %></span>
       </p>
       <p>
         <%= label_tag 'budget', l(:label_budget) %>

@@ -15,6 +15,38 @@ class TocatTicket < ActiveResource::Base
     end
   end
 
+  def get_budget
+    if attributes.include? "budget"
+      budget
+    else
+      '0'
+    end
+  end
+
+  def get_paid
+    if attributes.include? "paid"
+      paid
+    else
+      false
+    end
+  end
+
+  def get_accepted
+    if attributes.include? "accepted"
+      accepted
+    else
+      false
+    end
+  end
+
+  def get_resolver
+    return nil unless attributes.include? "resolver"
+    if resolver.attributes.empty?
+      nil
+    else
+      resolver
+    end
+  end
 
   def self.find_by_external_id(id)
     ticket = TocatTicket.find(:all, params: {search_query: id}).first
@@ -36,6 +68,26 @@ class TocatTicket < ActiveResource::Base
     Issue.find(external_id)
   end
 
+
+  def self.update_resolver(id, resolver)
+    if resolver.present? && resolver.to_i != 0
+      begin
+        connection.post("#{self.prefix}/task/#{id}/resolver", {user_id: resolver.to_i}.to_json)
+      rescue => error
+        # TODO add logger
+        return false, error
+      end
+      return true, nil
+    else
+      begin
+        connection.delete("#{self.prefix}/task/#{id}/resolver")
+      rescue => error
+        # TODO add logger
+        return false, error
+      end
+      return true, nil
+    end
+  end
 
   def self.set_budgets(id, budgets)
     begin

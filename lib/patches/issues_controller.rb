@@ -3,7 +3,7 @@ module RedmineTocatClient
     module IssuesControllerPatch
       module InstanceMethods
         def show_with_tocat_vars
-          @orders = TocatOrder.all
+          @issue.tocat_ticket.create! unless @issue.tocat_ticket.present?
           show_without_tocat_vars
         end
 
@@ -35,10 +35,10 @@ module RedmineTocatClient
         base.send(:include, InstanceMethods)
         base.class_eval do
           unloadable
-          alias_method_chain :show, :tocat_vars
-          alias_method_chain :edit, :tocat_vars
-          alias_method_chain :create, :budgets
-          alias_method_chain :update, :budgets
+          #alias_method_chain :show, :tocat_vars
+          # alias_method_chain :edit, :tocat_vars
+          # alias_method_chain :create, :budgets
+          # alias_method_chain :update, :budgets
         end
       end
 

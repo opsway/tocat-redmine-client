@@ -7,6 +7,21 @@ class TocatController < ApplicationController
   include QueriesHelper
   before_filter :check_for_setup
 
+  def update_resolver
+    @issue = Issue.find(params[:issue_id])
+    status, errors = TocatTicket.update_resolver(@issue.tocat.id, params[:resolver_id])
+    if status
+      data = []
+      data << render_to_string(:partial => 'issues/orders')
+      data << render_to_string(:partial => 'issues/tocat_data')
+      respond_to do |format|
+        format.js {   render( :text => data, :status => :ok ) }
+      end
+    else
+      render :json =>  errors, :status => :bad_request
+    end
+  end
+
   def budget_dialog
     @issue = Issue.find(params[:issue_id])
     if params[:order_id].present?
@@ -38,7 +53,29 @@ class TocatController < ApplicationController
     unless payload.collect(&:id).include? params[:order_id].to_i
       budgets << { order_id:params[:order_id].to_i, budget:params[:budget].to_i }
     end
-    binding.pry
+    status, errors = TocatTicket.set_budgets(@issue.tocat.id, budgets)
+    if status
+      data = []
+      data << render_to_string(:partial => 'issues/orders')
+      data << render_to_string(:partial => 'issues/tocat_data')
+      respond_to do |format|
+        format.js {   render( :text => data, :status => :ok ) }
+      end
+    else
+      render :json =>  errors, :status => :bad_request
+    end
+  end
+
+  def delete_budget
+    @issue = Issue.find(params[:issue_id])
+    budgets = []
+    status, payload = TocatTicket.get_budgets(@issue.tocat.id)
+    return render :status => :bad_request unless status
+    payload.each do |budget|
+      unless budget.id == params[:order_id].to_i
+        budgets << { order_id:budget.id, budget:budget.budget }
+      end
+    end
     status, errors = TocatTicket.set_budgets(@issue.tocat.id, budgets)
     if status
       data = render_to_string :partial => 'issues/orders'

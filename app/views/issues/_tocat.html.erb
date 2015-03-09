@@ -1,30 +1,78 @@
+<% if User.current.allowed_to?(:show_orders, nil, global:true)# FIXME manage_tocat instead of show_orders %>
+  <hr/>
+  <div id="tocat">
+    <p><strong><%=l(:label_tocat_data)%></strong></p>
+    <span id = 'tocat_box'><%= render :partial => 'tocat_data' %></span>
+  </div>
+
+  <script>
+  function set_resolver(e){
+    var data = {
+                resolver_id:+e.value,
+                issue_id:<%= @issue.id %>
+                }
+   $.ajax({
+      type: "POST",
+      url: "<%= tocat_resolver_path %>",
+      data: data,
+      success: function(data) {
+        document.getElementById('orders_box').innerHTML = data[0];
+        document.getElementById('tocat_box').innerHTML = data[1];
+        var orders = JSON.parse($('#teams').val())
+      },
+      error: function(data) {;
+        alert(data);
+      },
+      dataType: 'JSON'
+    });
+  };
+  </script>
+<% end %>
+
 <% if User.current.allowed_to?(:show_orders, nil, global:true) %>
+<style>
+.link:hover{text-decoration: underline;}
+.link{cursor: pointer;color: #169;}
+</style>
   <hr/>
   <div id="orders_tree">
-    <div class="contextual"><%= link_to l(:button_add), new_order_path if User.current.allowed_to?(:create_orders, nil, global:true) %></div>
+    <div class="contextual">
+      <% if User.current.allowed_to?(:edit_orders, nil, global:true)%>
+        <span class='link' onclick="budget_dialog()"><%= l(:button_add) %></span>
+      <% end %>
+    </div>
     <p><strong><%=l(:label_order_plural)%></strong></p>
     <span id = 'orders_box'><%= render :partial => 'orders' %></span>
   </div>
 
 
   <script charset="utf-8">
-  function createBudget(data){
-    $.ajax({
-      type: "POST",
-      url: "<%= tocat_budget_path %>",
-      data: data,
-      success: function(data) {
-        document.getElementById('orders_box').innerHTML = data.responseText;
-        var orders = JSON.parse($('#teams').val())
-        hideModal();
-      },
-      error: function(data) {
-        document.getElementById('orders_box').innerHTML = data.responseText;
-        var orders = JSON.parse($('#teams').val())
-        hideModal();
-      },
-      dataType: 'JSON'
-    });
-  };
+    function createBudget(data){
+      $.ajax({
+        type: "POST",
+        url: "<%= tocat_budget_path %>",
+        data: data,
+        success: function(data) {
+          document.getElementById('orders_box').innerHTML = data[0];
+          document.getElementById('tocat_box').innerHTML = data[1];
+          var orders = JSON.parse($('#teams').val())
+          hideModal();
+        },
+        error: function(data) {;
+          alert(data);
+        },
+        dataType: 'JSON'
+      });
+    };
+
+    function budget_dialog(){
+      $.ajax('<%= tocat_budget_path %>', {
+        asynchronous: true,
+        method: 'get',
+        data: {
+          'issue_id': <%= @issue.id%>
+        }
+      });
+    };
   </script>
 <% end %>

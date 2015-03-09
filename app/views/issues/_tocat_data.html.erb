@@ -1,0 +1,35 @@
+<table class='attributes'>
+  <% ticket = @issue.tocat %>
+  <tr>
+    <th>
+      <%=l(:label_tocat_budget)%>
+    </th>
+    <td>
+      <%= ticket.get_budget %>
+    </td>
+    <th>
+      <%=l(:label_tocat_resolver)%>
+    </th>
+    <td>
+      <% if ticket.get_resolver %>
+        <%= select_tag "resolver", options_from_collection_for_select(@issue.available_resolvers, "id", "name", selected: ticket.get_resolver.id ), include_blank: true, onChange: 'set_resolver(this)' %>
+      <% else %>
+        <%= select_tag "resolver", options_from_collection_for_select(@issue.available_resolvers, "id", "name"), include_blank: true, onChange: 'set_resolver(this)' %>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <th>
+      <%=l(:label_tocat_accepted)%>
+    </th>
+    <td>
+      <%= ticket.get_accepted ? image_tag('true.png') : image_tag('false.png') %>
+    </td>
+    <th>
+      <%=l(:label_tocat_paid)%>
+    </th>
+    <td>
+      <%= ticket.get_paid ? image_tag('true.png') : image_tag('false.png') %>
+    </td>
+  </tr>
+</table>
