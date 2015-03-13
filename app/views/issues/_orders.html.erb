@@ -2,7 +2,7 @@
   <%= hidden_field_tag 'teams', @issue.available_orders_as_json  %>
   <% records = @issue.budgets %>
   <% if records.present? %>
-    <table class = 'list issues'>
+    <table class = 'list issues'  style="text-align: center;">
       <thead><tr>
             <td><%= l(:label_name) %></td>
             <td><%= l(:label_invoiced_budget) %></td>

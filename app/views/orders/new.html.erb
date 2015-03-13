@@ -22,7 +22,7 @@
                              :no_label => true %>
             <% end %>
           </p>
-          <p><%= f.select :team, options_for_select(@groups.collect {|t| [t.name, t.tocat.id]}, selected: @order.team), {:required => true} %></p>
+          <p><%= f.select :team, options_for_select(@groups.collect {|t| [t.name, t.id]}, selected: @order.team), {:required => true} %></p>
           <p><%= f.number_field :invoiced_budget, :class => 'invoiced_budget', :step => 0.5, :required => true %></p>
           <p><%= f.number_field :allocatable_budget, :class => 'allocatable_budget', :step => 0.5, :required => true %></p>
           <% if @order.parent_order.present?%>
@@ -31,7 +31,7 @@
               <%= f.hidden_field :parent_order, value: @order.parent_order %>
             </p>
           <% else %>
-            <p><%= f.select :parent_order, options_for_select(TocatOrder.all.collect {|o| [o.name, o.id]}), {} %></p>
+            <p><%= f.select :parent_order, options_for_select(TocatOrder.all.collect {|o| [o.name, o.id]}), { :include_blank => 'None'} %></p>
           <% end %>
         <% end %>
       </div>

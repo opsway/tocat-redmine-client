@@ -33,6 +33,14 @@ class TocatOrder < ActiveResource::Base
     nil
   end
 
+  def issues
+    issues = []
+    tasks.each do |task|
+      issues << Issue.find(task.external_id)
+    end
+    issues
+  end
+
   def get_team
     team
   end

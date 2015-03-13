@@ -14,7 +14,7 @@
       end
 
       if @order.attributes.include? 'paid'
-        rows.right l(:field_paid), @order.paid, :class => 'paid'
+        rows.right l(:field_paid),(@order.paid ? image_tag('true.png') : image_tag('false.png')), :class => 'paid'
       end
 
       if @order.attributes.include? 'free_budget'
@@ -22,7 +22,7 @@
       end
 
       if @order.attributes.include? 'completed'
-        rows.right l(:field_completed), @order.completed, :class => 'completed'
+        rows.right l(:field_completed), (@order.completed ? image_tag('true.png') : image_tag('false.png')), :class => 'completed'
       end
 
       if @order.attributes.include? 'team'
@@ -37,7 +37,6 @@
 
     end %>
   </table>
-    <% if @order.description? %>
     <hr />
       <div class="description">
         <p><strong><%=l(:field_description)%></strong></p>
@@ -45,26 +44,20 @@
           <%= @order.description %>
         </div>
       </div>
-    <% end %>
 
-    <hr />
     <% unless @parent.present?%>
+    <hr />
       <div id="orders_tree">
         <div class="contextual"><%= link_to l(:button_add), new_order_path(split: @order.id) %></div>
         <p><strong><%=l(:label_suborder_plural)%></strong></p>
-        <% @order.sub_orders.each do |order| %>
-          <%= link_to order.name, action: "show", order_id: order.id %></br>
-        <% end %>
+        <%= render :partial => 'orders', locals: {orders: @order.sub_orders } if @order.sub_orders.present? %>
       </div>
     <% end %>
     <hr />
     <div id="tasks_tree">
       <div class="contextual"><%= link_to l(:button_add), '' %></div>
       <p><strong><%=l(:label_issue_plural)%></strong></p>
-      <% @order.tasks.each do |task| %>
-        <%= link_to_task(task) %> </br>
-        <!-- TODO add redmine method to tasks -->
-      <% end %>
+      <%= render :partial => 'issues', locals: {issues: @order.issues } if @order.tasks.present? %>
       </div>
     <hr />
     <div id="invoice">

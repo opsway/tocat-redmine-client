@@ -23,7 +23,7 @@
                              :no_label => true %>
             <% end %>
           </p>
-          <p><%= f.select :team, options_for_select(@groups.collect {|t| [t.name, t.tocat.id]}, selected: @order.get_team), {:required => true} %></p>
+          <p><%= f.select :team, options_for_select(@groups.collect {|t| [t.name, t.id]}, selected: @order.get_team), {:required => true} %></p>
           <p><%= f.number_field :invoiced_budget, :class => 'invoiced_budget', :step => 0.5, :required => true %></p>
           <p><%= f.number_field :allocatable_budget, :class => 'allocatable_budget', :step => 0.5, :required => true %></p>
         <% end %>

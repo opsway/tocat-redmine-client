@@ -57,7 +57,7 @@ class InvoicesController < ApplicationController
     end
     @invoices = TocatInvoice.all(params: query_params)
     @invoice_count = @invoices.http_response['X-total'].to_i
-    @invoice_pages = Paginator.new @invoice_count, @invoices.http_response['X-Per-Page'].to_i, params['page']
+    @invoice_pages = Paginator.new self, @invoice_count, @invoices.http_response['X-Per-Page'].to_i, params['page']
   end
 
 

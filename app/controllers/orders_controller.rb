@@ -15,6 +15,7 @@ class OrdersController < ApplicationController
     @order.invoiced_budget = params[:invoiced_budget] if params[:invoiced_budget].present?
     @order.team = params[:team] if params[:team].present?
     @order.parent_order = params[:split] if params[:split].present?
+    @groups = TocatTeam.all
   end
 
   def destroy
@@ -105,6 +106,7 @@ class OrdersController < ApplicationController
   end
 
   def edit
+    @groups = TocatTeam.all
   end
 
   def index
@@ -125,19 +127,18 @@ class OrdersController < ApplicationController
     end
     @orders = TocatOrder.all(params: query_params)
     @order_count = @orders.http_response['X-total'].to_i
-    @order_pages = Paginator.new @order_count, @orders.http_response['X-Per-Page'].to_i, params['page']
+    @order_pages = Paginator.new self, @order_count, @orders.http_response['X-Per-Page'].to_i, params['page']
   end
 
   def show
+    @groups = TocatTeam.all
     @parent = @order.parent
   end
 
   private
 
   def find_groups
-    @groups = []
-    Group.all.each { |g| @groups << g if g.builtin_type.nil? }
-    @groups
+    @groups = Group.all
   end
 
   def find_order

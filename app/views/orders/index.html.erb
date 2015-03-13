@@ -25,16 +25,25 @@
 
     <thead><tr>
           <%= sort_header_tag('name', :caption => l(:label_name)) %>
+          <th>
+            <%= l(:label_suborder)%>
+          </th>
           <%= sort_header_tag('invoiced_budget', :caption => l(:label_invoiced_budget)) %>
           <%= sort_header_tag('allocatable_budget', :caption => l(:label_allocatable_budget)) %>
           <%= sort_header_tag('free_budget', :caption => l(:label_free_budget)) %>
-        </tr></thead>
+          <th>
+            <%= l(:label_paid)%>
+          </th>
+          </tr></thead>
 
     <tbody>
       <%@orders.each do |order| %>
         <tr class = '<%= cycle('odd', 'even')%> issue'>
           <td class = 'name'>
             <%= link_to order.name, order_path(order) %>
+          </td>
+          <td class = 'suborder'>
+            <%= order.suborder ? image_tag('true.png') : image_tag('false.png') %>
           </td>
           <td class = 'invoiced_budget'>
             <%= order.invoiced_budget %>
@@ -44,6 +53,9 @@
           </td>
           <td class = 'free_budget'>
             <%= order.free_budget %>
+          </td>
+          <td class = 'paid'>
+            <%= order.paid ? image_tag('true.png') : image_tag('false.png') %>
           </td>
         </tr>
       <% end %>
