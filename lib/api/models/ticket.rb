@@ -49,7 +49,7 @@ class TocatTicket < ActiveResource::Base
   end
 
   def self.find_by_external_id(id)
-    ticket = TocatTicket.find(:all, params: {search_query: id}).first
+    ticket = TocatTicket.find(:all, params: {search: id}).first
     if ticket.present?
       return TocatTicket.find(ticket.id)
     end
