@@ -115,7 +115,7 @@ class OrdersController < ApplicationController
     query_params = {}
     query_params[:limit] = params[:per_page] if params[:per_page].present?
     query_params[:page] = params[:page] if params[:page].present?
-    query_params[:search_query] = params[:name] if params[:name].present?
+    query_params[:search] = params[:name] if params[:name].present?
     query_params[:paid] = params[:paid] if params[:paid].present?
     if params[:sort].present?
       query = []
@@ -123,7 +123,7 @@ class OrdersController < ApplicationController
         option.gsub!(':', '_')
         query << option
       end
-      query_params[:sorted_by] = query.join(', ')
+      query_params[:sort] = query.join(', ')
     end
     @orders = TocatOrder.all(params: query_params)
     @order_count = @orders.http_response['X-total'].to_i
