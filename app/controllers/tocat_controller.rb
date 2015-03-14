@@ -104,7 +104,7 @@ class TocatController < ApplicationController
   end
 
   def my_tocat
-    @user = User.last #User.current [FIXME]
+    @user = User.current
     @user_tocat = TocatUser.find(4)
     @team_tocat = TocatTeam.find(@user_tocat.team.id)
     transactions = TocatTransaction.get_transactions_for_user(@user_tocat.id)
@@ -113,7 +113,7 @@ class TocatController < ApplicationController
     transactions.each do |t|
       t.type == 'balance' ?
         @balance_transactions << t :
-        @income_tranactions << t
+        @income_transactions << t
     end
     transactions = TocatTransaction.get_transactions_for_team(@team_tocat.id)
     @team_balance_transactions = []

@@ -1,3 +1,5 @@
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script charset="utf-8">jQuery.noConflict()</script>
 <% if User.current.allowed_to?(:show_orders, nil, global:true)# FIXME manage_tocat instead of show_orders %>
   <hr/>
   <div id="tocat">
@@ -11,14 +13,14 @@
                 resolver_id:+e.value,
                 issue_id:<%= @issue.id %>
                 }
-   $.ajax({
+   jQuery.noConflict().ajax({
       type: "POST",
       url: "<%= tocat_resolver_path %>",
       data: data,
       success: function(data) {
         document.getElementById('orders_box').innerHTML = data[0];
         document.getElementById('tocat_box').innerHTML = data[1];
-        var orders = JSON.parse($('#teams').val())
+        var orders = JSON.parse(jQuery.noConflict()('#teams').val())
       },
       error: function(data) {;
         alert(data.responseText);
@@ -48,14 +50,14 @@
 
   <script charset="utf-8">
     function createBudget(data){
-      $.ajax({
+      jQuery.noConflict().ajax({
         type: "POST",
         url: "<%= tocat_budget_path %>",
         data: data,
         success: function(data) {
           document.getElementById('orders_box').innerHTML = data[0];
           document.getElementById('tocat_box').innerHTML = data[1];
-          var orders = JSON.parse($('#teams').val())
+          var orders = JSON.parse(jQuery.noConflict()('#teams').val())
           hideModal();
         },
         error: function(data) {;
@@ -66,7 +68,7 @@
     };
 
     function budget_dialog(){
-      $.ajax('<%= tocat_budget_path %>', {
+      jQuery.noConflict().ajax('<%= tocat_budget_path %>', {
         asynchronous: true,
         method: 'get',
         data: {

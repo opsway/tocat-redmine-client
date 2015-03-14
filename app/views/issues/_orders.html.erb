@@ -48,7 +48,7 @@
 
 <script>
   function edit_order(e){
-    $.ajax('<%= tocat_budget_path %>', {
+    jQuery.noConflict().ajax('<%= tocat_budget_path %>', {
       asynchronous: true,
       method: 'get',
       data: {
@@ -59,7 +59,7 @@
   };
 
   function delete_order(e){
-    $.ajax('<%= tocat_budget_path %>', {
+    jQuery.noConflict().ajax('<%= tocat_budget_path %>', {
       asynchronous: true,
       method: 'delete',
       data: {
@@ -68,11 +68,11 @@
       },
       success: function(data) {
         document.getElementById('orders_box').innerHTML = data.responseText;
-        var orders = JSON.parse($('#teams').val())
+        var orders = JSON.parse(jQuery.noConflict()('#teams').val())
       },
       error: function(data) {
         document.getElementById('orders_box').innerHTML = data.responseText;
-        var orders = JSON.parse($('#teams').val())
+        var orders = JSON.parse(jQuery.noConflict()('#teams').val())
       }
     });
   };
