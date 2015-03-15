@@ -1,31 +1,29 @@
-<div class='modal'>
-  <h3 class="title"><%= l(:label_select_order) %></h3>
-  <form id = "new_order">
-    <div class='order_selector'>
-      <p>
-        <%= label_tag 'orders', l(:label_select_order) %>
-        <% if @order.present?%>
-          <%= select_tag "orders", options_from_collection_for_select(@orders, "id", "name", selected:@order.id), disabled: true %>
-        <% else %>
-          <%= select_tag "orders", options_from_collection_for_select(@issue.available_orders, "id", "name"), include_blank: true %>
-        <% end %>
-      </p>
-      <p>
-        <%= label_tag 'free_budget', l(:label_free_budget_on_issue_page) %>
-        <span id='free_budget'><%= @order.free_budget + @order.balance if @order.present? %></span>
-      </p>
-      <p>
-        <%= label_tag 'budget', l(:label_budget) %>
-        <% if @order.present?%>
-          <%= number_field_tag "budget", @order.balance, max: @order.free_budget + @order.balance , min: 0.5, step: 0.5, disabled:false %>
-        <% else %>
-          <%= number_field_tag "budget", 0, min: 0.5, step: 0.5, disabled:true %>
-        <% end %>
-      </p>
-    </div>
-    <p class="buttons">
-      <%= submit_tag l(:button_close), :name => nil, :onclick => "hideModal();return false;", :type => 'button' %>
-      <%#= submit_tag l(:button_save), :name => nil, :onclick => "save_budget(this);return false;", :type => 'button' %>
+<h3 class="title"><%= l(:label_select_order) %></h3>
+<form id = "new_order">
+  <div class='order_selector'>
+    <p>
+      <%= label_tag 'orders', l(:label_select_order) %>
+      <% if @order.present?%>
+      <%= select_tag "orders", options_from_collection_for_select(@orders, "id", "name", selected:@order.id), disabled: true %>
+      <% else %>
+      <%= select_tag "orders", options_from_collection_for_select(@issue.available_orders, "id", "name"), include_blank: true %>
+      <% end %>
     </p>
-  </form>
-</div>
+    <p>
+      <%= label_tag 'free_budget', l(:label_free_budget_on_issue_page) %>
+      <span id='free_budget'><%= @order.free_budget + @order.balance if @order.present? %></span>
+    </p>
+    <p>
+      <%= label_tag 'budget', l(:label_budget) %>
+      <% if @order.present?%>
+      <%= number_field_tag "budget", @order.balance, max: @order.free_budget + @order.balance , min: 0.5, step: 0.5, disabled:false %>
+      <% else %>
+      <%= number_field_tag "budget", 0, min: 0.5, step: 0.5, disabled:true %>
+      <% end %>
+    </p>
+  </div>
+  <p class="buttons">
+    <%= submit_tag l(:button_close), :name => nil, :onclick => "hideModal();return false;", :type => 'button' %>
+    <%#= submit_tag l(:button_save), :name => nil, :onclick => "save_budget(this);return false;", :type => 'button' %>
+  </p>
+</form>

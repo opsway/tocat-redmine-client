@@ -1,5 +1,9 @@
 <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
-<script charset="utf-8">jQuery.noConflict()</script>
+<script charset="utf-8">jQuery.noConflict()
+jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
+  jqXHR.setRequestHeader('X-CSRF-Token', jQuery.noConflict()('meta[name=csrf-token]').attr('content'));
+});
+</script>
 <% if User.current.allowed_to?(:show_orders, nil, global:true)# FIXME manage_tocat instead of show_orders %>
   <hr/>
   <div id="tocat">
@@ -17,13 +21,18 @@
       type: "POST",
       url: "<%= tocat_resolver_path %>",
       data: data,
+      beforeSend: function( xhr ) {
+        jQuery.noConflict()('#ajax-indicator').show();
+      },
       success: function(data) {
         document.getElementById('orders_box').innerHTML = data[0];
         document.getElementById('tocat_box').innerHTML = data[1];
         var orders = JSON.parse(jQuery.noConflict()('#teams').val())
+        jQuery.noConflict()('#ajax-indicator').hide();
       },
       error: function(data) {;
         alert(data.responseText);
+        jQuery.noConflict()('#ajax-indicator').hide();
       },
       dataType: 'JSON'
     });
@@ -54,14 +63,19 @@
         type: "POST",
         url: "<%= tocat_budget_path %>",
         data: data,
+        beforeSend: function( xhr ) {
+          jQuery.noConflict()('#ajax-indicator').show();
+        },
         success: function(data) {
           document.getElementById('orders_box').innerHTML = data[0];
           document.getElementById('tocat_box').innerHTML = data[1];
           var orders = JSON.parse(jQuery.noConflict()('#teams').val())
           hideModal();
+          jQuery.noConflict()('#ajax-indicator').hide();
         },
         error: function(data) {;
           alert(data.responseText);
+          jQuery.noConflict()('#ajax-indicator').hide();
         },
         dataType: 'JSON'
       });
@@ -73,7 +87,16 @@
         method: 'get',
         data: {
           'issue_id': <%= @issue.id%>
-        }
+        },
+        beforeSend: function( xhr ) {
+          jQuery.noConflict()('#ajax-indicator').show();
+        },
+        success: function(data) {
+          jQuery.noConflict()('#ajax-indicator').hide();
+        },
+        error: function(data) {;
+          jQuery.noConflict()('#ajax-indicator').hide();
+        },
       });
     };
   </script>
