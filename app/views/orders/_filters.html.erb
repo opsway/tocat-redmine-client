@@ -5,13 +5,13 @@
       <table id="filters-table">
         <tbody>
           <tr class="filter" id="name">
-            <td><%= label_tag(:name, l(:label_name)) %></td>
-            <td><%= text_field_tag(:name) %></td>
+            <td><%= label_tag(:search, l(:label_search)) %></td>
+            <td><%= text_field_tag(:search, params[:search]) %></td>
           </tr>
-          <!-- <tr class="filter" id="paid">
-            <td><%#= label_tag(:paid, l(:label_paid)) %></td>
-            <td><%#= select_tag(:paid, options_for_select([[l(:label_yes), true], [l(:label_no), false]], selected: params[:paid]), include_blank: true) %></td>
-          </tr> -->
+          <tr class="filter" id="paid">
+            <td><%= label_tag(:paid, l(:label_paid)) %></td>
+            <td><%= select_tag(:paid, options_for_select([[l(:label_yes), 1], [l(:label_no), 0]], selected: params[:paid]), include_blank: true) %></td>
+          </tr>
         </tbody>
       </table>
       </td>

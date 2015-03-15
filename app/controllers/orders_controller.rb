@@ -115,8 +115,8 @@ class OrdersController < ApplicationController
     query_params = {}
     query_params[:limit] = params[:per_page] if params[:per_page].present?
     query_params[:page] = params[:page] if params[:page].present?
-    query_params[:search] = params[:name] if params[:name].present?
-    query_params[:paid] = params[:paid] if params[:paid].present?
+    query_params[:search] = params[:search] if params[:search].present?
+    query_params[:search] = "#{query_params[:search]} paid == #{params[:paid]}" if params[:paid].present?
     if params[:sort].present?
       query = []
       [*params[:sort]].each do |option|
