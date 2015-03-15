@@ -5,7 +5,7 @@
           <label><%=	l(:label_transactions)  %></label>
           <thead>
           <tr>
-            <th>#</th>
+            <th><%=	l(:label_date)  %></th>
             <th><%=	l(:label_comment)  %></th>
             <th><%=	l(:label_total)  %></th>
           </tr>
@@ -13,7 +13,7 @@
           <tbody>
           <% transactions.first(10).each do |t|%>
               <tr class="<%= cycle("odd", "even") %>">
-                <td> <%= t.id%> </td>
+                <td> <%= Time.parse(t.date)%> </td>
                 <td> <%= t.comment%> </td>
                 <td nowrap> <%= t.total%> </td>
               </tr>

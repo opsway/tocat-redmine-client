@@ -19,12 +19,17 @@
 <% end %>
 
 <p class="pagination"><%= pagination_links_full @order_pages, @order_count %></p>
+<style>
+fieldset#filters table td {
+  padding-right: 10px;
+}
+</style>
 
 <div class = 'autoscroll'>
   <table class = 'list issues'>
 
     <thead><tr>
-          <%= sort_header_tag('name', :caption => l(:label_name)) %>
+          <%= sort_header_tag('name', :caption => l(:label_order_name)) %>
           <th>
             <%= l(:label_suborder)%>
           </th>
@@ -63,3 +68,4 @@
   </table>
 </div>
 <p class="pagination"><%= pagination_links_full @order_pages, @order_count %></p>
+<% html_title "TOCAT : Orders" %>

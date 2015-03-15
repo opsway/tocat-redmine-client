@@ -4,6 +4,12 @@
 
 <h2> <%= l(:label_invoice_plural)%> </h2>
 
+<style>
+fieldset#filters table td {
+  padding-right: 10px;
+}
+</style>
+
 
 <%= form_tag("/tocat/invoices", method: "get") do %>
   <%= hidden_field_tag 'set_filter', '1' %>
@@ -46,3 +52,4 @@
   <table>
 </div>
 <p class="pagination"><%= pagination_links_full @invoice_pages, @invoice_count %></p>
+<% html_title "TOCAT : Invoices" %>
