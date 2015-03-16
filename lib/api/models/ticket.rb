@@ -2,6 +2,8 @@ class TocatTicket < ActiveResource::Base
   self.site = RedmineTocatClient.settings[:host]
   self.collection_name = 'tasks'
   self.element_name = 'task'
+  add_response_method :http_response
+
 
   class << self
     def element_path(id, prefix_options = {}, query_options = nil)
@@ -65,7 +67,11 @@ class TocatTicket < ActiveResource::Base
   end
 
   def redmine
-    Issue.find(external_id)
+    begin
+      return Issue.find(external_id)
+    rescue ActiveRecord::RecordNotFound
+      return nil
+    end
   end
 
 
