@@ -14,7 +14,7 @@ Redmine::Plugin.register :redmine_tocat_client do
 
   menu :top_menu, :tocat, { :controller => 'tocat', :action => 'my_tocat' },
                           :if => Proc.new{ User.current.allowed_to?({:controller => 'tocat', :action => 'my_tocat'},
-                                          nil, {:global => true})}, :caption => 'Tocat'
+                                          nil, {:global => true})}, :caption => 'TOCAT'
 
   project_module :redmine_tocat_client do
 

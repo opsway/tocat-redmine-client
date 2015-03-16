@@ -53,7 +53,7 @@ class OrdersController < ApplicationController
       end
       return
     end
-    flash[:notice] = l(:notice_successful_created)
+    flash[:notice] = l(:notice_suborder_successful_created)
     respond_to do |format|
       format.html { redirect_back_or_default({:action => 'show', :id => @order}) }
       format.js do
@@ -67,7 +67,7 @@ class OrdersController < ApplicationController
   def create
     @order = TocatOrder.new(params[:order])
     if @order.save
-      flash[:notice] = l(:notice_successful_created)
+      flash[:notice] = l(:notice_order_successful_created)
       respond_to do |format|
         format.html { redirect_back_or_default({:action => 'show', :id => @order}) }
         format.js do
@@ -87,7 +87,7 @@ class OrdersController < ApplicationController
 
   def update
     if @order.update_attributes(params[:order])
-      flash[:notice] = l(:notice_successful_update)
+      flash[:notice] = l(:notice_order_successful_update)
       respond_to do |format|
         format.html { redirect_back_or_default({:action => 'show', :id => @order}) }
         format.js do

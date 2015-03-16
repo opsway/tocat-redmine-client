@@ -16,14 +16,15 @@
     <p>
       <%= label_tag 'budget', l(:label_budget) %>
       <% if @order.present?%>
-      <%= number_field_tag "budget", @order.balance, max: @order.free_budget + @order.balance , min: 0.5, step: 0.5, disabled:false %>
+      <%= number_field_tag "budget", @order.balance, max: @order.free_budget + @order.balance , min: 0.5, step: 0.5, disabled:false, required:true %>
       <% else %>
-      <%= number_field_tag "budget", 0, min: 0.5, step: 0.5, disabled:true %>
+      <%= number_field_tag "budget", 0, min: 0.5, step: 0.5, disabled:true, required:true %>
       <% end %>
     </p>
   </div>
   <p class="buttons">
     <%= submit_tag l(:button_close), :name => nil, :onclick => "hideModal();return false;", :type => 'button' %>
-    <%#= submit_tag l(:button_save), :name => nil, :onclick => "save_budget(this);return false;", :type => 'button' %>
+    <input required="" type="submit" name="submit" id="submit" value="Save">
+    <%#= submit_tag l(:button_save), :name => nil, :onclick => "createBudget();return false;", :type => 'button' %>
   </p>
 </form>

@@ -58,7 +58,12 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
 
 
   <script charset="utf-8">
-    function createBudget(data){
+    function createBudget(){
+      var data = {
+                  budget:jQuery.noConflict()("#budget").val(),
+                  order_id:jQuery.noConflict()('#orders').val(),
+                  issue_id:<%= @issue.id %>
+                  }
       jQuery.noConflict().ajax({
         type: "POST",
         url: "<%= tocat_budget_path %>",

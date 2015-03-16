@@ -17,7 +17,7 @@ class InvoicesController < ApplicationController
   def create
     @invoice = TocatInvoice.new(params[:invoice])
     if @invoice.save
-      flash[:notice] = l(:notice_successful_created)
+      flash[:notice] = l(:notice_invoice_successful_created)
       respond_to do |format|
         format.html { redirect_back_or_default({:action => 'show', :id => @invoice}) }
         format.js do

@@ -40,7 +40,7 @@ class TocatOrder < ActiveResource::Base
     end
     issues
   end
-
+  
   def get_team
     team
   end
