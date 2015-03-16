@@ -17,7 +17,7 @@ class TocatTeam < ActiveResource::Base
 
 
   def self.find_by_name(name)
-    TocatTeam.all.each { |team| return team if team.name == name }
+    TocatTeam.find(:all, params:{search:"#{name}"}).first
   end
 
   def self.available_for_issue(issue)

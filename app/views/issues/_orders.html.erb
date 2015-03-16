@@ -51,9 +51,18 @@
     jQuery.noConflict().ajax('<%= tocat_budget_path %>', {
       asynchronous: true,
       method: 'get',
+      beforeSend: function( xhr ) {
+        jQuery.noConflict()('#ajax-indicator').show();
+      },
       data: {
         'issue_id': <%= @issue.id%>,
         'order_id': +e.parentElement.parentElement.id
+      },
+      success: function(data) {
+        jQuery.noConflict()('#ajax-indicator').hide();
+      },
+      error: function(data) {;
+        jQuery.noConflict()('#ajax-indicator').hide();
       }
     });
   };
@@ -66,13 +75,18 @@
         'issue_id': <%= @issue.id%>,
         'order_id': +e.parentElement.parentElement.id
       },
+      beforeSend: function( xhr ) {
+        jQuery.noConflict()('#ajax-indicator').show();
+      },
       success: function(data) {
         document.getElementById('orders_box').innerHTML = data.responseText;
         var orders = JSON.parse(jQuery.noConflict()('#teams').val())
+        jQuery.noConflict()('#ajax-indicator').hide();
       },
       error: function(data) {
         document.getElementById('orders_box').innerHTML = data.responseText;
         var orders = JSON.parse(jQuery.noConflict()('#teams').val())
+        jQuery.noConflict()('#ajax-indicator').hide();
       }
     });
   };

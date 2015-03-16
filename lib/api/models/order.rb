@@ -28,9 +28,7 @@ class TocatOrder < ActiveResource::Base
   end
 
   def self.find_by_name(name)
-    all_records = Team.all
-    all_records.each { |r| return Team.find(r.id) if r.name == name }
-    nil
+    record = TocatOrder.find(:all, params:{search:"#{name}"}).first
   end
 
   def issues
@@ -40,7 +38,7 @@ class TocatOrder < ActiveResource::Base
     end
     issues
   end
-  
+
   def get_team
     team
   end

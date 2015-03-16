@@ -15,9 +15,8 @@ module RedmineTocatClient
 
         def available_resolvers
           if tocat.orders.present?
-            users = []
             team = TocatOrder.find(tocat.orders.first.id).team.name
-            TocatUser.all.each {|u| users << u if u.team.name == team}
+            users = TocatUser.find(:all, params:{search:"team = #{team}", limit:9999999999})
           else
             users =  TocatUser.all
           end
@@ -29,23 +28,11 @@ module RedmineTocatClient
         end
 
         def available_orders
-          # FIXME add team to /orders serializer on server
-          orders = []
-          orders_ = []
-          all_orders = TocatOrder.all
-          presented_orders = orders.collect(&:id)
-          all_orders.each do |order|
-            unless presented_orders.include? order.id
-              orders_ << order
-            end
-          end
           if tocat.attributes.include? 'resolver' && tocat.resolver.id.present?
             team = TocatUser.find(tocat.resolver.id).team.name
-            orders_.each do |order|
-              orders << order if TocatOrder.find(order.id).team.name == team
-            end
+            orders = TocatOrder.find(:all, params:{search:"team=#{team} paid=0 completed=0 free_budget>0", limit:9999999999})
           else
-            orders = orders_
+            orders = TocatOrder.find(:all, params:{search:"paid=0 completed=0 free_budget>0", limit:9999999999})
           end
           orders
         end
@@ -57,17 +44,15 @@ module RedmineTocatClient
         end
 
         def available_orders_as_json
-          @orders_data = {}
-          orders_ = []
-          all_orders = TocatOrder.all
-          presented_orders = orders.collect(&:id)
-          all_orders.each do |order|
-            unless presented_orders.include? order.id
-              orders_ << order
-            end
+          orders_data = {}
+          if tocat.attributes.include? 'resolver' && tocat.resolver.id.present?
+            team = TocatUser.find(tocat.resolver.id).team.name
+            orders = TocatOrder.find(:all, params:{search:"team=#{team} paid=0 completed=0 free_budget>0", limit:9999999999})
+          else
+            orders = TocatOrder.find(:all, params:{search:"paid=0 completed=0 free_budget>0", limit:9999999999})
           end
-          orders_.collect { |t| @orders_data[t.id] = t.free_budget}
-          return @orders_data.to_json
+          orders.collect { |t| orders_data[t.id] = t.free_budget}
+          return orders_data.to_json
         end
 
         def budgets

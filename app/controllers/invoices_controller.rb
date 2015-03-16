@@ -47,14 +47,8 @@ class InvoicesController < ApplicationController
     query_params[:page] = params[:page] if params[:page].present?
     query_params[:search] = params[:search] if params[:search].present?
     query_params[:search] = "#{query_params[:search]} paid == #{params[:paid]}" if params[:paid].present?
-    if params[:sort].present?
-      query = []
-      [*params[:sort]].each do |option|
-        option.gsub!(':', '_')
-        query << option
-      end
-      query_params[:sort] = query.join(', ')
-    end
+    query_params[:sort] = params[:sort] if params[:sort].present?
+
     @invoices = TocatInvoice.all(params: query_params)
     @invoice_count = @invoices.http_response['X-total'].to_i
     @invoice_pages = Paginator.new self, @invoice_count, @invoices.http_response['X-Per-Page'].to_i, params['page']

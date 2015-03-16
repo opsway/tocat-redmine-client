@@ -12,26 +12,18 @@
 
           <p>
             <%= f.label_for_field :description %>
-            <%= link_to_function image_tag('edit.png'), 'jQuery.noConflict()(this).hide(); jQuery.noConflict()("#order_description_and_toolbar").show()' %>
-            <%= content_tag 'span', :id => "order_description_and_toolbar", :style => 'display:none' do %>
-              <%= f.text_area :description,
-                             :cols => 60,
-                             :rows => 10,
-                             :accesskey => accesskey(:edit),
-                             :class => 'wiki-edit',
-                             :no_label => true %>
-            <% end %>
+            <%= f.text_area :description,
+                            :cols => 60,
+                            :rows => 10,
+                            :accesskey => accesskey(:edit),
+                            :class => 'wiki-edit',
+                            :no_label => true %>
           </p>
           <p><%= f.select :team, options_for_select(@groups.collect {|t| [t.name, t.id]}, selected: @order.team), {:required => true} %></p>
           <p><%= f.number_field :invoiced_budget, :class => 'invoiced_budget', :step => 0.5, :required => true %></p>
           <p><%= f.number_field :allocatable_budget, :class => 'allocatable_budget', :step => 0.5, :required => true %></p>
           <% if @order.parent_order.present?%>
-            <p>
-              <%= f.select :parent_order, options_for_select(TocatOrder.all.collect {|o| [o.name, o.id]}, selected: @order.parent_order),{}, disabled: true %>
-              <%= f.hidden_field :parent_order, value: @order.parent_order %>
-            </p>
-          <% else %>
-            <p><%= f.select :parent_order, options_for_select(TocatOrder.all.collect {|o| [o.name, o.id]}), { :include_blank => 'None'} %></p>
+            <%= f.hidden_field :parent_order, value: @order.parent_order %>
           <% end %>
         <% end %>
       </div>

@@ -13,15 +13,12 @@
 
           <p>
             <%= f.label_for_field :description %>
-            <%= link_to_function image_tag('edit.png'), 'jQuery.noConflict()(this).hide(); jQuery.noConflict()("#order_description_and_toolbar").show()' %>
-            <%= content_tag 'span', :id => "order_description_and_toolbar", :style => 'display:none' do %>
-              <%= f.text_area :description,
-                             :cols => 60,
-                             :rows => 10,
-                             :accesskey => accesskey(:edit),
-                             :class => 'wiki-edit',
-                             :no_label => true %>
-            <% end %>
+            <%= f.text_area :description,
+                            :cols => 60,
+                            :rows => 10,
+                            :accesskey => accesskey(:edit),
+                            :class => 'wiki-edit',
+                            :no_label => true %>
           </p>
           <p><%= f.select :team, options_for_select(@groups.collect {|t| [t.name, t.id]}, selected: @order.get_team), {:required => true} %></p>
           <p><%= f.number_field :invoiced_budget, :class => 'invoiced_budget', :step => 0.5, :required => true %></p>
