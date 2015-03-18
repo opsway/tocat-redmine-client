@@ -37,46 +37,69 @@
 
     end %>
   </table>
-    <hr />
-      <div class="description">
-        <p><strong><%=l(:field_description)%></strong></p>
-        <div class="wiki">
-          <%= @order.description %>
-        </div>
-      </div>
-
-    <% unless @parent.present?%>
-    <hr />
-      <div id="orders_tree">
-        <div class="contextual"><%= link_to l(:button_add), new_order_path(split: @order.id) %></div>
-        <p><strong><%=l(:label_suborder_plural)%></strong></p>
-        <%= render :partial => 'orders', locals: {orders: @order.sub_orders } if @order.sub_orders.present? %>
+  <hr />
+  <div class="description">
+    <p><strong><%=l(:field_description)%></strong></p>
+    <div class="wiki">
+      <%= @order.description %>
+    </div>
+  </div>
+  <hr />
+  <div id="invoice">
+    <% invoice = @order.get_invoice %>
+    <div class="contextual"><%= link_to_new_invoice(@order) %></div>
+    <p><strong><%=l(:label_invoice)%></strong></p>
+    <% if invoice.present? %>
+      <div class = 'autoscroll'>
+        <table class = 'list issues' style="text-align: center;">
+          <thead><tr>
+            <td>#</td>
+            <td><%= l(:label_total) %></td>
+            <td><%= l(:label_paid) %></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id='<%= invoice.id %>' class = 'even issue'>
+            <td class = 'id'>
+              <%= link_to invoice.external_id, invoice_path(invoice.id) %>
+            </td>
+            <td class = 'total'>
+              <%= invoice.total %>
+            </td>
+            <td class = 'paid'>
+              <%= get_paid_icon(invoice) %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
       </div>
     <% end %>
-    <hr />
-    <div id="tasks_tree">
-      <div class="contextual"><%= link_to l(:button_add), '' %></div>
-      <p><strong><%=l(:label_issue_plural)%></strong></p>
-      <%= render :partial => 'issues', locals: {issues: @order.issues } if @order.tasks.present? %>
-      </div>
-    <hr />
-    <div id="invoice">
-      <% invoice = @order.get_invoice %>
-      <div class="contextual"><%= link_to_new_invoice(@order) %></div>
-      <p><strong><%=l(:label_invoice)%></strong></p>
-      <% if invoice.present? %>
-        <%= get_paid_icon(invoice) + " " + @order.get_invoice.external_id %></br>
-      <% end %>
-    </div>
+  </div>
+
+  <% unless @parent.present?%>
+  <hr />
+  <div id="orders_tree">
+    <div class="contextual"><%= link_to l(:button_add), new_order_path(split: @order.id) %></div>
+    <p><strong><%=l(:label_suborder_plural)%></strong></p>
+    <%= render :partial => 'orders', locals: {orders: @order.sub_orders } if @order.sub_orders.present? %>
+  </div>
+  <% end %>
+  <hr />
+  <div id="tasks_tree">
+    <div class="contextual"><%= link_to l(:button_add), '' %></div>
+    <p><strong><%=l(:label_issue_plural)%></strong></p>
+    <%= render :partial => 'issues', locals: {issues: @order.issues } if @order.tasks.present? %>
+  </div>
+
 </div>
 <div style="clear: both;"></div>
 <%= render partial: 'action_menu' %>
 <div style="clear: both;"></div>
 <% if @order.editable? %>
-  <div id="update" style="display:none;">
+<div id="update" style="display:none;">
   <h3><%= l(:button_edit) %></h3>
   <%= render :partial => 'edit' %>
-  </div>
+</div>
 <% end %>
 
 <% html_title "TOCAT: Order ##{@order.id}" %>
