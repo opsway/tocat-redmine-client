@@ -21,7 +21,7 @@ en:
   label_invoiced_budget: 'Invoiced Budget'
   label_allocatable_budget: 'Allocatable Budget'
   label_free_budget: 'Budget left'
-  button_new_order: 'Add new order'
+  button_new_order: 'Create new order'
   label_paid: 'Paid'
   field_parent_order: 'Parent Order'
   label_select_order: 'Select Order'
@@ -60,3 +60,5 @@ en:
   label_accepted_issues: "Accepted & NOT paid tickets:"
   label_not_accepted_issues: "Not accepted tickets:"
   field_accepted: "Accepted"
+  label_tocat_server_address: 'API server address, for instance'
+  label_host_change: "You'll need to restart your webserver if API address is changed"
