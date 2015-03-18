@@ -15,7 +15,6 @@ class OrdersController < ApplicationController
     @order.invoiced_budget = params[:invoiced_budget] if params[:invoiced_budget].present?
     @order.team = params[:team] if params[:team].present?
     @order.parent_order = params[:split] if params[:split].present?
-    @groups = TocatTeam.all
   end
 
   def destroy
@@ -66,19 +65,25 @@ class OrdersController < ApplicationController
 
   def create
     @order = TocatOrder.new(params[:order])
-    if @order.save
-      flash[:notice] = l(:notice_order_successful_created)
-      respond_to do |format|
-        format.html { redirect_back_or_default({:action => 'show', :id => @order}) }
-        format.js do
-          render :update do |page|
-            page.replace_html 'order-form', :partial => 'tocat/orders/edit', :locals => {:order => @order}
+    begin
+      if @order.save
+        flash[:notice] = l(:notice_order_successful_created)
+        respond_to do |format|
+          format.html { redirect_back_or_default({:action => 'show', :id => @order}) }
+          format.js do
+            render :update do |page|
+              page.replace_html 'order-form', :partial => 'tocat/orders/edit', :locals => {:order => @order}
+            end
           end
         end
+      else
+        @order_old = @order
+        @order.reload
+        respond_to do |format|
+          format.html { render :template => 'orders/edit' }
+        end
       end
-    else
-      @order_old = @order
-      @order.reload
+    rescue => e
       respond_to do |format|
         format.html { render :template => 'orders/edit' }
       end
@@ -106,7 +111,6 @@ class OrdersController < ApplicationController
   end
 
   def edit
-    @groups = TocatTeam.all
   end
 
   def index
@@ -125,14 +129,13 @@ class OrdersController < ApplicationController
   end
 
   def show
-    @groups = TocatTeam.all
     @parent = @order.parent
   end
 
   private
 
   def find_groups
-    @groups = Group.all
+    @groups = TocatTeam.all
   end
 
   def find_order
