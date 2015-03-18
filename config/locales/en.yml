@@ -59,3 +59,4 @@ en:
   label_resolver: 'Resolver'
   label_accepted_issues: "Accepted & NOT paid tickets:"
   label_not_accepted_issues: "Not accepted tickets:"
+  field_accepted: "Accepted"
