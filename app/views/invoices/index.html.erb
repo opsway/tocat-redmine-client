@@ -37,7 +37,7 @@ fieldset#filters table td {
     <tbody>
       <%@invoices.each do |invoice| %>
         <tr class = '<%= cycle('odd', 'even')%> issue'>
-          <td class = 'external_id'>
+          <td class = 'external_id' style='text-align: left;'>
             <%= link_to invoice.external_id, invoice_path(invoice) %>
           </td>
           <td class = 'total'>

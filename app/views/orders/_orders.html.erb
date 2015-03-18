@@ -10,7 +10,7 @@
   <tbody>
     <%orders.each do |order| %>
     <tr id='<%= order.id %>' class = '<%= cycle('odd', 'even')%> issue'>
-      <td class = 'name'>
+      <td class = 'name' style='text-align: left;'>
         <%= link_to order.name, order_path(order.id) %>
       </td>
       <td class = 'invoiced_budget'>

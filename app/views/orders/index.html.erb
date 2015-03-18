@@ -44,7 +44,7 @@ fieldset#filters table td {
     <tbody>
       <%@orders.each do |order| %>
         <tr class = '<%= cycle('odd', 'even')%> issue'>
-          <td class = 'name'>
+          <td class = 'name' style='text-align: left;'>
             <%= link_to order.name, order_path(order) %>
           </td>
           <td class = 'suborder'>

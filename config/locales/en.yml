@@ -57,3 +57,5 @@ en:
   notice_invoice_successful_created: 'Invoice was successfully created!'
   label_subject: 'Subject'
   label_resolver: 'Resolver'
+  label_accepted_issues: "Accepted & NOT paid tickets:"
+  label_not_accepted_issues: "Not accepted tickets:"

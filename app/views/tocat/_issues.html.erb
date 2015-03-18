@@ -1,0 +1,24 @@
+<div class = "transactionsContainer"  style = "height: 300px">
+  <div class="autoscroll">
+    <table class="list transactions">
+      <thead>
+        <tr>
+          <th><%=	l(:label_project)  %></th>
+          <th>#</th>
+          <th><%=	l(:label_issue)  %></th>
+          <th><%=	l(:label_budget)  %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% issues.each do |i|%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td><%= link_to i.project, project_path(i.project_id) %> </td>
+          <td><%= link_to i.id, issue_path(i.id) %> </td>
+          <td><%= link_to truncate(i.subject, :length => 50, :omission => '...'), issue_path(i.id) %> </td>
+          <td nowrap><%= i.budget %> </td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -16,8 +16,8 @@ class TocatUser < ActiveResource::Base
   end
 
 
-  def self.find_by_login(login)
-    TocatUser.all.each { |u| return TocatUser.find(u.id) if u.login.to_s == login}
+  def self.find_by_name(name)
+    return TocatUser.find(:all, params:{search:"#{name}"}).first
   end
 
 end

@@ -104,24 +104,40 @@ class TocatController < ApplicationController
   end
 
   def my_tocat
-    @user = User.current
-    @user_tocat = TocatUser.find(4)
-    @team_tocat = TocatTeam.find(@user_tocat.team.id)
-    transactions = TocatTransaction.get_transactions_for_user(@user_tocat.id)
-    @balance_transactions = []
-    @income_transactions = []
-    transactions.each do |t|
-      t.type == 'balance' ?
-        @balance_transactions << t :
-        @income_transactions << t
+    if params[:user_id].present?
+      @user = User.where(id:params[:user_id]).first
+      @user = User.current unless @user.present?
+    else
+      @user = User.current
     end
-    transactions = TocatTransaction.get_transactions_for_team(@team_tocat.id)
-    @team_balance_transactions = []
-    @team_income_transactions = []
-    transactions.each do |t|
-      t.type == 'balance' ?
-        @team_balance_transactions << t :
-        @team_income_transactions << t
+    begin
+      @user_tocat = TocatUser.find(TocatUser.find_by_name(@user.name).id)
+      @team_tocat = TocatTeam.find(@user_tocat.team.id)
+      transactions = TocatTransaction.get_transactions_for_user(@user_tocat.id)
+      @balance_transactions = []
+      @income_transactions = []
+      transactions.each do |t|
+        t.type == 'balance' ?
+          @balance_transactions << t :
+          @income_transactions << t
+      end
+      transactions = TocatTransaction.get_transactions_for_team(@team_tocat.id)
+      @team_balance_transactions = []
+      @team_income_transactions = []
+      transactions.each do |t|
+        t.type == 'balance' ?
+          @team_balance_transactions << t :
+          @team_income_transactions << t
+      end
+      @accepted_tasks = TocatTicket.get_accepted_tasks(true, @user.name)
+      @not_accepted_tasks = TocatTicket.get_accepted_tasks(false, @user.name)
+      @not_accepted_balance = 0
+      @not_accepted_tasks.each { |t| @not_accepted_balance += t.budget }
+      @accepted_balance = 0
+      @accepted_tasks.each { |t| @accepted_balance += t.budget }
+    rescue Exception => e
+      binding.pry
+      @user_tocat = nil
     end
     respond_to do |format|
       format.html { render :template => 'tocat/my_tocat' }

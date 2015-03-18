@@ -34,7 +34,8 @@ class TocatOrder < ActiveResource::Base
   def issues
     issues = []
     tasks.each do |task|
-      issues << Issue.find(task.external_id)
+      issue = Issue.where(id:task.external_id).first
+      issues << issue if issue.present?
     end
     issues
   end

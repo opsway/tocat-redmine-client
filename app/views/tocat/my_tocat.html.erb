@@ -1,29 +1,34 @@
 <h2><%= avatar @user, :size => "50" %> <%= h @user.name %></h2>
 
+<% if @user_tocat.present? %>
+  <%=t 'label_team_balance', name: @team_tocat.name %>
+  <strong> $<%= @team_tocat.balance_account_state.round(2)%></strong><br/>
+  <hr/>
+  <div class="splitcontentleft">
+    <% unless @user_tocat.role == 'Manager' %>
+      <label><%=	l(:label_balance)  %></label><strong> $<%= @user_tocat.balance_account_state.round(2)%></strong><br/>
+      <%= render 'transactions', :transactions => @balance_transactions %>
+    <% end %>
+      <label><%=	l(:label_payment_balance)  %></label><strong> $<%= @user_tocat.income_account_state.round(1) %></strong><br/>
+      <%= render 'transactions', :transactions => @income_transactions %>
 
-<%=t 'label_team_balance', name: @team_tocat.name %>
-<strong> $<%= @team_tocat.balance_account_state.round(2)%></strong><br/>
-<hr/>
-<div class="splitcontentleft">
-    <label><%=	l(:label_balance)  %></label><strong> $<%= @user_tocat.balance_account_state.round(2)%></strong><br/>
-    <%= render 'transactions', :transactions => @balance_transactions %>
-    <label><%=	l(:label_payment_balance)  %></label><strong> $<%= @user_tocat.income_account_state.round(1) %></strong><br/>
-    <%= render 'transactions', :transactions => @income_transactions %>
-
-</div>
-<div class="splitcontentright">
-  <% if User.current.allowed_to?(:view_group_tocat_page, nil, global:true) %>
-      <label>  <%=t 'label_team_payment', name: @team_tocat.name %></label>
-      <strong> $<%= @team_tocat.income_account_state.round(2) %></strong><br/>
-      <%= render 'transactions', :transactions => @team_income_transactions %>
-  <% else %>
-      <br/>
-      <label><%#=	l(:label_not_accepted_issues)  %> <strong>$<%#= @not_accepted_balance.round(1) %> </strong> </label>
-      <%#= render 'issues', :issues => @not_accepted, :accepted => 0 %>
-      <label><%#=	l(:label_accepted_issues)  %> <strong>$<%#= @accepted_balance.round(1) %> </strong> </label>
-      <%#= render 'issues', :issues => @accepted, :accepted => 1, :balance => @accepted_balance.round(1) %>
-  <% end %>
-</div>
-<div style="clear:both;"></div>
+  </div>
+  <div class="splitcontentright">
+    <% if @user_tocat.role == 'Manager' %>
+        <label>  <%=t 'label_team_payment', name: @team_tocat.name %></label>
+        <strong> $<%= @team_tocat.income_account_state.round(2) %></strong><br/>
+        <%= render 'transactions', :transactions => @team_income_transactions %>
+    <% else %>
+        <br/>
+        <label><%=	l(:label_not_accepted_issues)  %> <strong>$<%= @not_accepted_balance.round(1) %> </strong> </label>
+        <%= render 'issues', :issues => @not_accepted_tasks, :accepted => 0 %>
+        <label><%=	l(:label_accepted_issues)  %> <strong>$<%= @accepted_balance.round(1) %> </strong> </label>
+        <%= render 'issues', :issues => @accepted_tasks, :accepted => 1, :balance => @accepted_balance.round(1) %>
+    <% end %>
+  </div>
+  <div style="clear:both;"></div>
+<% else %>
+    <div>Oops, looks like user invalid</div>
+<% end %>
 
 <% html_title "TOCAT : My dashboard" %>

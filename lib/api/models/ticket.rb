@@ -135,6 +135,28 @@ class TocatTicket < ActiveResource::Base
     end
   end
 
+  def self.get_accepted_tasks(accepted=false, name)
+    accepted == true ?
+      accepted = 1 :
+      accepted = 0
+    tasks = TocatTicket.find(:all, params: {search: "accepted=#{accepted} resolver=\"#{name}\"", sort: 'external_id:desc', limit:10})
+    issues = []
+    tasks.each do |task|
+      issue = Issue.where(id:task.external_id).first
+      if issue.present?
+        params = {
+          id:      issue.id,
+          subject: issue.subject,
+          project: issue.project.name,
+          project_id: issue.project.id,
+          budget: task.budget
+        }
+        issues << OpenStruct.new(params)
+      end
+    end
+    issues
+  end
+
   protected
 
   def to_json(options = {})
