@@ -1,15 +1,15 @@
 Redmine::Plugin.register :redmine_tocat_client do
-  name 'Redmine Tocat Client plugin'
+  name 'Redmine TOCAT Client plugin'
   author 'Alex Gornov'
   description 'This is a client for TOCAT Billing System.'
   version '0.0.1'
-  url ''
+  url 'https://github.com/opsway/tocat-server'
   author_url 'http://opsway.com/'
 
   requires_redmine :version_or_higher => '2.0.3'
 
   settings :default => {
-    'host' => 'test'
+    'host' => 'http://tocat.opsway.com'
           },:partial => 'settings/tocat_settings'
 
   menu :top_menu, :tocat, { :controller => 'tocat', :action => 'my_tocat' },
