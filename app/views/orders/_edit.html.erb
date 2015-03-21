@@ -4,7 +4,7 @@
     url = order_path(@order.id)
   end %>
 <%= labelled_form_for @order, url: url, :html => {:id => 'order-form', :multipart => true} do |f| %>
-    <%= error_messages_for @order_old if @order_old.present?%>
+    <%= error_messages_for @order if @order.present?%>
     <div class="box">
       <fieldset class="tabular"><legend><%= l(:label_change_properties) %></legend>
       <div id="all_attributes">
