@@ -28,6 +28,26 @@ class TocatInvoice < ActiveResource::Base
     true
   end
 
+  def set_paid
+    begin
+      connection.post("#{self.class.prefix}/invoice/#{id}/paid")
+    rescue => error
+      # TODO add logger
+      return false, error
+    end
+    return true, nil
+  end
+
+  def remove_paid
+    begin
+      connection.delete("#{self.class.prefix}/invoice/#{id}/paid")
+    rescue => error
+      # TODO add logger
+      return false, error
+    end
+    return true, nil
+  end
+
   protected
 
   def to_json(options = {})

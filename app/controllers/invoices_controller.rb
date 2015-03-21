@@ -20,7 +20,7 @@ class InvoicesController < ApplicationController
       if @invoice.save
         flash[:notice] = l(:notice_invoice_successful_created)
         respond_to do |format|
-          format.html { redirect_back_or_default({:action => 'show', :id => @invoice}) }
+          format.html { redirect_back_or_default({ :action => 'show', :id => @invoice}) }
           format.js do
             render :update do |page|
               page.replace_html 'invoice-form', :partial => 'tocat/invoices/edit', :locals => {:invoice => @invoice}
@@ -66,21 +66,31 @@ class InvoicesController < ApplicationController
 
 
   def set_paid
-    respond_to do |format|
-      if @invoice.set_paid
-
-      else
-
+    status, payload = @invoice.set_paid
+    if status
+      respond_to do |format|
+        flash[:notice] = l(:message_invoice_paid)
+        format.html { redirect_back_or_default({ :action => 'show', id: @invoice })}
+      end
+    else
+      respond_to do |format|
+        flash[:notice] = payload
+        format.html { redirect_back_or_default({ :action => 'show', id: @invoice })}
       end
     end
   end
 
   def set_unpaid
-    respond_to do |format|
-      if @invoice.set_unpaid
-
-      else
-
+    status, payload = @invoice.remove_paid
+    if status
+      respond_to do |format|
+        flash[:notice] = l(:message_invoice_paid)
+        format.html { redirect_back_or_default({ :action => 'show', id: @invoice })}
+      end
+    else
+      respond_to do |format|
+        flash[:notice] = payload
+        format.html { redirect_back_or_default({ :action => 'show', id: @invoice })}
       end
     end
   end

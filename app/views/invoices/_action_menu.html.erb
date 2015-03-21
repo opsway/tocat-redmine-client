@@ -1,3 +1,7 @@
 <div class="contextual">
-  <%= link_to l(:button_manage_paid), '', :class => 'icon icon-time-add' if User.current.allowed_to?(:edit_invoices, nil, global:true) %>
+  <% if @invoice.paid %>
+    <%= link_to l(:button_remove_paid), invoice_paid_path(@invoice.id),:data => {:confirm => l(:confirm_invoice_paid)}, :method => :delete, :class => 'icon icon-time-add' if User.current.allowed_to?(:edit_invoices, nil, global:true) %>
+  <% else %>
+    <%= link_to l(:button_set_paid), invoice_paid_path(@invoice.id),:data => {:confirm => l(:confirm_invoice_unpaid)}, :method => :put, :class => 'icon icon-time-add' if User.current.allowed_to?(:edit_invoices, nil, global:true) %>
+  <% end %>
 </div>

@@ -47,7 +47,8 @@ en:
   label_team_payment: 'Team income account:'
   label_suborder: 'SubOrder'
   label_order_name: 'Order name'
-  button_manage_paid: 'Set Paid'
+  button_set_paid: 'Set Paid'
+  button_remove_paid: 'Set Unpaid'
   field_resolver: 'Resolver'
   message_order_deletion_ok: 'Order has been deleted successfully'
   confirm_order_destroy: 'Are you sure you want to delete order?'
@@ -62,3 +63,6 @@ en:
   field_accepted: "Accepted"
   label_tocat_server_address: 'API server address, for instance'
   label_host_change: "You'll need to restart your webserver if API address is changed"
+  message_invoice_paid: 'Paid status saved!'
+  confirm_invoice_paid: 'Are you sure you want to paid invoice?'
+  confirm_invoice_paid: 'Are you sure you want to unpaid invoice?'
