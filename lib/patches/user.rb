@@ -10,7 +10,7 @@ module RedmineTocatClient
       end
       module InstanceMethods
         def tocat
-          TocatUser.find_by_login(login)
+          TocatUser.find_by_name(name)
         end
       end
     end

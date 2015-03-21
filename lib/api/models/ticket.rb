@@ -17,6 +17,26 @@ class TocatTicket < ActiveResource::Base
     end
   end
 
+  def toggle_paid
+    unless accepted
+      begin
+        connection.post("#{self.class.prefix}/task/#{id}/accept")
+      rescue => error
+        # TODO add logger
+        return false, error
+      end
+      return true, nil
+    else
+      begin
+        connection.delete("#{self.class.prefix}/task/#{id}/accept")
+      rescue => error
+        # TODO add logger
+        return false, error
+      end
+      return true, nil
+    end
+  end
+
   def get_budget
     if attributes.include? "budget"
       budget
@@ -78,7 +98,7 @@ class TocatTicket < ActiveResource::Base
   def self.update_resolver(id, resolver)
     if resolver.present? && resolver.to_i != 0
       begin
-        connection.post("#{self.prefix}/task/#{id}/resolver", {user_id: resolver.to_i}.to_json)
+        connection.post("#{self.prefix}/task/#{id}/resolver", {user_id: resolver}.to_json)
       rescue => error
         # TODO add logger
         return false, error

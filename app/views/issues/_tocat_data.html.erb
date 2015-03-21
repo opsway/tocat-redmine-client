@@ -22,8 +22,10 @@
     <th>
       <%=l(:label_tocat_accepted)%>
     </th>
-    <td>
-      <%= ticket.get_accepted ? image_tag('true.png') : image_tag('false.png') %>
+    <td class='paid'>
+      <%= link_to(issue_accepted_path(@issue.id), :data => {:confirm => l(:confirm_issue_accepted)}, :method => :put) do %>
+        <%= ticket.get_accepted ? image_tag('true.png') : image_tag('false.png') %>
+      <% end %>
     </td>
     <th>
       <%=l(:label_tocat_paid)%>

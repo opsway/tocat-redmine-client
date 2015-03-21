@@ -7,9 +7,26 @@ class TocatController < ApplicationController
   include QueriesHelper
   before_filter :check_for_setup
 
+  def toggle_accepted
+    issue = Issue.find(params[:id])
+    status, payload = issue.tocat.toggle_paid
+    if status
+      respond_to do |format|
+        flash[:notice] = l(:message_issue_accepted)
+        format.html { redirect_back_or_default({:controller => 'issues', :action => 'show', id: issue.id })}
+      end
+    else
+      respond_to do |format|
+        flash[:notice] = payload
+        format.html { redirect_back_or_default({:controller => 'issues', :action => 'show', id: issue.id })}
+      end
+    end
+  end
+
   def update_resolver
     @issue = Issue.find(params[:issue_id])
-    status, errors = TocatTicket.update_resolver(@issue.tocat.id, params[:resolver_id])
+    resolver = User.find(params[:resolver_id])
+    status, errors = TocatTicket.update_resolver(@issue.tocat.id, resolver.tocat.id)
     if status
       data = []
       data << render_to_string(:partial => 'issues/orders')
