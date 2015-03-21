@@ -77,11 +77,13 @@ class OrdersController < ApplicationController
           end
         end
       else
+        @order_old = @order
         respond_to do |format|
           format.html { render :template => 'orders/edit' }
         end
       end
     rescue => e
+      flash[:error] = JSON.parse(e.response.body)['message']
       respond_to do |format|
         format.html { render :template => 'orders/edit' }
       end

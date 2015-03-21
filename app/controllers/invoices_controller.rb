@@ -16,19 +16,25 @@ class InvoicesController < ApplicationController
 
   def create
     @invoice = TocatInvoice.new(params[:invoice])
-    if @invoice.save
-      flash[:notice] = l(:notice_invoice_successful_created)
-      respond_to do |format|
-        format.html { redirect_back_or_default({:action => 'show', :id => @invoice}) }
-        format.js do
-          render :update do |page|
-            page.replace_html 'invoice-form', :partial => 'tocat/invoices/edit', :locals => {:invoice => @invoice}
+    begin
+      if @invoice.save
+        flash[:notice] = l(:notice_invoice_successful_created)
+        respond_to do |format|
+          format.html { redirect_back_or_default({:action => 'show', :id => @invoice}) }
+          format.js do
+            render :update do |page|
+              page.replace_html 'invoice-form', :partial => 'tocat/invoices/edit', :locals => {:invoice => @invoice}
+            end
           end
         end
+      else
+        @invoice_old = @invoice
+        respond_to do |format|
+          format.html { render :template => 'invoices/edit' }
+        end
       end
-    else
-      @invoice_old = @invoice
-      @invoice.reload
+    rescue => e
+      flash[:error] = JSON.parse(e.response.body)['message']
       respond_to do |format|
         format.html { render :template => 'invoices/edit' }
       end

@@ -136,7 +136,6 @@ class TocatController < ApplicationController
       @accepted_balance = 0
       @accepted_tasks.each { |t| @accepted_balance += t.budget }
     rescue Exception => e
-      binding.pry
       @user_tocat = nil
     end
     respond_to do |format|
