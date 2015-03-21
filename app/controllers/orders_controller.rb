@@ -77,8 +77,6 @@ class OrdersController < ApplicationController
           end
         end
       else
-        @order_old = @order
-        @order.reload
         respond_to do |format|
           format.html { render :template => 'orders/edit' }
         end
