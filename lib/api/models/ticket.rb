@@ -46,7 +46,7 @@ class TocatTicket < ActiveResource::Base
     if resolver.attributes.empty?
       nil
     else
-      resolver
+      User.find_by_lastname(resolver.name.split.second)
     end
   end
 

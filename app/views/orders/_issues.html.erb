@@ -24,7 +24,10 @@
         <%= issue.tocat.get_budget %>
       </td>
       <td class = 'resolver'>
-        <%= issue.tocat.get_resolver.name if issue.tocat.get_resolver.present? %>
+        <% if issue.tocat.get_resolver.present? %>
+          <% user = issue.tocat.get_resolver %>
+          <%= link_to user.name, {:controller => 'tocat', :action => 'my_tocat', :user_id => user.id}%>
+        <% end %>
       </td>
     </tr>
     <% end %>
