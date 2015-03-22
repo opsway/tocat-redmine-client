@@ -27,7 +27,7 @@ class TicketsController < ApplicationController
       query[:created_on] = Time.zone.now.all_week
     end
     @tickets = {}
-    @issues = Issue.where(query).limit(1000).order('id desc')
+    @issues = Issue.where(query).limit(100).order('id desc')
     unless @issues.empty?
       query_params[:search] = "#{query_params[:search]} #{@issues.collect(&:id).join(' OR ')}"
       TocatTicket.find(:all, params: query_params).each do |ticket|
