@@ -71,10 +71,10 @@ Redmine::Plugin.register :redmine_tocat_client do
               :if => Proc.new{ User.current.allowed_to?({:controller => 'invoices', :action => 'index'},
                     nil, {:global => true})},
               :caption => :label_invoice_plural
-    # menu.push :issues, { :controller => 'tickets', :action => 'index' },
-    #           :if => Proc.new{ User.current.allowed_to?({:controller => 'invoices', :action => 'index'},
-    #                 nil, {:global => true})},
-    #           :caption => :label_issue_plural
+    menu.push :tickets, { :controller => 'tickets', :action => 'index' },
+              :if => Proc.new{ User.current.allowed_to?({:controller => 'invoices', :action => 'index'},
+                    nil, {:global => true})},
+              :caption => :label_issue_plural
   end
 end
 

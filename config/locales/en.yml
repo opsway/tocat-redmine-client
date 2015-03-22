@@ -68,3 +68,6 @@ en:
   confirm_invoice_paid: 'Are you sure you want to unpaid invoice?'
   message_issue_accepted: 'Accepted status saved!'
   confirm_issue_accepted: 'Are you sure you want to change accepted status?'
+  label_status: 'Status'
+  label_review: 'Review requested'
+  label_accepted: 'Accepted'
