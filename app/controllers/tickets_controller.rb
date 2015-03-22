@@ -23,7 +23,7 @@ class TicketsController < ApplicationController
     if params[:status].present?
       query[:status_id] = params[:status]
     end
-    unless params[:project].present? || params[:status].present?
+    unless params[:project].present? || params[:status].present? || params[:paid].present? || params[:accepted].present? || params[:resolver].present?
       query[:created_on] = Time.zone.now.all_week
     end
     @tickets = {}
