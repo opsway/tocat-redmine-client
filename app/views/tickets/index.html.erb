@@ -37,7 +37,7 @@
                 </tr> -->
                 <tr class="filter" id="resolver">
                   <td><%= label_tag(:resolver, l(:label_resolver)) %></td>
-                  <td><%= select_tag(:resolver, options_from_collection_for_select(@resolvers, 'name', 'name', selected: params[:resolver]), include_blank: true) %></td>
+                  <td><%= select_tag(:resolver, options_from_collection_for_select(@resolvers, 'id', 'name', selected: params[:resolver]), include_blank: true) %></td>
                 </tr>
                 <!-- <tr class="filter" id="budget">
                   <td><%#= label_tag(:budget, l(:label_budget)) %></td>
@@ -63,6 +63,9 @@ fieldset#filters table td {
 </style>
 
 <div class = 'autoscroll'>
+  <% if !@issues.present? || @issues.empty? %>
+  <p class="nodata"><%= l(:label_no_data) %></p>
+  <% else %>
   <table class = 'list issues' style="text-align: center;">
     <thead><tr>
       <th>#</th>
@@ -76,43 +79,47 @@ fieldset#filters table td {
       <th><%= l(:label_paid) %></th>
     </tr>
   </thead>
+
   <tbody>
     <%@issues.each do |issue| %>
-      <%if @tickets["#{issue.id}"].present? %>
-        <tr id='<%= issue.id %>' class = '<%= cycle('odd', 'even')%> issue'>
-          <td class = 'id'>
-            <%= link_to issue.id, issue_path(issue.id) %>
-          </td>
-          <td class = 'project'>
-            <%= link_to issue.project.name, project_path(issue.project.id) %>
-          </td>
-          <td class = 'status'>
-            <%= issue.status.name %>
-          </td>
-          <td class = 'subject'>
-            <%= link_to issue.subject, issue_path(issue.id) %>
-          </td>
-          <td class = 'budget'>
-            <%= @tickets["#{issue.id}"][:budget] %>
-          </td>
-          <td>
-          </td>
-          <td class = 'resolver'>
-            <% if @tickets["#{issue.id}"][:resolver].present? %>
-              <%= link_to @tickets["#{issue.id}"][:resolver].name, my_tocat_path(user_id:@tickets["#{issue.id}"][:resolver].id) %>
-            <% end %>
-          </td>
-          <td class = 'accepted'>
-            <%= @tickets["#{issue.id}"][:accepted] ? image_tag('true.png') : image_tag('false.png')%>
-          </td>
-          <td class = 'paid'>
-            <%= @tickets["#{issue.id}"][:paid] ? image_tag('true.png') : image_tag('false.png') %>
-          </td>
-        </tr>
-      <% end %>
+      <tr id='<%= issue.id %>' class = '<%= cycle('odd', 'even')%> issue'>
+        <td class = 'id'>
+          <%= link_to issue.id, issue_path(issue.id) %>
+        </td>
+        <td class = 'project'>
+          <%= link_to issue.project.name, project_path(issue.project.id) %>
+        </td>
+        <td class = 'status'>
+          <%= issue.status.name %>
+        </td>
+        <td class = 'subject'>
+          <%= link_to issue.subject, issue_path(issue.id) %>
+        </td>
+        <td class = 'budget'>
+          <%= issue.budget %>
+        </td>
+        <td>
+        </td>
+        <td class = 'resolver'>
+          <% if issue.resolver.present? %>
+            <%= link_to issue.resolver.name, my_tocat_path(user_id:issue.resolver.id) %>
+          <% end %>
+        </td>
+        <td class = 'accepted'>
+          <%= issue.accepted ? image_tag('true.png') : image_tag('false.png')%>
+        </td>
+        <td class = 'paid'>
+          <%= issue.paid ? image_tag('true.png') : image_tag('false.png') %>
+        </td>
+      </tr>
     <% end %>
   </tbody>
+
 </table>
+<p class="pagination"><%= pagination_links_full @issue_pages, @issue_count %></p>
+<% end %>
 </div>
+
+
 
 <% html_title "TOCAT : Issues" %>
