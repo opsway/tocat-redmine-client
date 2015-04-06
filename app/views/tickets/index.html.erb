@@ -6,9 +6,6 @@
   <fieldset id="filters" class="collapsible">
     <legend onclick="toggleFieldset(this);"><%= l(:label_filter_plural) %></legend>
     <div style="overflow: visible;">
-      <span>* For better results you should specify at least one search parameter.
-      Without page will show all issues for this week.
-      </span
       <table style="width:100%">
         <tbody>
           <tr>
@@ -31,19 +28,19 @@
                   <td><%= label_tag(:accepted, l(:label_accepted)) %></td>
                   <td><%= select_tag(:accepted, options_for_select([[l(:label_yes), 1], [l(:label_no), 0]], selected: params[:accepted]), include_blank: true) %></td>
                 </tr>
-                <!-- <tr class="filter" id="review">
-                  <td><%#= label_tag(:review, l(:label_review)) %></td>
-                  <td><%#= select_tag(:review, options_for_select([[l(:label_yes), 1], [l(:label_no), 0]], selected: params[:review]), include_blank: true) %></td>
-                </tr> -->
+                <tr class="filter" id="review">
+                  <td><%= label_tag(:review, l(:label_review)) %></td>
+                  <td><%= select_tag(:review, options_for_select([[l(:label_yes), 1], [l(:label_no), 0]], selected: params[:review]), include_blank: true) %></td>
+                </tr>
                 <tr class="filter" id="resolver">
                   <td><%= label_tag(:resolver, l(:label_resolver)) %></td>
                   <td><%= select_tag(:resolver, options_from_collection_for_select(@resolvers, 'id', 'name', selected: params[:resolver]), include_blank: true) %></td>
                 </tr>
-                <!-- <tr class="filter" id="budget">
-                  <td><%#= label_tag(:budget, l(:label_budget)) %></td>
-                  <td><%#= select_tag(:budget_op, options_for_select(@budget_op, selected: params[:budget_op])) %></td>
-                  <td><%#= text_field_tag(:budget_val, params[:budget_val]) %></td>
-                </tr> -->
+                <tr class="filter" id="budget">
+                  <td><%= label_tag(:budget, l(:label_budget)) %></td>
+                  <td><%= select_tag(:budget_op, options_for_select(@budget_op, selected: params[:budget_op])) %></td>
+                  <td><%= text_field_tag(:budget_val, params[:budget_val]) %></td>
+                </tr>
               </tbody>
             </table>
             </td>
@@ -55,6 +52,26 @@
     <%= link_to l(:button_clear), { :set_filter => 1 }, :class => 'icon icon-reload'  %>
   </fieldset>
 <% end %>
+<fieldset class="collapsible">
+  <legend onclick="toggleFieldset(this);"><%= l(:label_presets) %></legend>
+  <div style="overflow: visible;">
+    <table style="width:100%">
+      <tbody>
+        <tr>
+          <td>
+            <%= link_to 'Budget review requested', params: {review: 1} %>
+          </td>
+          <td>
+            <%= link_to 'Resolver w/o budget', params: {statuses: '5,3', budget_op: '=', budget_val: 0, resolver: true, set_filter: 1, commit:'Apply' } %>
+          </td>
+          <td>
+            <%= link_to 'Budget without resolver', params: {statuses: '5,3', budget_op: '>', budget_val: 0, resolver: false, set_filter: 1, commit:'Apply' } %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</fieldset>
 
 <style>
 fieldset#filters table td {
@@ -98,7 +115,8 @@ fieldset#filters table td {
         <td class = 'budget'>
           <%= issue.budget %>
         </td>
-        <td>
+        <td class = 'review'>
+          <%= issue.review ? image_tag('true.png') : image_tag('false.png')%>
         </td>
         <td class = 'resolver'>
           <% if issue.resolver.present? %>
