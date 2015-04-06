@@ -57,7 +57,6 @@ class TicketsController < ApplicationController
       end
       @issue_count = @issues.count
       @limit = per_page_option
-      binding.pry
       @issues = @issues[(@limit * @offset.to_i)..((@limit * @offset.to_i) + @limit)]
     elsif params[:project].present? || params[:status].present?
       query = {}
