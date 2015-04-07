@@ -35,7 +35,6 @@ class TocatRolesController < ApplicationController
       flash[:notice] = l(:notice_successful_create)
       redirect_to :action => 'index'
     else
-      binding.pry
       @roles = TocatRole.all
       render :action => 'new'
     end
