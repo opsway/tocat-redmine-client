@@ -47,7 +47,7 @@
   <hr />
   <div id="invoice">
     <% invoice = @order.get_invoice %>
-    <div class="contextual"><%= link_to_new_invoice(@order) %></div>
+    <div class="contextual"><%= link_to_new_invoice(@order) if User.current.tocat_allowed_to?(:create_invoices) %></div>
     <p><strong><%=l(:label_invoice)%></strong></p>
     <% if invoice.present? %>
       <div class = 'autoscroll'>
@@ -79,14 +79,14 @@
   <% unless @parent.present?%>
   <hr />
   <div id="orders_tree">
-    <div class="contextual"><%= link_to l(:button_add), new_order_path(split: @order.id) %></div>
+    <div class="contextual"><%= link_to l(:button_add), new_order_path(split: @order.id) if User.current.tocat_allowed_to?(:create_orders) %></div>
     <p><strong><%=l(:label_suborder_plural)%></strong></p>
     <%= render :partial => 'orders', locals: {orders: @order.sub_orders } if @order.sub_orders.present? %>
   </div>
   <% end %>
   <hr />
   <div id="tasks_tree">
-    <div class="contextual"><%= link_to l(:button_add), '' %></div>
+    <!-- <div class="contextual"><%#= link_to l(:button_add), '' if User.current.tocat_allowed_to?(:manage_budgets) %></div> -->
     <p><strong><%=l(:label_issue_plural)%></strong></p>
     <%= render :partial => 'issues', locals: {issues: @order.issues } if @order.tasks.present? %>
   </div>

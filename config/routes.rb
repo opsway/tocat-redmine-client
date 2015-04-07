@@ -8,6 +8,8 @@ match '/tocat' => 'tocat#my_tocat', as: :my_tocat, via: [:get]
 resources :orders, path: '/tocat/orders'
 resources :invoices, path: '/tocat/invoices'
 resources :tickets, path: '/tocat/issues'
+resources :tocat_roles, path: '/tocat/roles'
+match '/tocat/set_role' => 'tocat_roles#set_role', via: [:post, :put]
 match '/tocat/new_suborder' => 'orders#create_suborder', as: :suborder, via: [:post, :put]
 match '/tocat/budget' => 'tocat#budget_dialog', via: :get
 match '/tocat/budget' => 'tocat#delete_budget', via: :delete

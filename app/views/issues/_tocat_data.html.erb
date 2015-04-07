@@ -11,10 +11,14 @@
       <%=l(:label_tocat_resolver)%>
     </th>
     <td>
-      <% if ticket.get_resolver %>
-        <%= select_tag "resolver", options_from_collection_for_select(@issue.available_resolvers, "id", "name", selected: ticket.get_resolver.id ), include_blank: true, onChange: 'set_resolver(this)' %>
+      <% if User.current.tocat_allowed_to?(:modify_resolver)%>
+        <% if ticket.get_resolver %>
+          <%= select_tag "resolver", options_from_collection_for_select(@issue.available_resolvers, "id", "name", selected: ticket.get_resolver.id ), include_blank: true, onChange: 'set_resolver(this)' %>
+        <% else %>
+          <%= select_tag "resolver", options_from_collection_for_select(@issue.available_resolvers, "id", "name"), include_blank: true, onChange: 'set_resolver(this)' %>
+        <% end %>
       <% else %>
-        <%= select_tag "resolver", options_from_collection_for_select(@issue.available_resolvers, "id", "name"), include_blank: true, onChange: 'set_resolver(this)' %>
+      <%= ticket.get_resolver.name if ticket.get_resolver.present? %>
       <% end %>
     </td>
   </tr>
@@ -23,7 +27,11 @@
       <%=l(:label_tocat_accepted)%>
     </th>
     <td class='paid'>
-      <%= link_to(issue_accepted_path(@issue.id), :data => {:confirm => l(:confirm_issue_accepted)}, :method => :put) do %>
+      <% if User.current.tocat_allowed_to?(:modify_accepted)%>
+        <%= link_to(issue_accepted_path(@issue.id), :data => {:confirm => l(:confirm_issue_accepted)}, :method => :put) do %>
+          <%= ticket.get_accepted ? image_tag('true.png') : image_tag('false.png') %>
+        <% end %>
+      <% else %>
         <%= ticket.get_accepted ? image_tag('true.png') : image_tag('false.png') %>
       <% end %>
     </td>

@@ -1,5 +1,5 @@
 <div class="contextual">
-  <%= link_to l(:button_new_invoice), new_invoice_path, :class => 'icon icon-add' if User.current.allowed_to?(:create_invoices, nil, global: true) %>
+  <%= link_to l(:button_new_invoice), new_invoice_path, :class => 'icon icon-add' if User.current.tocat_allowed_to?(:create_invoices) %>
 </div>
 
 <h2> <%= l(:label_invoice_plural)%> </h2>

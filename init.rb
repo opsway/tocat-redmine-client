@@ -13,67 +13,21 @@ Redmine::Plugin.register :redmine_tocat_client do
           },:partial => 'settings/tocat_settings'
 
   menu :top_menu, :tocat, { :controller => 'tocat', :action => 'my_tocat' },
-                          :if => Proc.new{ User.current.allowed_to?({:controller => 'tocat', :action => 'my_tocat'},
-                                          nil, {:global => true})}, :caption => 'TOCAT'
+                          :if => Proc.new{ User.current.tocat_allowed_to?(:show_tocat_page) }, :caption => 'TOCAT'
 
-  project_module :redmine_tocat_client do
-
-    permission :view_my_tocat_page, {
-      :tocat => [:my_tocat]
-    }
-
-    permission :view_group_tocat_page, {
-      :tocat => [:my_tocat]
-    }
-
-    permission :show_invoices, {
-      :invoices => [:index, :show]
-    }
-
-    permission :create_invoices, {
-      :invoices => [:new, :create]
-    }
-
-    permission :edit_invoices, {
-      :invoices => [:set_paid, :set_unpaid, :edit, :update]
-    }
-
-    permission :delete_invoices, {
-      :invoices => [:destroy]
-    }
-
-    permission :show_orders, {
-      :orders => [:index, :show]
-    }
-
-    permission :create_orders, {
-      :orders => [:new, :create, :create_suborder]
-    }
-
-    permission :edit_orders, {
-      :orders => [:edit, :update]
-    }
-
-    permission :delete_orders, {
-      :orders => [:destroy]
-    }
-
-  end
+  menu :admin_menu, :tocat_roles, { :controller => 'tocat_roles', :action => 'index' }, :caption => 'TOCAT Roles and Permissions'
 
 
   Redmine::MenuManager.map :tocat_menu do |menu|
     menu.push :tocat, { :controller => 'tocat', :action => 'my_tocat' }, :caption => :label_my_tocat
     menu.push :orders, { :controller => 'orders', :action => 'index' },
-              :if => Proc.new{ User.current.allowed_to?({:controller => 'orders', :action => 'index'},
-                    nil, {:global => true})},
+              :if => Proc.new{ User.current.tocat_allowed_to?(:show_orders)},
               :caption => :label_order_plural
     menu.push :invoices, { :controller => 'invoices', :action => 'index' },
-              :if => Proc.new{ User.current.allowed_to?({:controller => 'invoices', :action => 'index'},
-                    nil, {:global => true})},
+              :if => Proc.new{ User.current.tocat_allowed_to?(:show_invoices)},
               :caption => :label_invoice_plural
     menu.push :tickets, { :controller => 'tickets', :action => 'index' },
-              :if => Proc.new{ User.current.allowed_to?({:controller => 'invoices', :action => 'index'},
-                    nil, {:global => true})},
+              :if => Proc.new{ User.current.tocat_allowed_to?(:show_issues)},
               :caption => :label_issue_plural
   end
 end
