@@ -24,7 +24,11 @@ class TocatRolesController < ApplicationController
   end
 
   def new
-    @role = TocatRole.new(params[:tocat_role] || {:permissions => TocatRole.permissions})
+    array = []
+    TocatRole.permissions.each do |r|
+      array << r.second.collect {|p| p.to_sym unless p.blank? }.compact.uniq
+    end
+    @role = TocatRole.new(params[:tocat_role] || {:permissions => array.flatten})
     @roles = TocatRole.all
   end
 
