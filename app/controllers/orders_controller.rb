@@ -6,6 +6,8 @@ class OrdersController < ApplicationController
   layout 'tocat_base'
   helper :sort
   include SortHelper
+  before_filter :check_action
+
 
   def new
     @order = TocatOrder.new
@@ -133,6 +135,9 @@ class OrdersController < ApplicationController
   end
 
   private
+  def check_action
+    render_403 unless TocatRole.check_path(Rails.application.routes.recognize_path(request.env['PATH_INFO']))
+  end
 
   def find_groups
     @groups = TocatTeam.all

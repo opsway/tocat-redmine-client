@@ -2,7 +2,7 @@ class TocatRolesController < ApplicationController
   unloadable
   layout 'tocat_base'
 
-  before_filter :require_admin, :except => :index
+  before_filter :require_admin
   before_filter :find_role, :only => [:edit, :update, :destroy]
   before_filter :find_permissions
 

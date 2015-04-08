@@ -6,6 +6,7 @@ class TocatController < ApplicationController
   helper :queries
   include QueriesHelper
   before_filter :check_for_setup
+  before_filter :check_action
 
   def toggle_accepted
     issue = Issue.find(params[:id])
@@ -126,7 +127,7 @@ class TocatController < ApplicationController
       if target.present? && check_permissions(target)
         @user = target
       else
-        @user = User.current
+        return render_403
       end
     else
       @user = User.current
@@ -165,6 +166,10 @@ class TocatController < ApplicationController
   end
 
   private
+
+  def check_action
+    render_403 unless TocatRole.check_path(Rails.application.routes.recognize_path(request.env['PATH_INFO']))
+  end
 
   def check_permissions(target)
     return true if User.current.tocat_allowed_to?(:is_admin)

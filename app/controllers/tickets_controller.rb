@@ -1,6 +1,8 @@
 class TicketsController < ApplicationController
   unloadable
   layout 'tocat_base'
+  before_filter :check_action
+
 
   def index
     query_params = {}
@@ -122,5 +124,11 @@ class TicketsController < ApplicationController
       end
     end
     @issue_pages = Paginator.new self, @issue_count, @limit, params['page']
+  end
+
+  private
+
+  def check_action
+    render_403 unless TocatRole.check_path(Rails.application.routes.recognize_path(request.env['PATH_INFO']))
   end
 end

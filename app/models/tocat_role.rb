@@ -10,6 +10,52 @@ class TocatRole < ActiveRecord::Base
 
   acts_as_list
 
+  def self.check_path(request)
+    paths = {}
+
+    paths[:orders] = {}
+    paths[:orders][:create] = :create_orders
+    paths[:orders][:new] = :create_orders
+    paths[:orders][:create_suborder] = :create_orders
+
+    paths[:orders][:show] = :show_orders
+    paths[:orders][:index] = :show_orders
+
+    paths[:orders][:edit] = :edit_orders
+    paths[:orders][:update] = :edit_orders
+
+    paths[:orders][:destroy] = :destroy_orders
+
+    paths[:orders][:destroy] = :complete_orders
+
+    paths[:invoices] = {}
+    paths[:invoices][:create] = :create_invoices
+    paths[:invoices][:new] = :create_invoices
+
+    paths[:invoices][:show] = :show_invoices
+    paths[:invoices][:index] = :show_invoices
+
+    paths[:invoices][:destroy] = :destroy_invoices
+    paths[:invoices][:set_paid] = :paid_invoices
+    paths[:invoices][:set_unpaid] = :paid_invoices
+
+    paths[:tocat] = {}
+    paths[:tocat][:toggle_accepted] = :modify_accepted
+    paths[:tocat][:update_resolver] = :modify_resolver
+
+    paths[:tocat][:budget_dialog] = :modify_budgets
+    paths[:tocat][:save_budget_dialog] = :modify_budgets
+    paths[:tocat][:delete_budget] = :modify_budgets
+
+    paths[:tickets] = {}
+    paths[:tickets][:index] = :show_issues
+    paths[:tocat][:my_tocat] = :show_tocat_page
+    return false unless paths[request[:controller].to_sym].present?
+    return false unless paths[request[:controller].to_sym][request[:action].to_sym].present?
+    return false unless User.current.tocat_allowed_to?(paths[request[:controller].to_sym][request[:action].to_sym])
+    true
+  end
+
   def self.permissions #load from config? and add issues
     data = {}
     data[:orders] = [:create_orders, :show_orders, :edit_orders, :destroy_orders, :complete_orders]

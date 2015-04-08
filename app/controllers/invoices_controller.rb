@@ -6,6 +6,8 @@ class InvoicesController < ApplicationController
   layout 'tocat_base'
   helper :sort
   include SortHelper
+  before_filter :check_action
+
 
   def new
     @invoice = TocatInvoice.new
@@ -115,6 +117,10 @@ class InvoicesController < ApplicationController
   end
 
   private
+
+  def check_action
+    render_403 unless TocatRole.check_path(Rails.application.routes.recognize_path(request.env['PATH_INFO']))
+  end
 
   def find_invoice
     @invoice = TocatInvoice.find(params[:id])
