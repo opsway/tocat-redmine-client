@@ -105,25 +105,29 @@ class TocatController < ApplicationController
   end
 
 
-  def show_invoice
-    @invoice = TocatInvoice.find(params[:invoice_id])
-    respond_to do |format|
-      format.html { render :template => 'tocat/invoices/show_invoice' }
-    end
-  end
-
-
-  def invoices
-    @invoices = TocatInvoice.all
-    respond_to do |format|
-      format.html { render :template => 'tocat/invoices' }
-    end
-  end
+  # def show_invoice
+  #   @invoice = TocatInvoice.find(params[:invoice_id])
+  #   respond_to do |format|
+  #     format.html { render :template => 'tocat/invoices/show_invoice' }
+  #   end
+  # end
+  #
+  #
+  # def invoices
+  #   @invoices = TocatInvoice.all
+  #   respond_to do |format|
+  #     format.html { render :template => 'tocat/invoices' }
+  #   end
+  # end
 
   def my_tocat
     if params[:user_id].present?
-      @user = User.where(id:params[:user_id]).first
-      @user = User.current unless @user.present?
+      target = User.where(id:params[:user_id]).first
+      if target.present? && check_permissions(target)
+        @user = target
+      else
+        @user = User.current
+      end
     else
       @user = User.current
     end
@@ -161,6 +165,12 @@ class TocatController < ApplicationController
   end
 
   private
+
+  def check_permissions(target)
+    return true if User.current.tocat_allowed_to?(:is_admin)
+    return true if User.current.tocat_allowed_to?(:can_see_public_pages) && !(target.tocat_allowed_to?(:has_protected_page))
+    false
+  end
 
   def check_for_setup
     errors = false

@@ -51,7 +51,7 @@ class TocatOrder < ActiveResource::Base
   end
 
   def fmr
-    (100 * (allocatable_budget/invoiced_budget)).round(2)
+    ((1 - (allocatable_budget/invoiced_budget)) * 100).round(2)
   end
 
 

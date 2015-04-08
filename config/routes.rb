@@ -4,9 +4,8 @@
 match '/tocat' => 'tocat#my_tocat', as: :my_tocat, via: [:get]
 #match '/tocat/invoices' => 'tocat#invoices', as: :invoices, via: [:get]
 #match '/tocat/invoices/:invoice_id' => 'tocat#show_invoice', as: :show_invoice, via: [:get]
-
-resources :orders, path: '/tocat/orders'
 resources :invoices, path: '/tocat/invoices'
+resources :orders, path: '/tocat/orders'
 resources :tickets, path: '/tocat/issues'
 resources :tocat_roles, path: '/tocat/roles'
 match '/tocat/set_role' => 'tocat_roles#set_role', via: [:post, :put]

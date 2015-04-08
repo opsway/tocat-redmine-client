@@ -10,7 +10,7 @@ class TocatRolesController < ApplicationController
     user = User.find(params[:user_id])
     role = TocatRole.find(params[:role])
     user.tocat_user_role.destroy if user.tocat_user_role.present?
-    record = TocatUserRole.new(principal: user, tocat_role:role, creator_id: User.current.id)
+    record = TocatUserRole.new(user: user, tocat_role:role, creator_id: User.current.id)
     if record.save
       render json: {}, status: 200
     else

@@ -6,15 +6,17 @@ class TocatRole < ActiveRecord::Base
   validates_length_of :name, :maximum => 30
 
   has_many :tocat_user_roles, class_name: "TocatUserRole"
-  has_many :principals, through: :tocat_user_roles, class_name: "Principal"
+  has_many :users, through: :tocat_user_roles, class_name: "User"
 
   acts_as_list
 
   def self.permissions #load from config? and add issues
-    return [:create_orders, :show_orders, :edit_orders, :destroy_orders, :split_orders, :complete_orders,
-            :create_invoices, :show_invoices, :edit_invoices, :destroy_invoices, :paid_invoices,
-            :modify_accepted, :modify_resolver, :modify_budgets, :show_tocat_page, :show_budgets
-          ]
+    data = {}
+    data[:orders] = [:create_orders, :show_orders, :edit_orders, :destroy_orders, :complete_orders]
+    data[:invoices] = [:create_invoices, :show_invoices, :destroy_invoices, :paid_invoices]
+    data[:issues] = [:modify_accepted, :modify_resolver, :modify_budgets, :show_budgets, :show_issues]
+    data[:dashboard] = [:show_tocat_page, :has_protected_page, :can_see_public_pages, :is_admin]
+    return data
   end
 
   def permissions=(perms)

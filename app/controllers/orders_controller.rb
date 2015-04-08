@@ -136,10 +136,14 @@ class OrdersController < ApplicationController
 
   def find_groups
     @groups = TocatTeam.all
+  rescue ActiveResource::ResourceNotFound
+    render_404
   end
 
   def find_order
     @order = TocatOrder.find(params[:id])
+  rescue ActiveResource::ResourceNotFound
+    render_404
   end
 
   def check_for_setup

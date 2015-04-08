@@ -1,4 +1,10 @@
-<%= labelled_form_for @invoice, url: invoices_path,
+<%if @invoice.new_record?
+    url = invoices_path
+  else
+    url = invoice_path(@invoice.id)
+  end %>
+
+<%= labelled_form_for @invoice, url: url,
                                 :html => {:id => 'inovice-form',
                                           :multipart => true} do |f| %>
     <%= error_messages_for @invoice_old if @invoice_old.present?%>

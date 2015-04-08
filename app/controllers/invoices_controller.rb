@@ -7,10 +7,29 @@ class InvoicesController < ApplicationController
   helper :sort
   include SortHelper
 
-
-
   def new
     @invoice = TocatInvoice.new
+  end
+
+  def destroy
+    begin
+      if @invoice.destroy
+        respond_to do |format|
+          flash[:notice] = l(:message_invoice_deletion_ok)
+          format.html { redirect_back_or_default({:action => 'index'})}
+        end
+      else
+        respond_to do |format|
+          flash[:notice] = @order.errors
+          format.html { redirect_back_or_default({:action => 'show', id: @invoice})}
+        end
+      end
+    rescue ActiveResource::ResourceInvalid => @e
+      respond_to do |format|
+        flash[:error] = JSON.parse(@e.response.body)['message']
+        format.html { redirect_back_or_default({:action => 'show', id: @invoice})}
+      end
+    end
   end
 
 
@@ -99,6 +118,8 @@ class InvoicesController < ApplicationController
 
   def find_invoice
     @invoice = TocatInvoice.find(params[:id])
+  rescue ActiveResource::ResourceNotFound
+    render_404
   end
 
   def check_for_setup

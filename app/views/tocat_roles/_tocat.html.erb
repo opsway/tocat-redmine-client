@@ -1,0 +1,19 @@
+<div id="tocat">
+  <div class="box">
+    <%= select_tag 'role', options_for_select(TocatRole.all.collect{ |r| [ r.name, r.id ] }, (@user.tocat_user_role.present? ? @user.tocat_user_role.tocat_role.id : nil)),include_blank: true %>
+  </div>
+  <input required="" type="submit" name="submit" id="submit" value="Save" onClick='sendData();return false;'>
+</div>
+
+<script type="text/javascript">
+  function sendData(){
+    var user_id = <%= @user.id %>;
+    var role = $$('#role')[0].value;
+    new Ajax.Request('/tocat/set_role', {asynchronous: true, evalScripts: true, method: 'post', parameters: {user_id: user_id, role: role},
+        onSuccess: function (transport) {
+            if (200 != transport.status)
+              alert('Failed to update role for <%= @user.name %>.');
+        }});
+
+  };
+</script>
