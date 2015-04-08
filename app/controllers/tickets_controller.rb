@@ -12,7 +12,8 @@ class TicketsController < ApplicationController
     query_params[:search] = "#{query_params[:search]} paid == #{params[:paid]}" if params[:paid].present?
     query_params[:search] = "#{query_params[:search]} accepted == #{params[:accepted]}" if params[:accepted].present?
     if params[:resolver].present?
-      if params[:resolver] == 'true' || 'false'
+      binding.pry
+      if params[:resolver] === ('true' || 'false')
         params[:resolver] == 'true' ?
           query_params[:search] = "#{query_params[:search]} set? resolver" :
           query_params[:search] = "#{query_params[:search]} null? resolver"
