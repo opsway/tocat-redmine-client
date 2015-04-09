@@ -21,4 +21,11 @@
       </tbody>
     </table>
   </div>
+  <% if User.current.tocat_allowed_to?(:show_issues)%>
+    <% if accepted%>
+      <%= link_to 'See more...', tickets_path(params:{ accepted: 1, paid: 0, resolver: @user_tocat.id, set_filter: 1, commit:'Apply' })%>
+    <% else %>
+      <%= link_to 'See more...', tickets_path(params:{ accepted: 0, resolver: @user_tocat.id, set_filter: 1, commit:'Apply' })%>
+    <% end %>
+  <% end %>
 </div>

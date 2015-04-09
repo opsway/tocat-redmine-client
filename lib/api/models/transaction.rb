@@ -1,4 +1,5 @@
 class TocatTransaction < ActiveResource::Base
+  unloadable
   self.site = RedmineTocatClient.settings[:host]
   self.collection_name = 'transactions'
   self.element_name = 'transaction'

@@ -1,4 +1,5 @@
 class TocatTeam < ActiveResource::Base
+  unloadable
   self.site = RedmineTocatClient.settings[:host]
   self.element_name = 'team'
   self.collection_name = 'teams'

@@ -11,7 +11,6 @@
     <% end %>
       <label><%=	l(:label_payment_balance)  %></label><strong> $<%= @user_tocat.income_account_state.round(1) %></strong><br/>
       <%= render 'transactions', :transactions => @income_transactions %>
-
   </div>
   <div class="splitcontentright">
     <% if @user_tocat.role == 'Manager' %>

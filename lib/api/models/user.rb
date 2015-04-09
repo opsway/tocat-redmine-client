@@ -1,4 +1,5 @@
 class TocatUser < ActiveResource::Base
+  unloadable
   self.site = RedmineTocatClient.settings[:host]
   self.collection_name = 'users'
   self.element_name = 'user'

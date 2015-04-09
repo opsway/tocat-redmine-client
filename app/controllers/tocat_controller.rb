@@ -105,22 +105,6 @@ class TocatController < ApplicationController
     end
   end
 
-
-  # def show_invoice
-  #   @invoice = TocatInvoice.find(params[:invoice_id])
-  #   respond_to do |format|
-  #     format.html { render :template => 'tocat/invoices/show_invoice' }
-  #   end
-  # end
-  #
-  #
-  # def invoices
-  #   @invoices = TocatInvoice.all
-  #   respond_to do |format|
-  #     format.html { render :template => 'tocat/invoices' }
-  #   end
-  # end
-
   def my_tocat
     if params[:user_id].present?
       target = User.where(id:params[:user_id]).first
@@ -151,14 +135,14 @@ class TocatController < ApplicationController
           @team_balance_transactions << t :
           @team_income_transactions << t
       end
-      @accepted_tasks = TocatTicket.get_accepted_tasks(true, @user.name)
-      @not_accepted_tasks = TocatTicket.get_accepted_tasks(false, @user.name)
+      @accepted_tasks = TocatTicket.get_accepted_tasks(true, @user_tocat.id)
+      @not_accepted_tasks = TocatTicket.get_accepted_tasks(false, @user_tocat.id)
       @not_accepted_balance = 0
       @not_accepted_tasks.each { |t| @not_accepted_balance += t.budget }
       @accepted_balance = 0
       @accepted_tasks.each { |t| @accepted_balance += t.budget }
     rescue Exception => e
-      @user_tocat = nil
+      return render_403
     end
     respond_to do |format|
       format.html { render :template => 'tocat/my_tocat' }
