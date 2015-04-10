@@ -157,10 +157,11 @@ class TocatTicket < ActiveResource::Base
   end
 
   def self.get_accepted_tasks(accepted=false, id)
-    accepted == true ?
-      accepted = 1 :
-      accepted = 0
-    tasks = TocatTicket.find(:all, params: {search: "accepted=#{accepted} resolver=#{id}", sort: 'external_id:desc', limit:10})
+    if accepted
+      tasks = TocatTicket.find(:all, params: {search: "accepted=1 paid=0 resolver=#{id}", sort: 'external_id:desc', limit:10})
+    else
+      tasks = TocatTicket.find(:all, params: {search: "accepted=0 resolver=#{id}", sort: 'external_id:desc', limit:10})
+    end
     issues = []
     tasks.each do |task|
       issue = Issue.where(id:task.external_id).first
