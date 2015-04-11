@@ -26,8 +26,12 @@ class TocatController < ApplicationController
 
   def update_resolver
     @issue = Issue.find(params[:issue_id])
-    resolver = User.find(params[:resolver_id])
-    status, errors = TocatTicket.update_resolver(@issue.tocat.id, resolver.tocat.id)
+    resolver_id = nil
+    resolver = User.where(params[:resolver_id]).last
+    if resolver.present?
+      resolver_id = resolver.tocat.id
+    end
+    status, errors = TocatTicket.update_resolver(@issue.tocat.id, resolver_id)
     if status
       data = []
       data << render_to_string(:partial => 'issues/orders')
