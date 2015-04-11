@@ -10,7 +10,7 @@
         </tr>
       </thead>
       <tbody>
-        <% issues.each do |i|%>
+        <% issues.last(10).each do |i|%>
         <tr class="<%= cycle("odd", "even") %>">
           <td><%= link_to i.project, project_path(i.project_id) %> </td>
           <td><%= link_to i.id, issue_path(i.id) %> </td>
