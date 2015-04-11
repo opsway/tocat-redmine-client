@@ -116,7 +116,7 @@ class TocatController < ApplicationController
     else
       @user = User.current
     end
-    begin
+    #begin
       @user_tocat = TocatUser.find(TocatUser.find_by_name(@user.name).id)
       @team_tocat = TocatTeam.find(@user_tocat.team.id)
       transactions = TocatTransaction.get_transactions_for_user(@user_tocat.id)
@@ -141,8 +141,8 @@ class TocatController < ApplicationController
       @not_accepted_tasks.each { |t| @not_accepted_balance += t.budget }
       @accepted_balance = 0
       @accepted_tasks.each { |t| @accepted_balance += t.budget }
-    rescue Exception => e
-      return render_403
+    #rescue Exception => e
+      #return render_404
     end
     respond_to do |format|
       format.html { render :template => 'tocat/my_tocat' }
