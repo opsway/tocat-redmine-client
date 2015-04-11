@@ -143,7 +143,7 @@ class TocatController < ApplicationController
       @accepted_tasks.each { |t| @accepted_balance += t.budget }
     #rescue Exception => e
       #return render_404
-    end
+    #end
     respond_to do |format|
       format.html { render :template => 'tocat/my_tocat' }
     end
