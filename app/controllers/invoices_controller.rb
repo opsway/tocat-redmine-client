@@ -29,7 +29,7 @@ class InvoicesController < ApplicationController
       end
     rescue ActiveResource::ResourceInvalid => @e
       respond_to do |format|
-        flash[:error] = JSON.parse(@e.response.body)['message']
+        flash[:error] = JSON.parse(@e.response.body)['errors'].join(', ')
         format.html { redirect_back_or_default({:action => 'show', id: @invoice})}
       end
     end
@@ -63,7 +63,7 @@ class InvoicesController < ApplicationController
         end
       end
     rescue => e
-      flash[:error] = JSON.parse(e.response.body)['message']
+      flash[:error] = JSON.parse(e.response.body)['errors'].join(', ')
       respond_to do |format|
         format.html { render :template => 'invoices/edit' }
       end

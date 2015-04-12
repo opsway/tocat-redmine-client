@@ -33,6 +33,9 @@ module RedmineTocatClient
           if tocat.attributes.include? 'resolver' && tocat.resolver.id.present?
             team = TocatUser.find(tocat.resolver.id).team.name
             orders = TocatOrder.find(:all, params:{search:"team=#{team} paid=0 completed=0 free_budget>0", limit:9999999999})
+          elsif tocat.orders.present?
+            team = TocatOrder.find(tocat.orders.first.id).team.name
+            orders = TocatOrder.find(:all, params:{search:"team=#{team} paid=0 completed=0 free_budget>0", limit:9999999999})
           else
             orders = TocatOrder.find(:all, params:{search:"paid=0 completed=0 free_budget>0", limit:9999999999})
           end

@@ -34,7 +34,7 @@ class OrdersController < ApplicationController
       end
     rescue ActiveResource::ResourceInvalid => @e
       respond_to do |format|
-        flash[:error] = JSON.parse(@e.response.body)['message']
+        flash[:error] = JSON.parse(@e.response.body)['errors'].join(', ')
         format.html { redirect_back_or_default({:action => 'show', id: @order})}
       end
     end
@@ -85,7 +85,7 @@ class OrdersController < ApplicationController
         end
       end
     rescue => e
-      flash[:error] = JSON.parse(e.response.body)['message']
+      flash[:error] = JSON.parse(e.response.body)['errors'].join(', ')
       respond_to do |format|
         format.html { render :template => 'orders/edit' }
       end
