@@ -11,6 +11,7 @@ class InvoicesController < ApplicationController
 
   def new
     @invoice = TocatInvoice.new
+    @order = TocatOrder.find(params[:order]) if params[:order].present?
   end
 
   def destroy
@@ -39,6 +40,13 @@ class InvoicesController < ApplicationController
     @invoice = TocatInvoice.new(params[:invoice])
     begin
       if @invoice.save
+        if params[:order].present?
+          begin
+            order = TocatOrder.find(params[:order].to_i)
+            status, errors = order.set_invoice(@invoice.id) if order.present?
+          rescue ActiveResource::ResourceNotFound
+          end
+        end
         flash[:notice] = l(:notice_invoice_successful_created)
         respond_to do |format|
           format.html { redirect_back_or_default({ :action => 'show', :id => @invoice}) }
@@ -119,7 +127,7 @@ class InvoicesController < ApplicationController
   private
 
   def check_action
-    render_403 unless TocatRole.check_path(Rails.application.routes.recognize_path(request.env['PATH_INFO']))
+    render_403 unless TocatRole.check_path(Rails.application.routes.recognize_path(request.env['PATH_INFO'], {:method => request.env['REQUEST_METHOD'].to_sym}))
   end
 
   def find_invoice

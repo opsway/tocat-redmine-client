@@ -47,7 +47,7 @@ module OrdersHelper
 
   def link_to_new_invoice(order)
     unless order.get_invoice.present?
-      return link_to l(:button_add), ''
+      return link_to l(:button_add), new_invoice_path(params: {order: order.id})
     end
   end
 

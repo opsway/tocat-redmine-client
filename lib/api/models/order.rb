@@ -54,12 +54,30 @@ class TocatOrder < ActiveResource::Base
     ((1 - (allocatable_budget/invoiced_budget)) * 100).round(2)
   end
 
+  def set_invoice(id)
+    begin
+      connection.post("#{self.class.prefix}/order/#{self.id}/invoice", {invoice_id: id}.to_json)
+    rescue => error
+      # TODO add logger
+      return false, error
+    end
+    return true, nil
+  end
 
   def get_invoice
     unless invoice.attributes.empty?
       return TocatInvoice.find(invoice.id)
     end
     nil
+  end
+  def set_suborder(query)
+    begin
+      connection.post("#{self.class.prefix}/order/#{self.id}/suborder", query.to_json)
+    rescue => error
+      # TODO add logger
+      return false, error
+    end
+    return true, nil
   end
 
   def editable?

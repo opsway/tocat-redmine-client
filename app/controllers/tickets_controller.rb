@@ -129,6 +129,6 @@ class TicketsController < ApplicationController
   private
 
   def check_action
-    render_403 unless TocatRole.check_path(Rails.application.routes.recognize_path(request.env['PATH_INFO']))
+    render_403 unless TocatRole.check_path(Rails.application.routes.recognize_path(request.env['PATH_INFO'], {:method => request.env['REQUEST_METHOD'].to_sym}))
   end
 end

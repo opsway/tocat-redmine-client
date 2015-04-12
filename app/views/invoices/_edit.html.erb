@@ -21,6 +21,8 @@
               <%= f.text_field :external_id, :size => 80,
                                :maxlength => 255, :required => true %>
             </p>
+            <%= hidden_field_tag :order, params[:order] %>
+
           <% end %>
         </div>
       </fieldset>

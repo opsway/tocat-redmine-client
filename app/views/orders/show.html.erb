@@ -47,7 +47,11 @@
   <hr />
   <div id="invoice">
     <% invoice = @order.get_invoice %>
-    <div class="contextual"><%= link_to_new_invoice(@order) if User.current.tocat_allowed_to?(:create_invoices) %></div>
+    <% unless @order.attributes[:parent_order].attributes[:id].present? %>
+      <% unless invoice.present? %>
+        <div class="contextual"><%= link_to l(:button_add), new_invoice_path(params: {order: @order.id}) if User.current.tocat_allowed_to?(:create_invoices) %></div>
+      <% end %>
+    <% end %>
     <p><strong><%=l(:label_invoice)%></strong></p>
     <% if invoice.present? %>
       <div class = 'autoscroll'>

@@ -44,24 +44,24 @@ class OrdersController < ApplicationController
     parent = TocatOrder.find(params[:order][:parent_order])
     query = params[:order]
     query[:team] = { id: params[:order][:team] }
-    begin
-      @order = TocatOrder.post("#{parent.id}/suborder", query)
-    rescue => error
-      flash[:error] = JSON.parse(error.response.body)['message']
+    status, error = parent.set_suborder(query)
+    if status
+      flash[:notice] = l(:notice_suborder_successful_created)
+      respond_to do |format|
+        format.html { redirect_back_or_default({ :action => 'show', :id => parent }) }
+        format.js do
+          render :update do |page|
+            page.replace_html 'order-form', :partial => 'tocat/orders/edit', :locals => {:order => @order}
+          end
+        end
+      end
+    else
+      flash[:error] = JSON.parse(error.response.body)['errors'].join(', ')
       query[:split] = params[:order][:parent_order]
       respond_to do |format|
         format.html { redirect_to :action => 'new', params: query }
       end
       return
-    end
-    flash[:notice] = l(:notice_suborder_successful_created)
-    respond_to do |format|
-      format.html { redirect_back_or_default({:action => 'show', :id => @order}) }
-      format.js do
-        render :update do |page|
-          page.replace_html 'order-form', :partial => 'tocat/orders/edit', :locals => {:order => @order}
-        end
-      end
     end
   end
 
@@ -136,7 +136,7 @@ class OrdersController < ApplicationController
 
   private
   def check_action
-    render_403 unless TocatRole.check_path(Rails.application.routes.recognize_path(request.env['PATH_INFO']))
+    render_403 unless TocatRole.check_path(Rails.application.routes.recognize_path(request.env['PATH_INFO'], {:method => request.env['REQUEST_METHOD'].to_sym}))
   end
 
   def find_groups
