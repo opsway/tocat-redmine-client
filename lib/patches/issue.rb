@@ -22,7 +22,7 @@ module RedmineTocatClient
           end
           users = []
           _users.each { |u| users << User.find_by_lastname(u.name.split.second) }
-          return users
+          return users.sort_by(&:name)
         end
 
         def orders
@@ -39,7 +39,7 @@ module RedmineTocatClient
           else
             orders = TocatOrder.find(:all, params:{search:"paid=0 completed=0 free_budget>0", limit:9999999999})
           end
-          orders
+          return orders.sort_by(&:name)
         end
 
         def get_balance_for_order(id)

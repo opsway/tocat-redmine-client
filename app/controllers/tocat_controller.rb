@@ -27,7 +27,7 @@ class TocatController < ApplicationController
   def update_resolver
     @issue = Issue.find(params[:issue_id])
     resolver_id = nil
-    resolver = User.where(params[:resolver_id]).last
+    resolver = User.where(id:params[:resolver_id]).last
     if resolver.present?
       resolver_id = resolver.tocat.id
     end
