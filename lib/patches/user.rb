@@ -6,6 +6,7 @@ module RedmineTocatClient
   module Patches
     module UserPatch
       def self.included(base) # :nodoc:
+        unloadable
         base.send(:include, InstanceMethods)
         base.class_eval do
           has_one :tocat_user_role, class_name: "TocatUserRole"

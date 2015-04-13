@@ -71,13 +71,14 @@ class TocatOrder < ActiveResource::Base
     nil
   end
   def set_suborder(query)
+    response = ''
     begin
-      connection.post("#{self.class.prefix}/order/#{self.id}/suborder", query.to_json)
+      response = connection.post("#{self.class.prefix}/order/#{self.id}/suborder", query.to_json)
     rescue => error
       # TODO add logger
-      return false, error
+      return false, error, nil
     end
-    return true, nil
+    return true, nil, JSON.parse(response.body)
   end
 
   def editable?

@@ -78,8 +78,8 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
           hideModal();
           jQuery.noConflict()('#ajax-indicator').hide();
         },
-        error: function(data) {;
-          alert(data.responseText);
+        error: function(data) {
+          alert(JSON.parse(data.responseText).errors.join(', '));
           jQuery.noConflict()('#ajax-indicator').hide();
         },
         dataType: 'JSON'

@@ -44,11 +44,11 @@ class OrdersController < ApplicationController
     parent = TocatOrder.find(params[:order][:parent_order])
     query = params[:order]
     query[:team] = { id: params[:order][:team] }
-    status, error = parent.set_suborder(query)
+    status, error, response = parent.set_suborder(query)
     if status
       flash[:notice] = l(:notice_suborder_successful_created)
       respond_to do |format|
-        format.html { redirect_back_or_default({ :action => 'show', :id => parent }) }
+        format.html { redirect_back_or_default({ :action => 'show', :id => response['id'].to_i }) }
         format.js do
           render :update do |page|
             page.replace_html 'order-form', :partial => 'tocat/orders/edit', :locals => {:order => @order}

@@ -2,6 +2,7 @@ module RedmineTocatClient
   module Patches
     module GroupPatch
       def self.included(base) # :nodoc:
+        unloadable
         base.send(:include, InstanceMethods)
       end
       module InstanceMethods
