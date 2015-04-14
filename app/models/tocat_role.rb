@@ -20,6 +20,8 @@ class TocatRole < ActiveRecord::Base
 
     paths[:orders][:show] = :show_orders
     paths[:orders][:index] = :show_orders
+    paths[:orders][:invoices] = :create_invoices
+    paths[:orders][:set_invoice] = :create_invoices
 
     paths[:orders][:edit] = :edit_orders
     paths[:orders][:update] = :edit_orders
@@ -60,7 +62,7 @@ class TocatRole < ActiveRecord::Base
     data = {}
     data[:orders] = [:create_orders, :show_orders, :edit_orders, :destroy_orders, :complete_orders]
     data[:invoices] = [:create_invoices, :show_invoices, :destroy_invoices, :paid_invoices]
-    data[:issues] = [:modify_accepted, :modify_resolver, :modify_budgets, :show_budgets, :show_issues]
+    data[:issues] = [:modify_accepted, :modify_resolver, :modify_budgets, :show_budgets, :show_issues, :show_aggregated_info]
     data[:dashboard] = [:show_tocat_page, :has_protected_page, :can_see_public_pages, :is_admin]
     return data
   end

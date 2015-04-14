@@ -1,4 +1,11 @@
 <%= render partial: 'action_menu' %>
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script charset="utf-8">jQuery.noConflict()
+jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
+  jqXHR.setRequestHeader('X-CSRF-Token', jQuery.noConflict()('meta[name=csrf-token]').attr('content'));
+});
+</script>
+
 <h2><%= l(:label_order_heading) + " #{@order.id}" %> </h2>
 <div class="issue details">
   <div class="subject"><h3><%= @order.name %></h3></div>
@@ -33,6 +40,8 @@
         rows.right l(:field_parent_order),  link_to(@parent.name, order_path(@parent)), :class => 'parent_order'
       end
 
+      rows.right l(:label_suborder),  (@parent.present? ? image_tag('true.png') : image_tag('false.png')), :class => 'sub_order'
+
       rows.left l(:field_fmr), @order.fmr, :class => 'fmr'
 
     end %>
@@ -49,35 +58,57 @@
     <% invoice = @order.get_invoice %>
     <% unless @order.attributes[:parent_order].attributes[:id].present? %>
       <% unless invoice.present? %>
-        <div class="contextual"><%= link_to l(:button_add), new_invoice_path(params: {order: @order.id}) if User.current.tocat_allowed_to?(:create_invoices) %></div>
+        <div class="contextual">
+        <% if User.current.tocat_allowed_to?(:create_invoices) %>
+          <span class='icon icon-edit' style='cursor:pointer;' onclick='invoice_dialog(this)'>Add</span>
+        <% end %>
+        </div>
+        <script>
+        function setInvoice(){
+          var data = {
+                      invoice_id:jQuery.noConflict()('#invoices').val(),
+                      }
+          jQuery.noConflict().ajax({
+            type: "POST",
+            url: "<%= order_invoices_path %>",
+            data: data,
+            beforeSend: function( xhr ) {
+              jQuery.noConflict()('#ajax-indicator').show();
+            },
+            success: function(data) {
+              hideModal();
+              console.log('ads');
+              document.getElementById('invoice-box').innerHTML = data;
+              jQuery.noConflict()('#ajax-indicator').hide();
+            },
+            error: function(data) {
+              alert(data.responseText);
+              jQuery.noConflict()('#ajax-indicator').hide();
+            },
+            dataType: 'JSON'
+          });
+        };
+
+        function invoice_dialog(){
+          jQuery.noConflict().ajax('<%= order_invoices_path %>', {
+            asynchronous: true,
+            method: 'get',
+            beforeSend: function( xhr ) {
+              jQuery.noConflict()('#ajax-indicator').show();
+            },
+            success: function(data) {
+              jQuery.noConflict()('#ajax-indicator').hide();
+            },
+            error: function(data) {;
+              jQuery.noConflict()('#ajax-indicator').hide();
+            },
+          });
+        };
+        </script>
       <% end %>
     <% end %>
-    <p><strong><%=l(:label_invoice)%></strong></p>
-    <% if invoice.present? %>
-      <div class = 'autoscroll'>
-        <table class = 'list issues' style="text-align: center;">
-          <thead><tr>
-            <td>#</td>
-            <td><%= l(:label_total) %></td>
-            <td><%= l(:label_paid) %></td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr id='<%= invoice.id %>' class = 'even issue'>
-            <td class = 'id'>
-              <%= link_to invoice.external_id, invoice_path(invoice.id) %>
-            </td>
-            <td class = 'total'>
-              <%= invoice.total %>
-            </td>
-            <td class = 'paid'>
-              <%= get_paid_icon(invoice) %>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      </div>
-    <% end %>
+    <span id='invoice-box'><%= render :partial => 'invoices', locals: {invoice: @order.get_invoice } %></span>
+
   </div>
 
   <% unless @parent.present?%>

@@ -94,3 +94,4 @@ en:
   has_protected_page: 'Has protected page from other users'
   can_see_public_pages: 'Can see other not protected pages'
   is_admin: 'Overrides page all protections'
+  show_aggregated_info: 'View aggregated info'

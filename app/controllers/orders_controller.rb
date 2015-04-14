@@ -134,7 +134,29 @@ class OrdersController < ApplicationController
     @parent = @order.parent
   end
 
+  def set_invoice
+    begin
+      status, errors = @order.set_invoice(params[:invoice_id].to_i)
+    rescue ActiveResource::ResourceNotFound
+    end
+    if status
+      data = []
+      data << render_to_string(:partial => 'orders/invoices')
+      respond_to do |format|
+        format.js {   render( :text => data, :status => :ok ) }
+      end
+    else
+      render :json =>  JSON.parse(errors.response.body)['errors'].join(', '), :status => :bad_request
+    end
+  end
+
+  def invoices
+    @invoices = TocatInvoice.find(:all, params: { search: "paid = 0" })
+    return render template: 'orders/invoice_dialog'
+  end
+
   private
+
   def check_action
     render_403 unless TocatRole.check_path(Rails.application.routes.recognize_path(request.env['PATH_INFO'], {:method => request.env['REQUEST_METHOD'].to_sym}))
   end

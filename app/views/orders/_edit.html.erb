@@ -1,10 +1,12 @@
 <%if @order.new_record?
     url = orders_path
-    team = params[:order][:team]
   else
     url = order_path(@order.id)
-    team = @order.get_team
   end %>
+<% params[:order].nil? ?
+    team = @order.get_team :
+    team = params[:order][:team]
+ %>
 <%= labelled_form_for @order, url: url, :html => {:id => 'order-form', :multipart => true} do |f| %>
     <%= error_messages_for @order if @order.present?%>
     <div class="box">

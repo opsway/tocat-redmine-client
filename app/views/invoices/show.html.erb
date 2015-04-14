@@ -5,10 +5,6 @@
   <table class="attributes">
     <%= invoice_fields_rows do |rows|
 
-      if @invoice.attributes.include? 'client'
-        rows.left l(:field_client), @invoice.client, :class => 'client'
-      end
-
       if @invoice.attributes.include? 'total'
         rows.left l(:field_total), @invoice.total, :class => 'total'
       end

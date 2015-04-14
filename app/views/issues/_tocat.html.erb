@@ -38,6 +38,42 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
     });
   };
   </script>
+<% elsif  User.current.tocat_allowed_to?(:show_aggregated_info) %>
+  <hr/>
+  <div id="tocat">
+    <p><strong><%=l(:label_tocat_data)%></strong></p>
+    <table class='attributes'>
+      <% ticket = @issue.tocat %>
+      <tr>
+        <th>
+          <%=l(:label_tocat_budget)%>
+        </th>
+        <td>
+          <%= ticket.get_budget %>
+        </td>
+        <th>
+          <%=l(:label_tocat_resolver)%>
+        </th>
+        <td>
+          <%= ticket.get_resolver.name if ticket.get_resolver.present? %>
+        </td>
+      </tr>
+      <tr>
+        <th>
+          <%=l(:label_tocat_accepted)%>
+        </th>
+        <td class='paid'>
+          <%= ticket.get_accepted ? image_tag('true.png') : image_tag('false.png') %>
+        </td>
+        <th>
+          <%=l(:label_tocat_paid)%>
+        </th>
+        <td>
+          <%= ticket.get_paid ? image_tag('true.png') : image_tag('false.png') %>
+        </td>
+      </tr>
+    </table>
+  </div>
 <% end %>
 
 <% if User.current.tocat_allowed_to?(:modify_budgets) %>

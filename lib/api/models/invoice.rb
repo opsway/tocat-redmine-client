@@ -19,7 +19,6 @@ class TocatInvoice < ActiveResource::Base
 
   schema do
     attribute 'id', :integer
-    attribute 'client', :string
     attribute 'external_id', :string
     attribute 'paid', :boolean
   end

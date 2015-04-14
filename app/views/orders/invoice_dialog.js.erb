@@ -1,0 +1,8 @@
+document.getElementById('ajax-modal').innerHTML = '<%= escape_javascript(render(:partial => 'orders/invoice_dialog')) %>';
+showModal('ajax-modal', 350);
+jQuery.noConflict()( document ).ready(function() {
+  jQuery.noConflict()('#new_invoice').on('submit',function(e){
+    e.preventDefault();
+    setInvoice();
+  });
+});
