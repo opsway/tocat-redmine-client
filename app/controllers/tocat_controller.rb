@@ -55,7 +55,7 @@ class TocatController < ApplicationController
       @order = OpenStruct.new(order)
     end
     @teams = TocatTeam.available_for_issue(@issue).collect { |g| [g.id, g.name] }
-    @orders = TocatOrder.find(:all, params: {limit: 9999999}
+    @orders = TocatOrder.find(:all, params: {limit: 9999999})
     return render template: 'issues/budget_dialog'
     # see http://stackoverflow.com/questions/9025338/rails-upgrade-to-3-1-changing-ajax-handling-from-render-update-to-respond-t
   end
