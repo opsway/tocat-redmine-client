@@ -42,4 +42,47 @@
       <%= ticket.get_paid ? image_tag('true.png') : image_tag('false.png') %>
     </td>
   </tr>
+  <% if @issue.review_requested%>
+    <tr>
+      <th>
+        <%= l(:label_review_requested) %>
+      </th>
+      <td>
+        <p id="review">
+          <input type="submit" value="<%= l(:label_yes)%>" onClick="review_requested_clicked(this); return false;">
+          <span id="load" class="icon icon-load" style=" background-image: url(../images/loading.gif); display: none"></span>
+        </p>
+        <script charset="utf-8">
+        function review_requested_clicked(elem){
+          var spiner = elem.next();
+          new Ajax.Request('/tocat/review_handler', {
+              asynchronous: true,
+              method: 'put',
+              parameters: {
+                  'issue_id': "<%= @issue.id%>",
+                  'status' : <%= !@issue.review_requested %>
+              },
+              onLoading: function () {
+                  $$('#ajax-indicator')[0].hide();
+                  spiner.show();
+                  elem.setValue("Loading...");
+                  elem.disabled();
+              },
+              onSuccess: function () {
+                  spiner.hide();
+                  elem.setValue("Success!");
+                  elem.disable()
+              },
+              onFailure: function () {
+                  spiner.hide();
+                  elem.setValue("Please, try again");
+                  elem.enabled();
+                  alert("Status:" + transport.status + " Message: " + transport.responseText);
+              }
+          });
+        }
+        </script>
+      <td>
+    </tr>
+  <% end %>
 </table>

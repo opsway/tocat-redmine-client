@@ -72,6 +72,14 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
           <%= ticket.get_paid ? image_tag('true.png') : image_tag('false.png') %>
         </td>
       </tr>
+      <tr>
+        <th>
+          <%=l(:label_review_requested_question)%>
+        </th>
+        <td>
+          <%= @issue.review_requested ? image_tag('true.png') : image_tag('false.png') %>
+        </td>
+      </tr>
     </table>
   </div>
 <% end %>

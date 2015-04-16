@@ -95,3 +95,8 @@ en:
   can_see_public_pages: 'Can see other not protected pages'
   is_admin: 'Overrides page all protections'
   show_aggregated_info: 'View aggregated info'
+  label_review_requested: 'Issue reviewed:'
+  label_true: 'Yes'
+  button_review_request: 'Request Review'
+  field_review_requested: 'Review Requested'
+  label_review_requested_question: 'Review Requested:'

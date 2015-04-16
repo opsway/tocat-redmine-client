@@ -19,3 +19,6 @@ match '/tocat/resolver' => 'tocat#update_resolver', via: [:post, :put]
 match '/tocat/invoices/:id/paid' => 'invoices#set_paid', as: :invoice_paid, via: [:post, :put]
 match '/tocat/invoices/:id/paid' => 'invoices#set_unpaid', as: :invoice_paid, via: [:delete]
 match '/issues/:id/accepted' => 'tocat#toggle_accepted', as: :issue_accepted, via: [:post, :put]
+
+match '/tocat/request_review' => 'tocat#request_review', :via => :put
+match '/tocat/review_handler' => 'tocat#review_handler', :via => :put

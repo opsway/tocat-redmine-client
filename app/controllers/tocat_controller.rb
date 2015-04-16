@@ -6,7 +6,40 @@ class TocatController < ApplicationController
   helper :queries
   include QueriesHelper
   before_filter :check_for_setup
-  before_filter :check_action
+  before_filter :check_action, except: [:request_review, :review_handler]
+
+
+  def request_review
+    issue = Issue.find(params[:issue_id])
+    issue.review_requested = true
+    respond_to do |format|
+      if issue.save
+        status = ActiveRecord::Base.connection.execute("SHOW TABLE STATUS LIKE 'journals';").first
+        journal_id = status[10]
+        ActiveRecord::Base.connection.execute("INSERT INTO `journals` (`journalized_id`, `journalized_type`, `user_id`, `created_on`, `private`) VALUES (#{issue.id}, 'Issue', #{User.current.id.to_i}, '#{Time.now.to_s(:db)}', 1);")
+        ActiveRecord::Base.connection.execute("INSERT INTO `journal_details` (`journal_id`, `old_value`, `prop_key`, `property`, `value`) VALUES (#{journal_id}, '0', 'review_requested', 'attr', '1');")
+        format.js { render :text => "OK", :status => 200 }
+      else
+        format.js { render :text => "Fail", :status => 406 }
+      end
+    end
+  end
+
+  def review_handler
+    issue = Issue.find(params[:issue_id])
+    issue.review_requested = false
+    if issue.save
+      status = ActiveRecord::Base.connection.execute("SHOW TABLE STATUS LIKE 'journals';").first
+      journal_id = status[10]
+      ActiveRecord::Base.connection.execute("INSERT INTO `journals` (`journalized_id`, `journalized_type`, `user_id`, `created_on`, `private`) VALUES (#{issue.id}, 'Issue', #{User.current.id.to_i}, '#{Time.now.to_s(:db)}', 1);")
+      ActiveRecord::Base.connection.execute("INSERT INTO `journal_details` (`journal_id`, `old_value`, `prop_key`, `property`, `value`) VALUES (#{journal_id}, '1', 'review_requested', 'attr', '0');")
+      respond_to do |format|
+        format.js { render :text => "OK", :status => 200 }
+      end
+    else
+      format.js { render :text => "Fail", :status => 406 }
+    end
+  end
 
   def toggle_accepted
     issue = Issue.find(params[:id])
