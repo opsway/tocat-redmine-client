@@ -51,7 +51,7 @@ class TocatController < ApplicationController
       end
     else
       respond_to do |format|
-        flash[:notice] = payload
+        flash[:error] = JSON.parse(payload.response.body)['errors'].join(', ')
         format.html { redirect_back_or_default({:controller => 'issues', :action => 'show', id: issue.id })}
       end
     end
