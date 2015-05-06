@@ -49,13 +49,13 @@ class TocatOrder < ActiveResource::Base
       begin
         return TocatOrder.find(parent_order.id)
       rescue
-        return OpenStruct.create id: parent_order.id, name: 'Parent order doesn\'t exists'
+        return OpenStruct.new id: parent_order.id, name: 'Parent order doesn\'t exists'
       end
     else
       return nil
     end
   end
-  
+
   def fmr
     ((1 - (allocatable_budget/invoiced_budget)) * 100).round(2)
   end

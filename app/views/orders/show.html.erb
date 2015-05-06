@@ -37,7 +37,11 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
       end
 
       if @parent.present?
-        rows.right l(:field_parent_order),  link_to(@parent.name, order_path(@parent)), :class => 'parent_order'
+        if @parent.class == OpenStruct
+          rows.right l(:field_parent_order),  @parent.name, :class => 'parent_order'
+        else
+          rows.right l(:field_parent_order),  link_to(@parent.name, order_path(@parent)), :class => 'parent_order'
+        end
       end
 
       rows.right l(:label_suborder),  (@parent.present? ? image_tag('true.png') : image_tag('false.png')), :class => 'sub_order'
