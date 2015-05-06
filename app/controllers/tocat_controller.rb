@@ -7,6 +7,10 @@ class TocatController < ApplicationController
   include QueriesHelper
   before_filter :check_for_setup
   before_filter :check_action, except: [:request_review, :review_handler]
+  #
+  # def status_page
+  #   @messages
+  # end
 
 
   def request_review
@@ -143,7 +147,7 @@ class TocatController < ApplicationController
   end
 
   def my_tocat
-    if params[:user_id].present?
+    if params[:user_id].present? && params[:user_id].to_i != User.current.id
       target = User.where(id:params[:user_id]).first
       if target.present? && check_permissions(target)
         @user = target

@@ -58,7 +58,7 @@ class TocatRole < ActiveRecord::Base
     true
   end
 
-  def self.permissions #load from config? and add issues
+  def self.permissions #load from config?
     data = {}
     data[:orders] = [:create_orders, :show_orders, :edit_orders, :destroy_orders, :complete_orders]
     data[:invoices] = [:create_invoices, :show_invoices, :destroy_invoices, :paid_invoices]
