@@ -158,6 +158,24 @@ class OrdersController < ApplicationController
     end
   end
 
+  def delete_invoice
+    begin
+      status, errors = @order.delete_invoice
+    rescue ActiveResource::ResourceNotFound
+    end
+    if status
+      respond_to do |format|
+        flash[:notice] = l(:notice_invoice_successful_deattached)
+        format.html { redirect_back_or_default({:action => 'show', id: @order})}
+      end
+    else
+      respond_to do |format|
+        flash[:error] = JSON.parse(errors.response.body)['errors'].join(', ')
+        format.html { redirect_back_or_default({:action => 'show', id: @order})}
+      end
+    end
+  end
+
   def invoices
     @invoices = TocatInvoice.find(:all, params: { search: "paid = 0" })
     return render template: 'orders/invoice_dialog'

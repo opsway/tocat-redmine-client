@@ -76,6 +76,10 @@ en:
   message_invoice_deletion_ok: "Invoice has been deleted successfully"
   confirm_invoice_destroy: "Are you sure you want to delete invoice?"
   label_invoiced: "Invoiced"
+  confirm_invoice_deattach: "Are you sure you want to deattach invoice?"
+  notice_invoice_successful_deattached: "Invoice was successfully deattached!"
+  confirm_order_deattach: "Are you sure you want to deattach order?"
+  notice_order_successful_deattached: "Order was successfully deattached!"
   #permissions
   modify_accepted: 'Set accepted'
   create_orders: 'Create order'

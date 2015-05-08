@@ -5,6 +5,7 @@
           <td><%= l(:label_invoiced_budget) %></td>
           <td><%= l(:label_allocatable_budget) %></td>
           <td><%= l(:label_free_budget) %></td>
+          <td></td>
         </tr>
     </thead>
     <tbody>
@@ -22,6 +23,9 @@
           <td class = 'free_budget'>
             <%= order.free_budget %>
           </td>
+          <% if User.current.tocat_allowed_to?(:create_invoices) %>
+            <td><%= link_to l(:button_delete), invoice_orders_path(params:{order_id: order.id}), :data => {:confirm => l(:confirm_order_deattach)}, :method => :delete, :class => 'icon icon-del' %></td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>

@@ -82,6 +82,16 @@ class TocatOrder < ActiveResource::Base
     return true, nil
   end
 
+  def delete_invoice
+    begin
+      connection.delete("#{self.class.prefix}/order/#{self.id}/invoice")
+    rescue => error
+      # TODO add logger
+      return false, error
+    end
+    return true, nil
+  end
+
   def get_invoice
     unless invoice.attributes.empty?
       return TocatInvoice.find(invoice.id)
