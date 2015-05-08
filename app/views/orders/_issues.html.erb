@@ -9,7 +9,7 @@
     </tr>
   </thead>
   <tbody>
-    <%issues.each do |issue| %>
+    <% issues.each do |issue| %>
     <tr id='<%= issue.id %>' class = '<%= cycle('odd', 'even')%> issue' style='text-align: left;'>
       <td class = 'id'>
         <%= link_to issue.id, issue_path(issue.id) %>
@@ -21,12 +21,11 @@
         <%= link_to issue.project.name, project_path(issue.project.id) %>
       </td>
       <td class = 'budget'>
-        <%= issue.tocat.get_budget %>
+        <%= issue.budget %>
       </td>
       <td class = 'resolver'>
-        <% if issue.tocat.get_resolver.present? %>
-          <% user = issue.tocat.get_resolver %>
-          <%= link_to user.name, {:controller => 'tocat', :action => 'my_tocat', :user_id => user.id}%>
+        <% if issue.resolver.present? %>
+          <%= link_to issue.resolver.name, {:controller => 'tocat', :action => 'my_tocat', :user_id => issue.resolver.id}%>
         <% end %>
       </td>
     </tr>

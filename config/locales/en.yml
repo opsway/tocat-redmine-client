@@ -104,3 +104,4 @@ en:
   label_status: "Status"
   show_status_page: "Can see status page"
   confirm_invoice_unpaid: 'Are you sure you want to set invoice "Paid"?'
+  label_select_invoice: 'Select Invoice'

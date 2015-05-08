@@ -34,8 +34,20 @@ class TocatOrder < ActiveResource::Base
   def issues
     issues = []
     tasks.each do |task|
-      issue = Issue.where(id:task.external_id).first
-      issues << issue if issue.present?
+      issue = Issue.where(id: task.external_id).first
+      if issue.present?
+        if task.resolver.attributes.include? 'name'
+          resolver = User.where(lastname: task.resolver.name.split).first
+        else
+          resolver = nil
+        end
+        issues << OpenStruct.new( id: task.external_id,
+                                  project: issue.project,
+                                  budget: task.budget,
+                                  resolver: resolver,
+                                  subject: issue.subject
+                                )
+      end
     end
     issues
   end
