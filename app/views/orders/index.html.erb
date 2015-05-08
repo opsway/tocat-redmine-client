@@ -35,9 +35,21 @@ fieldset#filters table td {
           </th>
           <%= sort_header_tag('invoiced_budget', :caption => l(:label_invoiced_budget)) %>
           <%= sort_header_tag('allocatable_budget', :caption => l(:label_allocatable_budget)) %>
+          <th>
+            <%= l(:field_fmr)%>
+          </th>
           <%= sort_header_tag('free_budget', :caption => l(:label_free_budget)) %>
           <th>
+            <%= l(:field_team)%>
+          </th>
+          <th>
+            <%= l(:label_invoiced)%>
+          </th>
+          <th>
             <%= l(:label_paid)%>
+          </th>
+          <th>
+            <%= l(:field_completed)%>
           </th>
           </tr></thead>
 
@@ -56,11 +68,23 @@ fieldset#filters table td {
           <td class = 'allocatable_budget'>
             <%= order.allocatable_budget %>
           </td>
+          <td class = 'fmr'>
+            <%= order.fmr %>
+          </td>
           <td class = 'free_budget'>
             <%= order.free_budget %>
           </td>
+          <td class = 'team'>
+            <%= order.team.name %>
+          </td>
+          <td class = 'invoiced'>
+            <%= order.get_invoice ? image_tag('true.png') : image_tag('false.png') %>
+          </td>
           <td class = 'paid'>
             <%= order.paid ? image_tag('true.png') : image_tag('false.png') %>
+          </td>
+          <td class = 'completed'>
+            <%= order.completed ? image_tag('true.png') : image_tag('false.png') %>
           </td>
         </tr>
       <% end %>

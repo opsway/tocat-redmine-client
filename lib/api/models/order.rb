@@ -57,7 +57,7 @@ class TocatOrder < ActiveResource::Base
   end
 
   def fmr
-    ((1 - (allocatable_budget/invoiced_budget)) * 100).round(2)
+    ((1 - (allocatable_budget.to_f/invoiced_budget.to_f)) * 100).round(2)
   end
 
   def set_invoice(id)
@@ -76,6 +76,7 @@ class TocatOrder < ActiveResource::Base
     end
     nil
   end
+
   def set_suborder(query)
     response = ''
     begin

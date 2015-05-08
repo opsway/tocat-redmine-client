@@ -75,6 +75,7 @@ en:
   label_tocat_role: 'TOCAT Role'
   message_invoice_deletion_ok: "Invoice has been deleted successfully"
   confirm_invoice_destroy: "Are you sure you want to delete invoice?"
+  label_invoiced: "Invoiced"
   #permissions
   modify_accepted: 'Set accepted'
   create_orders: 'Create order'

@@ -123,11 +123,19 @@ class OrdersController < ApplicationController
     query_params[:page] = params[:page] if params[:page].present?
     query_params[:search] = params[:search] if params[:search].present?
     query_params[:search] = "#{query_params[:search]} paid == #{params[:paid]}" if params[:paid].present?
+    query_params[:search] = "#{query_params[:search]} completed == #{params[:completed]}" if params[:completed].present?
+    query_params[:search] = "#{query_params[:search]} team == #{params[:team]}" if params[:team].present?
+    if params[:suborder].present?
+      params[:suborder].to_i == 1 ?
+        query_params[:search] = "#{query_params[:search]} set? parent_id" :
+        query_params[:search] = "#{query_params[:search]} null? parent_id"
+    end
     query_params[:sort] = params[:sort] if params[:sort].present?
 
     @orders = TocatOrder.all(params: query_params)
     @order_count = @orders.http_response['X-total'].to_i
     @order_pages = Paginator.new self, @order_count, @orders.http_response['X-Per-Page'].to_i, params['page']
+    @teams = TocatTeam.all
   end
 
   def show
