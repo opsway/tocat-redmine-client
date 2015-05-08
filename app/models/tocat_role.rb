@@ -48,6 +48,7 @@ class TocatRole < ActiveRecord::Base
     paths[:tocat][:budget_dialog] = :modify_budgets
     paths[:tocat][:save_budget_dialog] = :modify_budgets
     paths[:tocat][:delete_budget] = :modify_budgets
+    paths[:tocat][:status] = :show_status_page
 
     paths[:tickets] = {}
     paths[:tickets][:index] = :show_issues
@@ -63,7 +64,7 @@ class TocatRole < ActiveRecord::Base
     data[:orders] = [:create_orders, :show_orders, :edit_orders, :destroy_orders, :complete_orders]
     data[:invoices] = [:create_invoices, :show_invoices, :destroy_invoices, :paid_invoices]
     data[:issues] = [:modify_accepted, :modify_resolver, :modify_budgets, :show_budgets, :show_issues, :show_aggregated_info]
-    data[:dashboard] = [:show_tocat_page, :has_protected_page, :can_see_public_pages, :is_admin]
+    data[:dashboard] = [:show_tocat_page, :has_protected_page, :can_see_public_pages, :is_admin, :show_status_page]
     return data
   end
 

@@ -100,3 +100,5 @@ en:
   button_review_request: 'Request Review'
   field_review_requested: 'Review Requested'
   label_review_requested_question: 'Review Requested:'
+  label_status: "Status"
+  show_status_page: "Can see status page"

@@ -1,0 +1,13 @@
+<div class = "problemsContainer"  style = "height: 300px">
+  <div class="autoscroll">
+    <table class="list problems">
+      <tbody>
+        <% @messages.each do |message|%>
+        <tr class="<%= cycle("odd", "even") %>">
+          <td><%= message %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

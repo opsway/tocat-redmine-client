@@ -7,10 +7,15 @@ class TocatController < ApplicationController
   include QueriesHelper
   before_filter :check_for_setup
   before_filter :check_action, except: [:request_review, :review_handler]
-  #
-  # def status_page
-  #   @messages
-  # end
+
+  def status
+    resource = RestClient::Resource.new(
+        "#{RedmineTocatClient.settings[:host]}/status/selfcheck",
+        :timeout => nil,
+        :open_timeout => nil
+      )
+    @messages = JSON.parse(resource.get)['messages']
+  end
 
 
   def request_review
