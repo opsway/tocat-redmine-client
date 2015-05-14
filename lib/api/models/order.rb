@@ -47,6 +47,13 @@ class TocatOrder < ActiveResource::Base
                                   resolver: resolver,
                                   subject: issue.subject
                                 )
+      else
+        issues << OpenStruct.new( id: 0,
+                                  project: nil,
+                                  budget: task.budget,
+                                  resolver: resolver,
+                                  subject: 'Can not found task. Please, contact administrator.'
+                                )
       end
     end
     issues

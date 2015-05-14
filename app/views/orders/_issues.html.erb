@@ -18,7 +18,7 @@
         <%= link_to issue.subject, issue_path(issue.id) %>
       </td>
       <td class = 'project'>
-        <%= link_to issue.project.name, project_path(issue.project.id) %>
+        <%= link_to issue.project.name, project_path(issue.project.id) if issue.project.present? %>
       </td>
       <td class = 'budget'>
         <%= issue.budget %>
