@@ -48,7 +48,7 @@ class TocatOrder < ActiveResource::Base
                                   subject: issue.subject
                                 )
       else
-        issues << OpenStruct.new( id: 0,
+        issues << OpenStruct.new( id: task.external_id,
                                   project: nil,
                                   budget: task.budget,
                                   resolver: resolver,
