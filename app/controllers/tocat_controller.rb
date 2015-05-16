@@ -14,7 +14,7 @@ class TocatController < ApplicationController
         :timeout => nil,
         :open_timeout => nil
       )
-    @messages = JSON.parse(resource.get)['messages']
+    @report = JSON.parse(resource.get)
   end
 
 

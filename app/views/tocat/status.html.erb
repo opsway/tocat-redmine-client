@@ -1,8 +1,10 @@
+<h4>Generated at: <%= Time.parse(@report['timestamp']) %></h4>
+
 <div class = "problemsContainer"  style = "height: 300px">
   <div class="autoscroll">
     <table class="list problems">
       <tbody>
-        <% @messages.each do |message|%>
+        <% @report['messages'].each do |message|%>
         <tr class="<%= cycle("odd", "even") %>">
           <td><%= message %></td>
         </tr>
