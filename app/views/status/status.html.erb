@@ -1,4 +1,4 @@
-<h4>Generated at: <%= Time.parse(@report['timestamp']) %></h4>
+<h4>Last run: <%= Time.parse(@report['timestamp']) %></h4>
 
 <div class = "problemsContainer">
   <div class="autoscroll">
@@ -13,3 +13,5 @@
     </table>
   </div>
 </div>
+
+<% html_title "TOCAT: Status check" %>
