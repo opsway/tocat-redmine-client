@@ -8,16 +8,6 @@ class TocatController < ApplicationController
   before_filter :check_for_setup
   before_filter :check_action, except: [:request_review, :review_handler]
 
-  def status
-    resource = RestClient::Resource.new(
-        "#{RedmineTocatClient.settings[:host]}/status/selfcheck",
-        :timeout => nil,
-        :open_timeout => nil
-      )
-    @report = JSON.parse(resource.get)
-  end
-
-
   def request_review
     issue = Issue.find(params[:issue_id])
     issue.review_requested = true

@@ -50,11 +50,12 @@ class TocatRole < ActiveRecord::Base
     paths[:tocat][:budget_dialog] = :modify_budgets
     paths[:tocat][:save_budget_dialog] = :modify_budgets
     paths[:tocat][:delete_budget] = :modify_budgets
-    paths[:tocat][:status] = :show_status_page
 
     paths[:tickets] = {}
     paths[:tickets][:index] = :show_issues
     paths[:tocat][:my_tocat] = :show_tocat_page
+    paths[:status] = {}
+    paths[:status][:status] = :show_status_page
     return false unless paths[request[:controller].to_sym].present?
     return false unless paths[request[:controller].to_sym][request[:action].to_sym].present?
     return false unless User.current.tocat_allowed_to?(paths[request[:controller].to_sym][request[:action].to_sym])
