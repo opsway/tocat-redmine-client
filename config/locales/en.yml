@@ -80,6 +80,7 @@ en:
   notice_invoice_successful_deattached: "Invoice was successfully deattached!"
   confirm_order_deattach: "Are you sure you want to deattach order?"
   notice_order_successful_deattached: "Order was successfully deattached!"
+  message_invoice_paid_failed: "Paid status can\'t be changed!"
   #permissions
   modify_accepted: 'Set accepted'
   create_orders: 'Create order'

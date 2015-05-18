@@ -115,7 +115,7 @@ class InvoicesController < ApplicationController
       end
     else
       respond_to do |format|
-        flash[:notice] = payload
+        flash[:error] = l(:message_invoice_paid_failed)
         format.html { redirect_back_or_default({ :action => 'show', id: @invoice })}
       end
     end
@@ -130,7 +130,7 @@ class InvoicesController < ApplicationController
       end
     else
       respond_to do |format|
-        flash[:notice] = payload
+        flash[:error] = l(:message_invoice_paid_failed)
         format.html { redirect_back_or_default({ :action => 'show', id: @invoice })}
       end
     end
