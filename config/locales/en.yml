@@ -81,6 +81,9 @@ en:
   confirm_order_deattach: "Are you sure you want to deattach order?"
   notice_order_successful_deattached: "Order was successfully deattached!"
   message_invoice_paid_failed: "Paid status can\'t be changed!"
+  label_transaction_plural: "Transactions"
+  label_owner_type: "Owner Type"
+  label_owner: "Owner"
   #permissions
   modify_accepted: 'Set accepted'
   create_orders: 'Create order'
@@ -110,3 +113,4 @@ en:
   show_status_page: "Can see status page"
   confirm_invoice_unpaid: 'Are you sure you want to set invoice "Paid"?'
   label_select_invoice: 'Select Invoice'
+  show_transactions: "Show Transactions"

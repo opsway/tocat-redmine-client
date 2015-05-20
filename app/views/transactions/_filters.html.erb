@@ -1,0 +1,24 @@
+<table style="width:100%">
+  <tbody>
+    <tr>
+      <td>
+      <table id="filters-table">
+        <tbody>
+          <tr class="filter" id="comment">
+            <td><%= label_tag(:search, l(:label_search)) %></td>
+            <td><%= text_field_tag(:search, params[:search]) %></td>
+          </tr>
+          <tr class="filter" id="user">
+            <td><%= label_tag(:user, l(:label_user)) %></td>
+            <td><%= select_tag(:user, options_from_collection_for_select(@users, 'id', 'name', selected: params[:user]), include_blank: true) %></td>
+          </tr>
+          <tr class="filter" id="team">
+            <td><%= label_tag(:team, l(:field_team)) %></td>
+            <td><%= select_tag(:team, options_from_collection_for_select(@teams, 'id', 'name', selected: params[:team]), include_blank: true) %></td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+    </tr>
+  </tbody>
+</table>

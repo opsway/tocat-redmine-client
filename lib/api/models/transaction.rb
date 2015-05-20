@@ -3,6 +3,7 @@ class TocatTransaction < ActiveResource::Base
   self.site = RedmineTocatClient.settings[:host]
   self.collection_name = 'transactions'
   self.element_name = 'transaction'
+  add_response_method :http_response
 
   class << self
     def element_path(id, prefix_options = {}, query_options = nil)

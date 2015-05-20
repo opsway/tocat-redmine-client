@@ -1,0 +1,63 @@
+<h2> <%= l(:label_transaction_plural)%> </h2>
+
+
+<%= form_tag("/tocat/transactions", method: "get") do %>
+  <%= hidden_field_tag 'set_filter', '1' %>
+  <fieldset id="filters" class="collapsible">
+    <legend onclick="toggleFieldset(this);"><%= l(:label_filter_plural) %></legend>
+    <div>
+      <%= render :partial => 'transactions/filters' %>
+    </div>
+    <%= submit_tag(l(:button_apply)) %>
+    <%= link_to l(:button_clear), { :set_filter => 1 }, :class => 'icon icon-reload'  %>
+    <hr/>
+  </fieldset>
+<% end %>
+
+<p class="pagination"><%= pagination_links_full @transactions_pages, @transactions_count %></p>
+<style>
+fieldset#filters table td {
+  padding-right: 10px;
+}
+</style>
+
+<div class = 'autoscroll'>
+  <table class = 'list transactions'>
+
+    <thead><tr>
+          <%= sort_header_tag('id', :caption => "#" )%>
+          <%= sort_header_tag('comment', :caption => l(:label_comment)) %>
+          <%= sort_header_tag('total', :caption => l(:label_total)) %>
+          <th>
+            <%= l(:label_owner_type)%>
+          </th>
+          <th>
+            <%= l(:label_owner)%>
+          </th>
+          </tr></thead>
+
+    <tbody>
+      <% @transactions.each do |transaction| %>
+        <tr class = '<%= cycle('odd', 'even')%> issue'>
+          <td class = 'id' style='text-align: left;'>
+            <%= transaction.id %>
+          </td>
+          <td class = 'comment'>
+            <%= transaction.comment %>
+          </td>
+          <td class = 'total'>
+            <%= transaction.total %>
+          </td>
+          <td class = 'owner_type'>
+            <%= transaction.owner.type.humanize %>
+          </td>
+          <td class = 'owner'>
+            <%= transaction.owner.name %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<p class="pagination"><%= pagination_links_full @transactions_pages, @transactions_count %></p>
+<% html_title "TOCAT : Transactions" %>
