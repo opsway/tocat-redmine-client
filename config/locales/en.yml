@@ -82,8 +82,10 @@ en:
   notice_order_successful_deattached: "Order was successfully deattached!"
   message_invoice_paid_failed: "Paid status can\'t be changed!"
   label_transaction_plural: "Transactions"
-  label_owner_type: "Owner Type"
+  label_account_type: "Account Type"
   label_owner: "Owner"
+  label_payment_type: "Payment"
+  label_balance_type: "Balance"
   #permissions
   modify_accepted: 'Set accepted'
   create_orders: 'Create order'

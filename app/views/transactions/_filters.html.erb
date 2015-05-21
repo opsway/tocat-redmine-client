@@ -8,13 +8,13 @@
             <td><%= label_tag(:search, l(:label_search)) %></td>
             <td><%= text_field_tag(:search, params[:search]) %></td>
           </tr>
-          <tr class="filter" id="user">
-            <td><%= label_tag(:user, l(:label_user)) %></td>
-            <td><%= select_tag(:user, options_from_collection_for_select(@users, 'id', 'name', selected: params[:user]), include_blank: true) %></td>
+          <tr class="filter" id="owner">
+            <td><%= label_tag(:owner, l(:label_owner)) %></td>
+            <td><%= select_tag(:owner, grouped_options_for_select(@owners, selected: params[:owner]), include_blank: true) %></td>
           </tr>
-          <tr class="filter" id="team">
-            <td><%= label_tag(:team, l(:field_team)) %></td>
-            <td><%= select_tag(:team, options_from_collection_for_select(@teams, 'id', 'name', selected: params[:team]), include_blank: true) %></td>
+          <tr class="filter" id="account_type">
+            <td><%= label_tag(:account_type, l(:label_account_type)) %></td>
+            <td><%= select_tag(:account_type, options_for_select([[l(:label_balance_type), 'balance'], [l(:label_payment_type), 'payment']], selected: params[:account_type]), include_blank: true) %></td>
           </tr>
         </tbody>
       </table>

@@ -17,42 +17,43 @@
 <p class="pagination"><%= pagination_links_full @transactions_pages, @transactions_count %></p>
 <style>
 fieldset#filters table td {
-  padding-right: 10px;
+  padding-right: 30px;
 }
 </style>
 
 <div class = 'autoscroll'>
   <table class = 'list transactions'>
-
-    <thead><tr>
-          <%= sort_header_tag('id', :caption => "#" )%>
-          <%= sort_header_tag('comment', :caption => l(:label_comment)) %>
-          <%= sort_header_tag('total', :caption => l(:label_total)) %>
-          <th>
-            <%= l(:label_owner_type)%>
-          </th>
-          <th>
-            <%= l(:label_owner)%>
-          </th>
-          </tr></thead>
-
+    <thead>
+      <tr style='text-align: left;'>
+        <%= sort_header_tag('comment', :caption => l(:label_comment)) %>
+        <%#= sort_header_tag('id', :caption => "#" )%>
+        <%= sort_header_tag('created_at', :caption => l(:label_date) )%>
+        <%= sort_header_tag('total', :caption => l(:label_total)) %>
+        <th>
+          <%= l(:label_owner)%>
+        </th>
+        <th>
+          <%= l(:label_account_type)%>
+        </th>
+      </tr>
+    </thead>
     <tbody>
       <% @transactions.each do |transaction| %>
-        <tr class = '<%= cycle('odd', 'even')%> issue'>
-          <td class = 'id' style='text-align: left;'>
-            <%= transaction.id %>
-          </td>
-          <td class = 'comment'>
+        <tr class = '<%= cycle('odd', 'even')%> issue' style='text-align: left;'>
+          <td class = 'comment' >
             <%= transaction.comment %>
+          </td>
+          <td class = 'date'>
+            <%= Time.parse(transaction.date) %>
           </td>
           <td class = 'total'>
             <%= transaction.total %>
           </td>
-          <td class = 'owner_type'>
-            <%= transaction.owner.type.humanize %>
-          </td>
           <td class = 'owner'>
             <%= transaction.owner.name %>
+          </td>
+          <td class = 'account'>
+            <%= transaction.type.humanize %>
           </td>
         </tr>
       <% end %>
