@@ -50,7 +50,7 @@ jQuery.noConflict()( document ).ready(function() {
 jQuery.noConflict()(function(){
   var users = JSON.parse(jQuery.noConflict()('#users').val())
   jQuery.noConflict()('#transaction_user_id').on('change', function() {
-    jQuery.noConflict()("#transaction_total").prop('max',users[this.value]);
+    jQuery.noConflict()("#transaction_total").prop('min',users[this.value]);
   });
 })
 </script>
