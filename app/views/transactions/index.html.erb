@@ -1,4 +1,8 @@
+<div class="contextual">
+  <%= link_to l(:button_new_transaction), new_transaction_path, :class => 'icon icon-add' if User.current.tocat_allowed_to?(:create_transactions) %>
+</div>
 <h2> <%= l(:label_transaction_plural)%> </h2>
+
 
 
 <%= form_tag("/tocat/transactions", method: "get") do %>

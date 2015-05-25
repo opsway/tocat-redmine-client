@@ -62,6 +62,9 @@ class TocatRole < ActiveRecord::Base
 
     paths[:transactions] = {}
     paths[:transactions][:index] = :show_transactions
+    paths[:transactions][:create] = :create_transactions
+    paths[:transactions][:new] = :create_transactions
+    paths[:transactions][:edit] = :create_transactions
 
     return false unless paths[request[:controller].to_sym].present?
     return false unless paths[request[:controller].to_sym][request[:action].to_sym].present?
@@ -74,7 +77,7 @@ class TocatRole < ActiveRecord::Base
     data[:orders] = [:create_orders, :show_orders, :edit_orders, :destroy_orders, :complete_orders]
     data[:invoices] = [:create_invoices, :show_invoices, :destroy_invoices, :paid_invoices]
     data[:issues] = [:modify_accepted, :modify_resolver, :modify_budgets, :show_budgets, :show_issues, :show_aggregated_info]
-    data[:transactions] = [:show_transactions]
+    data[:transactions] = [:show_transactions, :create_transactions]
     data[:dashboard] = [:show_tocat_page, :has_protected_page, :can_see_public_pages, :is_admin, :show_status_page]
     return data
   end

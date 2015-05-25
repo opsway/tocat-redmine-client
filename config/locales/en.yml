@@ -90,6 +90,11 @@ en:
   label_owner: "Owner"
   label_payment_type: "Payment"
   label_balance_type: "Balance"
+  button_new_transaction: "New transaction"
+  field_comment: "Comment"
+  field_account_type: "Account Type"
+  label_new_transaction: "New transaction"
+  notice_transaction_successful_created: "Transaction successfully created!"
   #permissions
   modify_accepted: 'Set accepted'
   create_orders: 'Create order'
@@ -120,3 +125,4 @@ en:
   confirm_invoice_unpaid: 'Are you sure you want to set invoice "Paid"?'
   label_select_invoice: 'Select Invoice'
   show_transactions: "Show Transactions"
+  create_transactions: "Create Transactions"

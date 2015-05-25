@@ -1,10 +1,38 @@
 class TransactionsController < ApplicationController
   unloadable
+  before_filter :find_transaction, :except => [:new, :create, :index]
   before_filter :check_for_setup
   layout 'tocat_base'
   helper :sort
   include SortHelper
   before_filter :check_action
+
+  def create
+    @transaction = TocatTransaction.new(params[:transaction])
+    @transaction.account_id = TocatUser.find(params[:transaction][:user_id].to_i).accounts.income.id
+    #begin
+      if @transaction.save
+        flash[:notice] = l(:notice_transaction_successful_created)
+        respond_to do |format|
+          format.html { redirect_back_or_default({ :action => 'index'}) }
+        end
+      else
+        respond_to do |format|
+          format.html { render :action => 'new' }
+        end
+      end
+    # rescue => e
+    #   flash[:error] = JSON.parse(e.response.body)['errors'].join(', ')
+    #   respond_to do |format|
+    #     format.html { render :template => 'transactions/edit' }
+    #   end
+    # end
+  end
+
+  def new
+    @transaction = TocatTransaction.new
+    @transaction.attributes = params[:transaction] if params[:transaction].present?
+  end
 
   def index
     sort_update %w(created_at comment total)
@@ -33,6 +61,12 @@ class TransactionsController < ApplicationController
   end
 
   private
+
+  def find_transaction
+    @transaction = TocatTransaction.find(params[:id])
+  rescue ActiveResource::ResourceNotFound
+    render_404
+  end
 
   def check_action
     render_403 unless TocatRole.check_path(Rails.application.routes.recognize_path(request.env['PATH_INFO'], {:method => request.env['REQUEST_METHOD'].to_sym}))

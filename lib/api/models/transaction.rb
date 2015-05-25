@@ -17,6 +17,13 @@ class TocatTransaction < ActiveResource::Base
     end
   end
 
+  schema do
+    attribute 'id', :integer
+    attribute 'user_id', :string
+    attribute 'comment', :string
+    attribute 'account_type', :string
+    attribute 'total', :decimal
+  end
 
   def self.get_transactions_for_user(id)
     TocatTransaction.find(:all, params:{user: id, limit:100, sort:'created_at:desc'})
@@ -24,5 +31,12 @@ class TocatTransaction < ActiveResource::Base
 
   def self.get_transactions_for_team(id)
     TocatTransaction.find(:all, params:{team: id, limit:100, sort:'created_at:desc'})
+  end
+
+  protected
+
+  def to_json(options = {})
+    self.attributes[:account] = {:id => self.attributes.delete(:account_id)}
+    self.attributes.to_json(options)
   end
 end
