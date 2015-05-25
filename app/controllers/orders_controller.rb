@@ -158,6 +158,21 @@ class OrdersController < ApplicationController
     end
   end
 
+  def toggle_completed
+    status, payload = @order.toggle_campleted
+    if status
+      respond_to do |format|
+        flash[:notice] = l(:message_order_completed)
+        format.html { redirect_back_or_default({ :action => 'show', id: @order })}
+      end
+    else
+      respond_to do |format|
+        flash[:error] = JSON.parse(payload.response.body)['errors'].join(', ')
+        format.html { redirect_back_or_default({ :action => 'show', id: @order })}
+      end
+    end
+  end
+
   def delete_invoice
     begin
       status, errors = @order.delete_invoice

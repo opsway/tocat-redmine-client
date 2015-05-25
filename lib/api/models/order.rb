@@ -31,6 +31,26 @@ class TocatOrder < ActiveResource::Base
     record = TocatOrder.find(:all, params:{search:"#{name}"}).first
   end
 
+  def toggle_campleted
+    unless completed
+      begin
+        connection.post("#{self.class.prefix}/order/#{id}/complete")
+      rescue => error
+        # TODO add logger
+        return false, error
+      end
+      return true, nil
+    else
+      begin
+        connection.delete("#{self.class.prefix}/order/#{id}/complete")
+      rescue => error
+        # TODO add logger
+        return false, error
+      end
+      return true, nil
+    end
+  end
+
   def issues
     issues = []
     tasks.each do |task|
