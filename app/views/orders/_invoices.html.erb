@@ -7,7 +7,9 @@
         <td>#</td>
         <td><%= l(:label_total) %></td>
         <td><%= l(:label_paid) %></td>
-        <td></td>
+        <% if User.current.tocat_allowed_to?(:create_invoices)  && !@order.completed %>
+          <td></td>
+        <% end %>
       </tr>
     </thead>
     <tbody>
@@ -21,7 +23,7 @@
         <td class = 'paid'>
           <%= get_paid_icon(invoice) %>
         </td>
-        <% if User.current.tocat_allowed_to?(:create_invoices) %>
+        <% if User.current.tocat_allowed_to?(:create_invoices)  && !@order.completed %>
           <td><%= link_to l(:button_delete), order_invoices_path, :data => {:confirm => l(:confirm_invoice_deattach)}, :method => :delete, :class => 'icon icon-del' %></td>
         <% end %>
       </tr>
