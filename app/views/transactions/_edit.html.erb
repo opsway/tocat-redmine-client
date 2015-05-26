@@ -5,7 +5,8 @@
     total = 0
     user_id = 0
   end %>
-  <% users = TocatUser.find(:all, params: {limit: 99999})%>
+  <% users = TocatUser.find(:all, params: {limit: 99999})
+    users.sort_by!(&:name)%>
 
 <%= labelled_form_for @transaction, url: transactions_path,
                                 :html => {:id => 'inovice-form',
@@ -19,12 +20,11 @@
           <%= labelled_fields_for :transaction, @transaction do |f| %>
             <p>
               <%= f.text_field :comment, :size => 80,
-                               :maxlength => 255, :required => true, :value => 'Paid in cash/bank', :disabled => true %>
+                               :maxlength => 255, :required => true, :value => 'Paid in cash/bank' %>
             </p>
-            <%= f.hidden_field :comment, :value => 'Paid in cash/bank'%>
             <p><%= f.select :user_id, options_for_select( users.collect {|t| [t.name, t.id]}, selected: user_id), {:required => true} %></p>
             <p><%= f.select :account_type, options_for_select([[l(:label_balance_type), 'balance'], [l(:label_payment_type), 'payment']], selected: 'payment'), { required: true }, :disabled => true %></p>
-            <p><%= f.number_field :total, :class => 'total', :max => 0, :min => -users.first.income_account_state, :required => true, :value => total %></p>
+            <p><%= f.number_field :total, :class => 'total', :max => 0, :min => -users.first.income_account_state, :required => true, :value => total, :style => 'width:80px' %></p>
 
           <% end %>
         </div>

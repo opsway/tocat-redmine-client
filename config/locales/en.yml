@@ -90,10 +90,10 @@ en:
   label_owner: "Owner"
   label_payment_type: "Payment"
   label_balance_type: "Balance"
-  button_new_transaction: "New transaction"
+  button_new_transaction: "Add payment"
   field_comment: "Comment"
   field_account_type: "Account Type"
-  label_new_transaction: "New transaction"
+  label_new_transaction: "Add payment"
   notice_transaction_successful_created: "Transaction successfully created!"
   #permissions
   modify_accepted: 'Set accepted'
