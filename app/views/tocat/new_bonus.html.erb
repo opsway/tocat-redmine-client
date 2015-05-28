@@ -1,0 +1,15 @@
+<%= form_tag bonus_path, :method => :post do %>
+<div class="box">
+  <fieldset class="tabular">
+    <legend><%= 'Pay bonus' %></legend>
+    <div id="all_attributes">
+      <p><%= label_tag :user %> <%= select_tag :user_id, options_for_select( @users.collect {|t| [t.name, t.id]}), {:required => true} %></p>
+      <p><%= label_tag 'Bonus, %' %><%= number_field_tag :bonus, '', :class => 'total', :max => 100, :required => true, :style => 'width:80px' %></p>
+      <p><%= label_tag 'Income out' %><%= number_field_tag :income, '', :class => 'total', :min => 0, :required => true, :style => 'width:80px' %></p>
+    </div>
+  </fieldset>
+</div>
+<%= submit_tag l(:button_submit) %>
+| <%= link_to l(:button_cancel), {},
+                :onclick => "jQuery.noConflict()('#update').hide(); return false;" %>
+<% end %>

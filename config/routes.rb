@@ -24,6 +24,11 @@ match '/tocat/resolver' => 'tocat#update_resolver', via: [:post, :put]
 match '/tocat/invoices/:id/paid' => 'invoices#set_paid', as: :invoice_paid, via: [:post, :put]
 match '/tocat/invoices/:id/paid' => 'invoices#set_unpaid', as: :invoice_paid, via: [:delete]
 match '/tocat/invoices/:id/orders' => 'invoices#deattach_order', as: :invoice_orders, via: [:delete]
+match '/tocat/payment' => 'tocat#new_payment', as: :payment, via: [:get]
+match '/tocat/payment' => 'tocat#create_payment', as: :payment, via: [:post]
+match '/tocat/bonus' => 'tocat#new_bonus', as: :bonus, via: [:get]
+match '/tocat/bonus' => 'tocat#pay_bonus', as: :bonus, via: [:post]
+
 match '/issues/:id/accepted' => 'tocat#toggle_accepted', as: :issue_accepted, via: [:post, :put]
 
 match '/tocat/request_review' => 'tocat#request_review', :via => :put

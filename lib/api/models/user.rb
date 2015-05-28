@@ -16,6 +16,26 @@ class TocatUser < ActiveResource::Base
     end
   end
 
+  def add_payment(comment, total)
+    begin
+      connection.post("#{self.class.prefix}/user/#{id}/add_payment", { comment: comment, total: total }.to_json)
+    rescue => error
+      # TODO add logger
+      return false, error
+    end
+    return true, nil
+  end
+
+  def pay_bonus(income, bonus)
+    begin
+      connection.post("#{self.class.prefix}/user/#{id}/pay_bonus", { income: income, bonus: bonus }.to_json)
+    rescue => error
+      # TODO add logger
+      return false, error
+    end
+    return true, nil
+  end
+
 
   def self.find_by_name(name)
     return TocatUser.find(:all, params:{search:"#{name}"}).first

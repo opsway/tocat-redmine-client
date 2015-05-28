@@ -7,28 +7,6 @@ class TransactionsController < ApplicationController
   include SortHelper
   before_filter :check_action
 
-  def create
-    @transaction = TocatTransaction.new(params[:transaction])
-    @transaction.account_id = TocatUser.find(params[:transaction][:user_id].to_i).accounts.income.id
-    #begin
-      if @transaction.save
-        flash[:notice] = l(:notice_transaction_successful_created)
-        respond_to do |format|
-          format.html { redirect_back_or_default({ :action => 'index'}) }
-        end
-      else
-        respond_to do |format|
-          format.html { render :action => 'new' }
-        end
-      end
-    # rescue => e
-    #   flash[:error] = JSON.parse(e.response.body)['errors'].join(', ')
-    #   respond_to do |format|
-    #     format.html { render :template => 'transactions/edit' }
-    #   end
-    # end
-  end
-
   def new
     @transaction = TocatTransaction.new
     @transaction.attributes = params[:transaction] if params[:transaction].present?

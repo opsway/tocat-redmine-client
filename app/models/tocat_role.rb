@@ -17,29 +17,22 @@ class TocatRole < ActiveRecord::Base
     paths[:orders][:create] = :create_orders
     paths[:orders][:new] = :create_orders
     paths[:orders][:create_suborder] = :create_orders
-
     paths[:orders][:show] = :show_orders
     paths[:orders][:index] = :show_orders
     paths[:orders][:invoices] = :create_invoices
     paths[:orders][:set_invoice] = :create_invoices
     paths[:orders][:delete_invoice] = :create_invoices
     paths[:orders][:toggle_completed] = :create_invoices
-
-
     paths[:orders][:edit] = :edit_orders
     paths[:orders][:update] = :edit_orders
-
     paths[:orders][:destroy] = :destroy_orders
-
     paths[:orders][:destroy] = :complete_orders
 
     paths[:invoices] = {}
     paths[:invoices][:create] = :create_invoices
     paths[:invoices][:new] = :create_invoices
-
     paths[:invoices][:show] = :show_invoices
     paths[:invoices][:index] = :show_invoices
-
     paths[:invoices][:destroy] = :destroy_invoices
     paths[:invoices][:set_paid] = :paid_invoices
     paths[:invoices][:set_unpaid] = :paid_invoices
@@ -48,24 +41,26 @@ class TocatRole < ActiveRecord::Base
     paths[:tocat] = {}
     paths[:tocat][:toggle_accepted] = :modify_accepted
     paths[:tocat][:update_resolver] = :modify_resolver
-
     paths[:tocat][:budget_dialog] = :modify_budgets
     paths[:tocat][:save_budget_dialog] = :modify_budgets
     paths[:tocat][:delete_budget] = :modify_budgets
+    paths[:tocat][:my_tocat] = :show_tocat_page
+    paths[:tocat][:new_payment] = :create_transactions
+    paths[:tocat][:create_payment] = :create_transactions
+    paths[:tocat][:new_bonus] = :create_transactions
+    paths[:tocat][:pay_bonus] = :create_transactions
 
     paths[:tickets] = {}
     paths[:tickets][:index] = :show_issues
-    paths[:tocat][:my_tocat] = :show_tocat_page
 
     paths[:status] = {}
     paths[:status][:status] = :show_status_page
 
     paths[:transactions] = {}
     paths[:transactions][:index] = :show_transactions
-    paths[:transactions][:create] = :create_transactions
+    #paths[:transactions][:create] = :create_transactions
     paths[:transactions][:new] = :create_transactions
     paths[:transactions][:edit] = :create_transactions
-
     return false unless paths[request[:controller].to_sym].present?
     return false unless paths[request[:controller].to_sym][request[:action].to_sym].present?
     return false unless User.current.tocat_allowed_to?(paths[request[:controller].to_sym][request[:action].to_sym])

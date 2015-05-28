@@ -1,0 +1,37 @@
+<%= form_tag payment_path, :method => :post do %>
+<div class="box">
+  <fieldset class="tabular">
+    <legend><%= l(:label_new_transaction) %></legend>
+    <div id="all_attributes">
+      <p>
+        <%= label_tag :comment%>
+        <%= text_field_tag :comment, 'Paid in cash/bank', :size => 80,
+                         :maxlength => 255, :required => true %>
+      </p>
+      <p><%= label_tag :user %> <%= select_tag :user_id, options_for_select( @users.collect {|t| [t.name, t.id]}), {:required => true} %></p>
+      <p><%= label_tag :account %> <%= select_tag :account_type, options_for_select([[l(:label_balance_type), 'balance'], [l(:label_payment_type), 'payment']], selected: 'payment'), :disabled => true %></p>
+      <p><%= label_tag :total %><%= number_field_tag :total, '',:class => 'total', :max => 0, :min => -@users.first.income_account_state, :required => true, :style => 'width:80px' %></p>
+    </div>
+  </fieldset>
+</div>
+<%= submit_tag l(:button_submit) %>
+| <%= link_to l(:button_cancel), {},
+                :onclick => "jQuery.noConflict()('#update').hide(); return false;" %>
+<% end %>
+
+<%= hidden_field_tag 'users', @users_data.as_json %>
+
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script charset="utf-8">jQuery.noConflict();</script>
+<script charset="utf-8">
+jQuery.noConflict()( document ).ready(function() {
+
+});
+
+jQuery.noConflict()(function(){
+  var users = JSON.parse(jQuery.noConflict()('#users').val())
+  jQuery.noConflict()('#user_id').on('change', function() {
+    jQuery.noConflict()("#total").prop('min',users[this.value]);
+  });
+})
+</script>
