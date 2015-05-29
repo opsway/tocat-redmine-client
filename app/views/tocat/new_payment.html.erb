@@ -8,9 +8,8 @@
         <%= text_field_tag :comment, 'Paid in cash/bank', :size => 80,
                          :maxlength => 255, :required => true %>
       </p>
-      <p><%= label_tag :user %> <%= select_tag :user_id, options_for_select( @users.collect {|t| [t.name, t.id]}), {:required => true} %></p>
-      <p><%= label_tag :account %> <%= select_tag :account_type, options_for_select([[l(:label_balance_type), 'balance'], [l(:label_payment_type), 'payment']], selected: 'payment'), :disabled => true %></p>
-      <p><%= label_tag :total %><%= number_field_tag :total, '',:class => 'total', :max => 0, :min => -@users.first.income_account_state, :required => true, :style => 'width:80px' %></p>
+      <p><%= label_tag :user %> <%= select_tag :user_id, options_for_select( @users.collect {|t| [t.name, t.id]}), {:include_blank => true, :required => true} %></p>
+      <p><%= label_tag :total %><%= number_field_tag :total, '',:class => 'total', :min => 0, :max => 0, :required => true, :style => 'width:80px' %></p>
     </div>
   </fieldset>
 </div>
@@ -31,7 +30,7 @@ jQuery.noConflict()( document ).ready(function() {
 jQuery.noConflict()(function(){
   var users = JSON.parse(jQuery.noConflict()('#users').val())
   jQuery.noConflict()('#user_id').on('change', function() {
-    jQuery.noConflict()("#total").prop('min',users[this.value]);
+    jQuery.noConflict()("#total").prop('max',users[this.value]);
   });
 })
 </script>

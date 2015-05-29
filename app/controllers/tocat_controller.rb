@@ -44,7 +44,7 @@ class TocatController < ApplicationController
   def new_payment
     @users = TocatUser.find(:all, params: { limit: 99999 }).sort_by!(&:name)
     @users_data = {}
-    @users.collect { |t| @users_data[t.id] = -t.income_account_state }
+    @users.collect { |t| @users_data[t.id] = t.income_account_state }
     @users_data = @users_data.to_json
   end
 
