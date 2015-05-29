@@ -28,3 +28,4 @@
     <%#= submit_tag l(:button_save), :name => nil, :onclick => "createBudget();return false;", :type => 'button' %>
   </p>
 </form>
+<%= hidden_field_tag 'teams', @issue.available_orders_as_json  %>

@@ -1,8 +1,8 @@
 document.getElementById('ajax-modal').innerHTML = '<%= escape_javascript(render(:partial => 'issues/budget_dialog', :locals => { :teams => @teams })) %>';
 showModal('ajax-modal', 350);
 jQuery.noConflict()( document ).ready(function() {
-  var orders = JSON.parse(jQuery.noConflict()('#teams').val())
   jQuery.noConflict()('#orders').on('change', function() {
+    var orders = JSON.parse(jQuery.noConflict()('#teams').val())
     jQuery.noConflict()('#free_budget').text(orders[this.value]);
     jQuery.noConflict()("#budget").prop('disabled',false);
     jQuery.noConflict()("#budget").prop('max',orders[this.value]);
