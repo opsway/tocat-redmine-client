@@ -25,9 +25,9 @@ class TicketsController < ApplicationController
       val = params[:budget_val]
       query_params[:search] = "#{query_params[:search]} budget #{op} #{val}"
     end
-    @resolvers = TocatUser.find(:all, params: { limit: 100 })
+    @resolvers = TocatUser.find(:all, params: { limit: 100 }).sort_by(&:name)
     @budget_op = [['<', '<'], ['>', '>'], ['=', '='], ['<=', '<='], ['>=', '>=']]
-    @projects = Project.all
+    @projects = Project.all.sort_by(&:name)
     @states = IssueStatus.all
 
     if params[:project].present?

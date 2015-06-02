@@ -33,8 +33,8 @@ class TransactionsController < ApplicationController
     @transactions_count = @transactions.http_response['X-total'].to_i
     @transactions_pages = Paginator.new self, @transactions_count, @transactions.http_response['X-Per-Page'].to_i, params['page']
     @owners = {
-      Group: TocatTeam.all.collect { |r| [r.name, "group_#{r.id}"] },
-      User: TocatUser.all.collect { |r| [r.name, "user_#{r.id}"] }
+      Group: TocatTeam.all.sort_by(&:name).collect { |r| [r.name, "group_#{r.id}"] },
+      User: TocatUser.all.sort_by(&:name).collect { |r| [r.name, "user_#{r.id}"] }
     }
   end
 
