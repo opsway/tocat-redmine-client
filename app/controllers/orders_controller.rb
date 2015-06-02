@@ -69,12 +69,33 @@ class OrdersController < ApplicationController
     @order = TocatOrder.new(params[:order])
     begin
       if @order.save
-        flash[:notice] = l(:notice_order_successful_created)
         respond_to do |format|
-          format.html { redirect_back_or_default({:action => 'show', :id => @order}) }
-          format.js do
-            render :update do |page|
-              page.replace_html 'order-form', :partial => 'tocat/orders/edit', :locals => {:order => @order}
+          if params[:redirect_to].present?
+            array = params[:redirect_to].split(':')
+            if array.length == 4
+              status, payload = TocatTicket.get_budgets(array.third.to_i)
+              budgets = []
+              payload.each do |budget|
+                budgets << { order_id:budget.id, budget:budget.budget }
+              end
+              budgets << {order_id: @order.id, budget:params[:budget].to_i}
+              status, errors = TocatTicket.set_budgets(array.third.to_i, budgets)
+              if status
+                flash[:notice] = l(:notice_order_successful_created)
+                redirect_to({:controller => array.first, :action => array.second, :id => array.fourth.to_i})
+                return
+              else
+                flash[:error] = l(:notice_order_creation_fail)
+                redirect_to({:controller => array.first, :action => array.second, :id => array.fourth.to_i})
+                return
+              end
+            end
+          else
+            format.html { redirect_back_or_default({:action => 'show', :id => @order}) }
+            format.js do
+              render :update do |page|
+                page.replace_html 'order-form', :partial => 'tocat/orders/edit', :locals => {:order => @order}
+              end
             end
           end
         end
@@ -135,7 +156,7 @@ class OrdersController < ApplicationController
     @orders = TocatOrder.all(params: query_params)
     @order_count = @orders.http_response['X-total'].to_i
     @order_pages = Paginator.new self, @order_count, @orders.http_response['X-Per-Page'].to_i, params['page']
-    @teams = TocatTeam.all
+    @teams = TocatTeam.all.sort_by(&:name)
   end
 
   def show

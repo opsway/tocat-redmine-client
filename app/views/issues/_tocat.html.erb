@@ -94,6 +94,18 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
     <div class="contextual">
       <% if User.current.tocat_allowed_to?(:edit_orders)%>
         <span class='link' onclick="budget_dialog()"><%= l(:button_add) %></span>
+        <% ticket = @issue.tocat %>
+        <% if ticket.get_resolver.present?
+          resolver = TocatUser.find(ticket.resolver.id)
+            params = {:name => "#{@issue.project.name} #{@issue.id}",
+                      :team => resolver.team.id,
+                      :redirect_to => "issues:show:#{ticket.id}:#{@issue.id}"}
+          else
+            params = {:name => "#{@issue.project.name} #{@issue.id}",
+                      :redirect_to => "issues:show:#{ticket.id}:#{@issue.id}"}
+          end
+            %>
+        <%= link_to "Create", new_order_path(params), :class => 'icon icon-add' if User.current.tocat_allowed_to?(:create_orders) %>
       <% end %>
     </div>
     <p><strong><%=l(:label_order_plural)%></strong></p>
