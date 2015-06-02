@@ -4,8 +4,23 @@ class StatusController < ApplicationController
   before_filter :check_action
 
   def status
-    resource = RestClient::Resource.new("#{RedmineTocatClient.settings[:host]}/status/selfcheck")
-    @report = JSON.parse(resource.get)
+    params_ = {}
+    params_[:search] = "checked == #{params[:checked]}" if params[:checked].present?
+    @messages = []
+    response = JSON.parse(RestClient.get("#{RedmineTocatClient.settings[:host]}/status", {:params => params_}))
+    response['messages'].each do |r|
+      @messages << OpenStruct.new(:id => r['id'], :alert => r['alert'], :checked => r['checked'])
+    end
+    @timestamp = response['timestamp']
+  end
+
+  def checked
+    method = request.delete? ? :delete : :post
+    RestClient.try(method, "#{RedmineTocatClient.settings[:host]}/status/#{params[:id]}/checked", {})
+    respond_to do |format|
+      flash[:notice] = l(:message_checked_updated)
+      format.html { redirect_back_or_default({:controller => 'status', :action => 'status' })}
+    end
   end
 
   private

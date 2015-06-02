@@ -1,12 +1,53 @@
-<h4>Last run: <%= Time.parse(@report['timestamp']) %></h4>
+<h2> Alerts </h2>
+
+<%= form_tag("/tocat/status", method: "get") do %>
+  <%= hidden_field_tag 'set_filter', '1' %>
+  <fieldset id="filters" class="collapsible">
+    <legend onclick="toggleFieldset(this);"><%= l(:label_filter_plural) %></legend>
+    <div>
+      <table style="width:100%">
+        <tbody>
+          <tr>
+            <td>
+            <table id="filters-table">
+              <tbody>
+                <tr class="filter" id="account_type">
+                  <td style='width: 70px;'><%= label_tag(:checked, l(:label_checked)) %></td>
+                  <td><%= select_tag(:checked, options_for_select([[l(:label_yes), 1], [l(:label_no), 0]], selected: params[:checked]), include_blank: true) %></td>
+                </tr>
+              </tbody>
+            </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <%= submit_tag(l(:button_apply)) %>
+    <%= link_to l(:button_clear), { :set_filter => 1 }, :class => 'icon icon-reload'  %>
+    <hr/>
+  </fieldset>
+<% end %>
+
+<h4>Last run: <%= Time.parse(@timestamp) %></h4>
 
 <div class = "problemsContainer">
   <div class="autoscroll">
     <table class="list problems">
+      <theader>
+        <tr style='text-align: left;'>
+          <th>Alert</<th>
+          <th>Checked</th>
+        </tr>
+      </theader>
       <tbody>
-        <% @report['messages'].each do |message|%>
+        <% @messages.each do |message|%>
         <tr class="<%= cycle("odd", "even") %>">
-          <td><%= message %></td>
+          <td><%= message.alert %></td>
+          <td>
+            <%= link_to(checked_path(message.id), :method => message.checked ? :delete : :post) do %>
+              <%= message.checked ? image_tag('true.png') : image_tag('false.png') %>
+            <% end %>
+          </td>
         </tr>
         <% end %>
       </tbody>

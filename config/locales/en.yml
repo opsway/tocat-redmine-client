@@ -95,6 +95,7 @@ en:
   field_account_type: "Account Type"
   label_new_transaction: "Add payment"
   notice_transaction_successful_created: "Transaction successfully created!"
+  label_checked: 'Checked'
   #permissions
   modify_accepted: 'Set accepted'
   create_orders: 'Create order'

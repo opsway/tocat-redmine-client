@@ -55,6 +55,7 @@ class TocatRole < ActiveRecord::Base
 
     paths[:status] = {}
     paths[:status][:status] = :show_status_page
+    paths[:status][:checked] = :show_status_page
 
     paths[:transactions] = {}
     paths[:transactions][:index] = :show_transactions
