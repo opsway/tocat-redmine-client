@@ -97,7 +97,7 @@ en:
   notice_transaction_successful_created: "Transaction successfully created!"
   label_checked: 'Checked'
   message_checked_updated: 'Checked status was updated!'
-  notice_order_creation_fail: 'Can not create order!
+  notice_order_creation_fail: 'Can not create order!'
   #permissions
   modify_accepted: 'Set accepted'
   create_orders: 'Create order'
@@ -129,3 +129,4 @@ en:
   label_select_invoice: 'Select Invoice'
   show_transactions: "Show Transactions"
   create_transactions: "Create Transactions"
+  mark_alerts_as_checked: 'Modify alerts checked status'

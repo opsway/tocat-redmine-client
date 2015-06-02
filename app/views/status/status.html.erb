@@ -44,7 +44,11 @@
         <tr class="<%= cycle("odd", "even") %>">
           <td><%= message.alert %></td>
           <td>
-            <%= link_to(checked_path(message.id), :method => message.checked ? :delete : :post) do %>
+            <% if User.current.tocat_allowed_to?(:mark_alerts_as_checked) %>
+              <%= link_to(checked_path(message.id), :method => message.checked ? :delete : :post) do %>
+                <%= message.checked ? image_tag('true.png') : image_tag('false.png') %>
+              <% end %>
+            <% else %>
               <%= message.checked ? image_tag('true.png') : image_tag('false.png') %>
             <% end %>
           </td>
