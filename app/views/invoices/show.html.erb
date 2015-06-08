@@ -23,6 +23,16 @@
       <%= render :partial => 'orders' if @invoice.orders.present? %>
     </div>
   <% end %>
+  <% if User.current.tocat_allowed_to?(:show_activity_feed) %>
+    <% activities = @invoice.activity %>
+    <% if activities.any? %>
+      <hr />
+      <div id="activity">
+        <p><strong><%=l(:label_activity)%></strong></p>
+        <%= render :partial => 'activity/feed', locals: {activities: activities } %>
+      </div>
+    <% end %>
+  <% end %>
 </div>
 <div style="clear: both;"></div>
 <%= render partial: 'action_menu' %>

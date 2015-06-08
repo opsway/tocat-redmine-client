@@ -129,6 +129,16 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
     <p><strong><%=l(:label_issue_plural)%></strong></p>
     <%= render :partial => 'issues', locals: {issues: @order.issues } if @order.tasks.present? %>
   </div>
+  <% if User.current.tocat_allowed_to?(:show_activity_feed) %>
+    <% activities = @order.activity %>
+    <% if activities.any? %>
+      <hr />
+      <div id="activity">
+        <p><strong><%=l(:label_activity)%></strong></p>
+        <%= render :partial => 'activity/feed', locals: {activities: activities } %>
+      </div>
+    <% end %>
+  <% end %>
 
 </div>
 <div style="clear: both;"></div>

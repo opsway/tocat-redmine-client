@@ -130,3 +130,4 @@ en:
   show_transactions: "Show Transactions"
   create_transactions: "Create Transactions"
   mark_alerts_as_checked: 'Modify alerts checked status'
+  show_activity_feed: 'Show objects history'

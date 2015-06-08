@@ -1,0 +1,7 @@
+  <% activity.parameters['changes'].each do |record|%>
+    <li>
+      <% if record.first == '~' %>
+        <%= "<strong>#{record.second.humanize}</strong> changed from <i>#{record.third}</i> to <i>#{record.fourth}</i>".html_safe %>
+      <% end %>
+    </li>
+  <% end %>

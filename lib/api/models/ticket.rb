@@ -18,6 +18,14 @@ class TocatTicket < ActiveResource::Base
     end
   end
 
+  def activity
+    begin
+       return JSON.parse(connection.get("#{self.class.prefix}/activity?owner=task&owner_id=#{self.id}").body)
+     rescue
+       return []
+     end
+  end
+
   def toggle_paid
     unless accepted
       begin

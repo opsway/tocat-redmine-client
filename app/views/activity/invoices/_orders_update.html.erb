@@ -1,0 +1,5 @@
+<% if activity.recipient.present? %>
+  <li><strong>Order</strong> <%= link_to activity.recipient.name, order_path(activity.recipient.id) %>  was <i>invoiced</i> with current invoice</li>
+<% else %>
+  <li><strong>Invoice</strong> was <i>deleted</i>  from <%= link_to activity.parameters['order_name_was'], order_path(activity.parameters['order_id_was'])  %> order</li>
+<% end %>

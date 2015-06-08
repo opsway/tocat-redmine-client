@@ -27,6 +27,31 @@ class TocatInvoice < ActiveResource::Base
     true
   end
 
+  def activity
+    begin
+      records = []
+      JSON.parse(connection.get("#{self.class.prefix}/activity?owner=invoice&owner_id=#{self.id}").body).each do |record|
+        recipient = nil
+        unless record["recipient_id"].nil?
+          case record["recipient_type"]
+          when "Invoice"
+            recipient = TocatInvoice.find(record["recipient_id"].to_i)
+          when "Order"
+            recipient = TocatOrder.find(record["recipient_id"].to_i)
+          when "User"
+            recipient = TocatUser.find(record["recipient_id"].to_i)
+          when "Team"
+            recipient = TocatTeam.find(record["recipient_id"].to_i)
+          end
+        end
+        records << OpenStruct.new(key: record["key"], recipient: recipient, parameters: record['parameters'], created_at: record['created_at'])
+      end
+       return records
+     rescue
+       return []
+     end
+  end
+
   def set_paid
     begin
       connection.post("#{self.class.prefix}/invoice/#{id}/paid")

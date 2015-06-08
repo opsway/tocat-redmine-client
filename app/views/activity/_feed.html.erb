@@ -1,0 +1,10 @@
+<% activities.each do |activity| %>
+  <div>
+    <h4> Updated by Redmine Client  <%= time_tag(activity.created_at)%> ago. </h4>
+    <ul>
+      <% begin %>
+        <%= render :partial => "activity/#{activity.key.split('.').first}s/#{activity.key.split('.').second}", locals: {activity: activity }%></ul>
+      <%rescue%>
+      <%end%>
+  </div>
+<% end %>

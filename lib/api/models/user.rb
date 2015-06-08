@@ -16,6 +16,14 @@ class TocatUser < ActiveResource::Base
     end
   end
 
+  def activity
+    begin
+       return JSON.parse(connection.get("#{self.class.prefix}/activity?owner=user&owner_id=#{self.id}").body)
+     rescue
+       return []
+     end
+  end
+
   def add_payment(comment, total)
     begin
       connection.post("#{self.class.prefix}/user/#{id}/add_payment", { comment: comment, total: total }.to_json)

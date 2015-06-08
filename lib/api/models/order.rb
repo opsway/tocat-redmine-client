@@ -27,6 +27,31 @@ class TocatOrder < ActiveResource::Base
     decimal 'invoiced_budget', 'allocatable_budget', 'free_budget'
   end
 
+  def activity
+    begin
+      records = []
+      JSON.parse(connection.get("#{self.class.prefix}/activity?owner=order&owner_id=#{self.id}").body).each do |record|
+        recipient = nil
+        unless record["recipient_id"].nil?
+          case record["recipient_type"]
+          when "Invoice"
+            recipient = TocatInvoice.find(record["recipient_id"].to_i)
+          when "Order"
+            recipient = TocatOrder.find(record["recipient_id"].to_i)
+          when "User"
+            recipient = TocatUser.find(record["recipient_id"].to_i)
+          when "Team"
+            recipient = TocatTeam.find(record["recipient_id"].to_i)
+          end
+        end
+        records << OpenStruct.new(key: record["key"], recipient: recipient, parameters: record['parameters'], created_at: record['created_at'])
+      end
+       return records
+     rescue
+       return []
+     end
+  end
+
   def self.find_by_name(name)
     record = TocatOrder.find(:all, params:{search:"#{name}"}).first
   end
