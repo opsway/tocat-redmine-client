@@ -151,6 +151,11 @@ class OrdersController < ApplicationController
         query_params[:search] = "#{query_params[:search]} set? parent_id" :
         query_params[:search] = "#{query_params[:search]} null? parent_id"
     end
+    if params[:invoiced].present?
+      params[:invoiced].to_i == 1 ?
+        query_params[:search] = "#{query_params[:search]} set? invoice_id" :
+        query_params[:search] = "#{query_params[:search]} null? invoice_id"
+    end
     query_params[:sort] = params[:sort] if params[:sort].present?
 
     @orders = TocatOrder.all(params: query_params)

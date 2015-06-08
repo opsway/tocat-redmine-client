@@ -5,24 +5,33 @@
       <table id="filters-table">
         <tbody>
           <tr class="filter" id="name">
-            <td><%= label_tag(:search, l(:label_search)) %></td>
-            <td><%= text_field_tag(:search, params[:search]) %></td>
+            <td class='field'>
+              <%= label_tag(:search, l(:label_search)) %>
+            </td>
+            <td class='operator'><%= text_field_tag(:search, params[:search]) %></td>
           </tr>
           <tr class="filter" id="paid">
-            <td><%= label_tag(:paid, l(:label_paid)) %></td>
-            <td><%= select_tag(:paid, options_for_select([[l(:label_yes), 1], [l(:label_no), 0]], selected: params[:paid]), include_blank: true) %></td>
+            <td class='field'>
+              <%#= check_box_tag 'f[]', :paid, params[:paid].present?, :onclick => "toggle_filter('paid');", :id => "cb_paid" %>
+              <%= label_tag(:paid, l(:label_paid)) %>
+            </td>
+            <td class='operator'><%= select_tag(:paid, options_for_select([[l(:label_yes), 1], [l(:label_no), 0]], selected: params[:paid]), include_blank: true) %></td>
           </tr>
           <tr class="filter" id="team">
-            <td><%= label_tag(:team, l(:field_team)) %></td>
-            <td><%= select_tag(:team, options_from_collection_for_select(@teams, 'name', 'name', selected: params[:team]), include_blank: true) %></td>
+            <td class='field'><%= label_tag(:team, l(:field_team)) %></td>
+            <td class='operator'><%= select_tag(:team, options_from_collection_for_select(@teams, 'name', 'name', selected: params[:team]), include_blank: true) %></td>
           </tr>
           <tr class="filter" id="completed">
-            <td><%= label_tag(:completed, l(:field_completed)) %></td>
-            <td><%= select_tag(:completed, options_for_select([[l(:label_yes), 1], [l(:label_no), 0]], selected: params[:completed]), include_blank: true) %></td>
+            <td class='field'><%= label_tag(:completed, l(:field_completed)) %></td>
+            <td class='operator'><%= select_tag(:completed, options_for_select([[l(:label_yes), 1], [l(:label_no), 0]], selected: params[:completed]), include_blank: true) %></td>
           </tr>
           <tr class="filter" id="suborder">
-            <td><%= label_tag(:suborder, l(:label_suborder)) %></td>
-            <td><%= select_tag(:suborder, options_for_select([[l(:label_yes), 1], [l(:label_no), 0]], selected: params[:suborder]), include_blank: true) %></td>
+            <td class='field'><%= label_tag(:suborder, l(:label_suborder)) %></td>
+            <td class='operator'><%= select_tag(:suborder, options_for_select([[l(:label_yes), 1], [l(:label_no), 0]], selected: params[:suborder]), include_blank: true) %></td>
+          </tr>
+          <tr class="filter" id="invoiced">
+            <td class='field'><%= label_tag(:invoiced, l(:label_invoiced)) %></td>
+            <td class='operator'><%= select_tag(:invoiced, options_for_select([[l(:label_yes), 1], [l(:label_no), 0]], selected: params[:invoiced]), include_blank: true) %></td>
           </tr>
         </tbody>
       </table>

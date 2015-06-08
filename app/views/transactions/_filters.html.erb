@@ -5,16 +5,16 @@
       <table id="filters-table">
         <tbody>
           <tr class="filter" id="comment">
-            <td><%= label_tag(:search, l(:label_search)) %></td>
-            <td><%= text_field_tag(:search, params[:search]) %></td>
+            <td class='field'><%= label_tag(:search, l(:label_search)) %></td>
+            <td class='operator'><%= text_field_tag(:search, params[:search]) %></td>
           </tr>
           <tr class="filter" id="owner">
-            <td><%= label_tag(:owner, l(:label_owner)) %></td>
-            <td><%= select_tag(:owner, grouped_options_for_select(@owners, selected: params[:owner]), include_blank: true) %></td>
+            <td class='field'><%= label_tag(:owner, l(:label_owner)) %></td>
+            <td class='operator'><%= select_tag(:owner, grouped_options_for_select(@owners, selected: params[:owner]), include_blank: true) %></td>
           </tr>
           <tr class="filter" id="account_type">
-            <td><%= label_tag(:account_type, l(:label_account_type)) %></td>
-            <td><%= select_tag(:account_type, options_for_select([[l(:label_balance_type), 'balance'], [l(:label_payment_type), 'payment']], selected: params[:account_type]), include_blank: true) %></td>
+            <td class='field'><%= label_tag(:account_type, l(:label_account_type)) %></td>
+            <td class='operator'><%= select_tag(:account_type, options_for_select([[l(:label_balance_type), 'balance'], [l(:label_payment_type), 'payment']], selected: params[:account_type]), include_blank: true) %></td>
           </tr>
         </tbody>
       </table>
