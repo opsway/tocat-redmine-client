@@ -27,9 +27,9 @@
     <hr/>
   </fieldset>
 <% end %>
-
-<h4>Last run: <%= Time.parse(@timestamp) %></h4>
-
+<% if @timestamp.present? %>
+  <h4>Last run: <%= Time.parse(@timestamp) %></h4>
+<% end %>
 <div class = "problemsContainer">
   <div class="autoscroll">
     <table class="list problems">
