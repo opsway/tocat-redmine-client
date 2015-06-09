@@ -5,14 +5,17 @@ class TocatInvoice < ActiveResource::Base
   self.element_name = 'invoice'
   add_response_method :http_response
 
+
   class << self
     def element_path(id, prefix_options = {}, query_options = nil)
       prefix_options, query_options = split_options(prefix_options) if query_options.nil?
+      query_options.merge!({:current_user => User.current.name})
       "#{prefix(prefix_options)}#{element_name}/#{URI.parser.escape id.to_s}#{query_string(query_options)}"
     end
 
     def collection_path(prefix_options = {}, query_options = nil)
       prefix_options, query_options = split_options(prefix_options) if query_options.nil?
+      query_options.merge!({:current_user => User.current.name})
       "#{prefix(prefix_options)}#{collection_name}#{query_string(query_options)}"
     end
   end
@@ -44,7 +47,12 @@ class TocatInvoice < ActiveResource::Base
             recipient = TocatTeam.find(record["recipient_id"].to_i)
           end
         end
-        records << OpenStruct.new(key: record["key"], recipient: recipient, parameters: record['parameters'], created_at: record['created_at'])
+        owner = nil
+        if record['owner_id'].present?
+          owner = TocatUser.find(record['owner_id'])
+          owner = User.where(firstname: owner.name.split().first, lastname: owner.name.split().second).first
+        end
+        records << OpenStruct.new(key: record["key"], recipient: recipient, parameters: record['parameters'], created_at: record['created_at'], owner: owner)
       end
        return records
      rescue
@@ -54,7 +62,7 @@ class TocatInvoice < ActiveResource::Base
 
   def set_paid
     begin
-      connection.post("#{self.class.prefix}/invoice/#{id}/paid")
+      connection.post(element_path.gsub('?', '/paid?'))
     rescue => error
       # TODO add logger
       return false, error
@@ -64,7 +72,7 @@ class TocatInvoice < ActiveResource::Base
 
   def remove_paid
     begin
-      connection.delete("#{self.class.prefix}/invoice/#{id}/paid")
+      connection.delete(element_path.gsub('?', '/paid?'))
     rescue => error
       # TODO add logger
       return false, error

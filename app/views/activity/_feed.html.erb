@@ -1,10 +1,16 @@
 <% activities.each do |activity| %>
   <div>
-    <h4> Updated by Redmine Client  <%= time_tag(activity.created_at)%> ago. </h4>
+    <h4>
+      <% if activity.owner.present? %>
+        <%= avatar(activity.owner, :size => "24", :style => 'float:none;') %> Updated by <%= activity.owner.name%> <%= time_tag(activity.created_at)%> ago.
+      <% else %>
+        Updated by someone <%= time_tag(activity.created_at)%> ago.
+      <%  end %>
+    </h4>
     <ul>
       <% begin %>
         <%= render :partial => "activity/#{activity.key.split('.').first}s/#{activity.key.split('.').second}", locals: {activity: activity }%></ul>
-      <%rescue%>
+      <%rescue => e%>
       <%end%>
   </div>
 <% end %>
