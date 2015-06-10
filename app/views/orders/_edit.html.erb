@@ -36,8 +36,8 @@
                             :value => des %>
           </p>
           <p><%= f.select :team, options_for_select(@groups.collect {|t| [t.name, t.id]}, selected: team), {:required => true} %></p>
-          <p><%= f.number_field :invoiced_budget, :class => 'invoiced_budget', :step => 0.5, :required => true, :value => i_budget %></p>
-          <p><%= f.number_field :allocatable_budget, :class => 'allocatable_budget', :step => 0.5, :required => true, :value => a_budget %></p>
+          <p><%= f.number_field :invoiced_budget, :class => 'invoiced_budget', :step => 0.1, :required => true, :value => i_budget %></p>
+          <p><%= f.number_field :allocatable_budget, :class => 'allocatable_budget', :step => 0.1, :required => true, :value => a_budget %></p>
         <% end %>
       </div>
       </fieldset>
