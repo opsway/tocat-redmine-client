@@ -28,10 +28,25 @@ class TocatTicket < ActiveResource::Base
      end
   end
 
+  def self.events_for(ids, key = nil)
+    begin
+      records = []
+      key.nil? ?
+        url = "#{self.prefix}/activity?trackable=task&trackable_id=#{ids.join(',')}" :
+        url = "#{self.prefix}/activity?trackable=task&trackable_id=#{ids.join(',')}&key='#{key}'"
+      JSON.parse(connection.get(url).body).each do |record|
+        records << OpenStruct.new(id: record["trackable_id"], key: record["key"], parameters: record['parameters'], created_at: record['created_at'])
+      end
+     return records
+   rescue => e
+     return []
+   end
+  end
+
   def toggle_paid
     unless accepted
       begin
-        connection.post("#{self.class.prefix}/task/#{id}/accept", { current_user: User.current.name }.to_json)
+        connection.post(element_path.gsub('?', '/accept?'))
       rescue => error
         # TODO add logger
         return false, error
@@ -39,7 +54,7 @@ class TocatTicket < ActiveResource::Base
       return true, nil
     else
       begin
-        connection.delete("#{self.class.prefix}/task/#{id}/accept", { current_user: User.current.name }.to_json)
+        connection.delete(element_path.gsub('?', '/accept?'))
       rescue => error
         # TODO add logger
         return false, error
@@ -117,7 +132,7 @@ class TocatTicket < ActiveResource::Base
       return true, nil
     else
       begin
-        connection.delete("#{self.prefix}/task/#{id}/resolver")
+        connection.delete(element_path(id).gsub('?', '/resolver?'))
       rescue => error
         # TODO add logger
         return false, error
