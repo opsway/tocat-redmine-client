@@ -218,9 +218,9 @@ class TocatController < ApplicationController
       month = (1.month.ago.to_date..Date.today)
       halfyear = (6.months.ago.to_date..Date.today)
       year = (1.year.ago.to_date..Date.today)
-      events_count = accepted_not_paid_events.select{ |r| r.parameters['new'] == true }.count
+      events_count = accepted_not_paid_events.select{ |r| r.parameters['new'] == true }.uniq(&:id).count
       (1.year.ago.to_date..Date.today).each do |date|
-        events_sum = accepted_not_paid_events.select{ |r| r.created_at.to_date == date && r.parameters['new'] == true }.sum { |r| r.parameters["balance"].to_i}
+        events_sum = accepted_not_paid_events.uniq(&:id).select{ |r| r.created_at.to_date == date && r.parameters['new'] == true }.sum { |r| r.parameters["balance"].to_i}
         transactions_sum =  @balance_transactions.select{ |r| r.date.to_date == date}.sum { |r| r.total.to_i }
         balance_with_transactions = (balance += transactions_sum).round(2)
         forecast_balance = (balance_with_tasks += (events_sum + transactions_sum)).round(2)
