@@ -37,9 +37,8 @@
 <div class='chart_container'>
   <fieldset>
     <legend>Personal dynamics</legend>
-    Period: <%= select_tag("period", options_for_select([['1 Week', 1], ['1 Month', 2], ['6 Months', 3], ['1 Year', 4]]), :onchange => 'redraw_chart(this);false;') %>
+    Period: <%= select_tag("period", options_for_select([['1 Month', 1], ['6 Months', 2], ['1 Year', 3]]), :onchange => 'redraw_chart(this);false;') %>
     <div style='display:none;'>
-      <%= content_tag :div, "", id: "week", data: { balance: @balance_chart[:week][:balance], forecast: @balance_chart[:week][:forecast], zero_line: @balance_chart[:week][:zero_line], time: @balance_chart[:week][:timeline]  } %>
       <%= content_tag :div, "", id: "month", data: { balance: @balance_chart[:month][:balance], forecast: @balance_chart[:month][:forecast], zero_line: @balance_chart[:month][:zero_line], time: @balance_chart[:month][:timeline]  } %>
       <%= content_tag :div, "", id: "halfyear", data: { balance: @balance_chart[:halfyear][:balance], forecast: @balance_chart[:halfyear][:forecast], zero_line: @balance_chart[:halfyear][:zero_line], time: @balance_chart[:halfyear][:timeline]  } %>
       <%= content_tag :div, "", id: "year", data: { balance: @balance_chart[:year][:balance], forecast: @balance_chart[:year][:forecast], zero_line: @balance_chart[:year][:zero_line], time: @balance_chart[:year][:timeline]  } %>
@@ -59,15 +58,12 @@
     var source;
     switch (+elem.value) {
       case 1:
-        source = jQuery('#week');
-        break;
-      case 2:
         source = jQuery('#month');
         break;
-      case 3:
+      case 2:
         source = jQuery('#halfyear');
         break;
-      case 4:
+      case 3:
         source = jQuery('#year');
         break;
 
@@ -93,10 +89,10 @@
     data: {
       x: 'Time',
       json: {
-            Zero: jQuery('#week').data('zero-line'),
-            Balance: jQuery('#week').data('balance'),
-            'Balance Forecast': jQuery('#week').data('forecast'),
-            Time: jQuery('#week').data('time')
+            Zero: jQuery('#month').data('zero-line'),
+            Balance: jQuery('#month').data('balance'),
+            'Balance Forecast': jQuery('#month').data('forecast'),
+            Time: jQuery('#month').data('time')
         },
       type: 'spline',
       colors: {

@@ -208,8 +208,7 @@ class TocatController < ApplicationController
       @balance_transactions = TocatTransaction.find(:all, params:{user: @user_tocat.id, limit:9999999, search: "account = balance" })
       @accepted_tasks = TocatTicket.get_accepted_tasks(true, @user_tocat.id)
       @not_accepted_tasks = TocatTicket.get_accepted_tasks(false, @user_tocat.id)
-      @balance_chart = { week: { balance: [], forecast: [], zero_line: [], timeline: [] },
-                         month: { balance: [], forecast: [], zero_line: [], timeline: [] },
+      @balance_chart = { month: { balance: [], forecast: [], zero_line: [], timeline: [] },
                          halfyear: { balance: [], forecast: [], zero_line: [], timeline: [] },
                          year: { balance: [], forecast: [], zero_line: [], timeline: [] } }
       balance_transactions_ = TocatTransaction.find(:all, params: { search: "accountable_type == User accountable_id == #{@user_tocat.id} created_at >= #{1.year.ago.strftime('%Y-%m-%e')} account = balance", limit: 9999999})
@@ -225,12 +224,6 @@ class TocatController < ApplicationController
         transactions_sum =  @balance_transactions.select{ |r| r.date.to_date == date}.sum { |r| r.total.to_i }
         balance_with_transactions = (balance += transactions_sum).round(2)
         forecast_balance = (balance_with_tasks += (events_sum + transactions_sum)).round(2)
-        if week.include?(date)
-          @balance_chart[:week][:balance] << balance_with_transactions
-          @balance_chart[:week][:forecast] << forecast_balance if events_count == @accepted_tasks.count
-          @balance_chart[:week][:zero_line] << 0
-          @balance_chart[:week][:timeline] << date
-        end
         if month.include?(date)
           @balance_chart[:month][:balance] << balance_with_transactions
           @balance_chart[:month][:forecast] << forecast_balance if events_count == @accepted_tasks.count
