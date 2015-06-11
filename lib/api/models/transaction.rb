@@ -28,11 +28,11 @@ class TocatTransaction < ActiveResource::Base
   end
 
   def self.get_transactions_for_user(id)
-    TocatTransaction.find(:all, params:{user: id, limit:100, sort:'created_at:desc'})
+    TocatTransaction.find(:all, params:{user: id, limit:9999999, sort:'created_at:desc'})
   end
 
   def self.get_transactions_for_team(id)
-    TocatTransaction.find(:all, params:{team: id, limit:100, sort:'created_at:desc'})
+    TocatTransaction.find(:all, params:{team: id, limit:9999999, sort:'created_at:desc'})
   end
 
   protected

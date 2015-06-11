@@ -215,15 +215,18 @@ class TocatController < ApplicationController
           @team_balance_transactions << t :
           @team_income_transactions << t
       end
-      @balance_chart = []
-      balance_transactions_ = TocatTransaction.find(:all, params: { search: "accountable_type == User accountable_id == #{@user_tocat.id} created_at >= #{1.month.ago.strftime('%Y-%m-%e')}"})
+      @balance_chart = { balance: [], forecast: [], zero_line: [], timeline: [] }
+      balance_transactions_ = TocatTransaction.find(:all, params: { search: "accountable_type == User accountable_id == #{@user_tocat.id} created_at >= #{1.year.ago.strftime('%Y-%m-%e')} account = balance", limit: 9999999})
       accepted_not_paid = TocatTicket.find(:all, params: { search: "resolver == #{@user_tocat.id} accepted == 1 paid == 0", limit: 99999 })
       accepted_not_paid_events = TocatTicket.events_for(accepted_not_paid.collect(&:id), "task.accepted_update")
       balance_with_tasks = balance =  @user_tocat.balance_account_state - balance_transactions_.sum { |r| r.total.to_i}
-      (1.month.ago.to_date..Date.today).each do |date|
+      (1.year.ago.to_date..Date.today).each do |date|
         events_sum = accepted_not_paid_events.select{ |r| r.created_at.to_date == date && r.parameters['new'] == true }.sum { |r| r.parameters["balance"].to_i}
         transactions_sum =  @balance_transactions.select{ |r| r.date.to_date == date}.sum { |r| r.total.to_i }
-        @balance_chart << {date: date, balance: balance += transactions_sum, balance_with_tasks: balance_with_tasks += events_sum }
+        @balance_chart[:balance] << (balance += transactions_sum).round(2)
+        @balance_chart[:forecast] << (balance_with_tasks += (events_sum + transactions_sum)).round(2)
+        @balance_chart[:zero_line] << 0
+        @balance_chart[:timeline] << date
       end
       @accepted_tasks = TocatTicket.get_accepted_tasks(true, @user_tocat.id)
       @not_accepted_tasks = TocatTicket.get_accepted_tasks(false, @user_tocat.id)

@@ -29,29 +29,89 @@
 
 
 <% html_title "TOCAT : My dashboard" %>
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 <script charset="utf-8">jQuery.noConflict()</script>
 
 
 <hr/>
-<div class='graph_container'>
+<div class='chart_container'>
+  <style>
+  #chart_container {
+          position: relative;
+          display: inline-block;
+          font-family: Arial, Helvetica, sans-serif;
+  }
+  #chart {
+          display: inline-block;
+  }
+  #zeroline {
+          color: red;
+  }
+  </style>
   <fieldset>
-    <legend> Charts</legend>
-    <%= content_tag :div, "", id: "chart", data: { transactions: @balance_chart }, style: "width: 800px;height: 250px;margin: 20px auto 0 auto;" %>
+    <legend>Personal dynamics</legend>
+    <div>
+      <%= content_tag :div, "", id: "chart", data: { balance: @balance_chart[:balance], forecast: @balance_chart[:forecast], zero_line: @balance_chart[:zero_line], time: @balance_chart[:timeline], test:  @balance_chart[:temp]  } %>
+    </div>
   </fieldset>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css" rel="stylesheet" type="text/css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.9/c3.js"></script>
+
+
   <script>
-  new Morris.Line({
-    element: 'chart',
-    data: jQuery('#chart').data('transactions'),
-    resize: true,
-    grid: true,
-    hideHover: 'auto',
-    xkey: 'date',
-    ykeys: ['balance', 'balance_with_tasks'],
-    labels: ['Balance', 'Balance with tasks']
-  });
+
+  var chart = c3.generate({
+    bindto: '#chart',
+    data: {
+      x: 'Time',
+      json: {
+            Zero: jQuery('#chart').data('zero-line'),
+            Balance: jQuery('#chart').data('balance'),
+            'Balance Forecast': jQuery('#chart').data('forecast'),
+            Time: jQuery('#chart').data('time')
+        },
+      type: 'spline',
+      colors: {
+            Zero: 'red'
+        }
+    },
+    point: {
+      show: false
+    },
+    axis: {
+        x: {
+            type: 'timeseries',
+            localtime: false,
+            tick: {
+                format: '%Y-%m-%d'
+            }
+        },
+        y : {
+            tick: {
+                format: d3.format("$")
+            }
+        },
+    },
+    tooltip: {
+        format: {
+            title: function (d) { return d; },
+            value: function (value, ratio, id) {
+              if (id != 'Zero'){
+                return '$' + value;
+              }
+            }
+        }
+    },
+    zoom: {
+        enabled: true
+    },
+    subchart: {
+        show: true
+    }
+});
+
   </script>
 </div>
