@@ -196,7 +196,8 @@ class TocatTicket < ActiveResource::Base
           subject: issue.subject,
           project: issue.project.name,
           project_id: issue.project.id,
-          budget: task.budget
+          budget: task.budget,
+          task_id: task.id
         }
         issues << OpenStruct.new(params)
       end
