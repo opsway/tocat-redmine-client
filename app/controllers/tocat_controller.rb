@@ -213,7 +213,6 @@ class TocatController < ApplicationController
                          halfyear: { balance: [], forecast: [], zero_line: [], timeline: [] },
                          year: { balance: [], forecast: [], zero_line: [], timeline: [] } }
       balance_transactions_ = TocatTransaction.find(:all, params: { search: "accountable_type == User accountable_id == #{@user_tocat.id} created_at >= #{1.year.ago.strftime('%Y-%m-%e')} account = balance", limit: 9999999})
-      accepted_not_paid = TocatTicket.find(:all, params: { search: "resolver == #{@user_tocat.id} accepted == 1 paid == 0", limit: 99999 })
       accepted_not_paid_events = TocatTicket.events_for(@accepted_tasks.collect(&:task_id), "task.accepted_update")
       balance_with_tasks = balance =  @user_tocat.balance_account_state - balance_transactions_.sum { |r| r.total.to_i}
       week = (1.week.ago.to_date..Date.today)
@@ -228,24 +227,24 @@ class TocatController < ApplicationController
         forecast_balance = (balance_with_tasks += (events_sum + transactions_sum)).round(2)
         if week.include?(date)
           @balance_chart[:week][:balance] << balance_with_transactions
-          @balance_chart[:week][:forecast] << forecast_balance if events_count == accepted_not_paid.count
+          @balance_chart[:week][:forecast] << forecast_balance if events_count == @accepted_tasks.count
           @balance_chart[:week][:zero_line] << 0
           @balance_chart[:week][:timeline] << date
         end
         if month.include?(date)
           @balance_chart[:month][:balance] << balance_with_transactions
-          @balance_chart[:month][:forecast] << forecast_balance if events_count == accepted_not_paid.count
+          @balance_chart[:month][:forecast] << forecast_balance if events_count == @accepted_tasks.count
           @balance_chart[:month][:zero_line] << 0
           @balance_chart[:month][:timeline] << date
         end
         if halfyear.include?(date)
           @balance_chart[:halfyear][:balance] << balance_with_transactions
-          @balance_chart[:halfyear][:forecast] << forecast_balance if events_count == accepted_not_paid.count
+          @balance_chart[:halfyear][:forecast] << forecast_balance if events_count == @accepted_tasks.count
           @balance_chart[:halfyear][:zero_line] << 0
           @balance_chart[:halfyear][:timeline] << date
         end
         @balance_chart[:year][:balance] << balance_with_transactions
-        @balance_chart[:year][:forecast] << forecast_balance if events_count == accepted_not_paid.count
+        @balance_chart[:year][:forecast] << forecast_balance if events_count == @accepted_tasks.count
         @balance_chart[:year][:zero_line] << 0
         @balance_chart[:year][:timeline] << date
       end

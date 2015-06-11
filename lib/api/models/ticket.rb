@@ -43,7 +43,7 @@ class TocatTicket < ActiveResource::Base
    end
   end
 
-  def toggle_paid
+  def toggle_paid # FIXME WTF? Rename to toggle_accepted
     unless accepted
       begin
         connection.post(element_path.gsub('?', '/accept?'))
