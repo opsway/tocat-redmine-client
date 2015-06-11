@@ -41,6 +41,12 @@ module OrdersHelper
     r.to_html
   end
 
+  def delete_link(order)
+    if User.current.tocat_allowed_to?(:destroy_orders) && !order.sub_orders.any? && !order.completed && !order.parent.try(:completed)
+      return link_to l(:button_delete), '', :data => {:confirm => l(:confirm_order_destroy)}, :method => :delete, :class => 'icon icon-del'
+    end
+  end
+
   def link_to_task(task)
     return link_to "#{task.external_id}", issue_path(task.external_id)
   end

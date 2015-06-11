@@ -13,7 +13,5 @@
       <% end %>
     <% end %>
   <% end %>
-  <% if User.current.tocat_allowed_to?(:destroy_orders) && !@order.sub_orders.present? && @order.completed == false && @order.parent.present? && @order.parent.completed == false  %>
-    <%= link_to l(:button_delete), '', :data => {:confirm => l(:confirm_order_destroy)}, :method => :delete, :class => 'icon icon-del' %>
-  <% end %>
+  <%= delete_link(@order)  %>
 </div>
