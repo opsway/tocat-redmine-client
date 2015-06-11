@@ -32,8 +32,8 @@ class TocatTicket < ActiveResource::Base
     begin
       records = []
       key.nil? ?
-        url = "#{self.prefix}/activity?trackable=task&trackable_id=#{ids.join(',')}" :
-        url = "#{self.prefix}/activity?trackable=task&trackable_id=#{ids.join(',')}&key=#{key}"
+        url = "#{self.prefix}/activity?trackable=task&trackable_id=#{ids.join(',')}&limit=9999999" :
+        url = "#{self.prefix}/activity?trackable=task&trackable_id=#{ids.join(',')}&key=#{key}&limit=9999999"
       JSON.parse(connection.get(url).body).each do |record|
         records << OpenStruct.new(id: record["trackable_id"], key: record["key"], parameters: record['parameters'], created_at: record['created_at'])
       end
