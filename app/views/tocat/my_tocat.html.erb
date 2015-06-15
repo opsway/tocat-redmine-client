@@ -29,104 +29,104 @@
 
 
 <% html_title "TOCAT : My dashboard" %>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-<script charset="utf-8">jQuery.noConflict()</script>
+<% unless @user_tocat.role == 'Manager' %>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+  <script charset="utf-8">jQuery.noConflict()</script>
+
+  <hr/>
+  <div class='chart_container'>
+    <fieldset>
+      <legend>Personal dynamics</legend>
+      Period: <%= select_tag("period", options_for_select([['1 Month', 1], ['6 Months', 2], ['1 Year', 3]]), :onchange => 'redraw_chart(this);false;') %>
+      <div style='display:none;'>
+        <%= content_tag :div, "", id: "month", data: { balance: @balance_chart[:month][:balance], forecast: @balance_chart[:month][:forecast], zero_line: @balance_chart[:month][:zero_line], time: @balance_chart[:month][:timeline]  } %>
+        <%= content_tag :div, "", id: "halfyear", data: { balance: @balance_chart[:halfyear][:balance], forecast: @balance_chart[:halfyear][:forecast], zero_line: @balance_chart[:halfyear][:zero_line], time: @balance_chart[:halfyear][:timeline]  } %>
+        <%= content_tag :div, "", id: "year", data: { balance: @balance_chart[:year][:balance], forecast: @balance_chart[:year][:forecast], zero_line: @balance_chart[:year][:zero_line], time: @balance_chart[:year][:timeline]  } %>
+      </div>
+      <div id="chart"></div>
+    </fieldset>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css" rel="stylesheet" type="text/css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.9/c3.js"></script>
 
 
-<hr/>
-<div class='chart_container'>
-  <fieldset>
-    <legend>Personal dynamics</legend>
-    Period: <%= select_tag("period", options_for_select([['1 Month', 1], ['6 Months', 2], ['1 Year', 3]]), :onchange => 'redraw_chart(this);false;') %>
-    <div style='display:none;'>
-      <%= content_tag :div, "", id: "month", data: { balance: @balance_chart[:month][:balance], forecast: @balance_chart[:month][:forecast], zero_line: @balance_chart[:month][:zero_line], time: @balance_chart[:month][:timeline]  } %>
-      <%= content_tag :div, "", id: "halfyear", data: { balance: @balance_chart[:halfyear][:balance], forecast: @balance_chart[:halfyear][:forecast], zero_line: @balance_chart[:halfyear][:zero_line], time: @balance_chart[:halfyear][:timeline]  } %>
-      <%= content_tag :div, "", id: "year", data: { balance: @balance_chart[:year][:balance], forecast: @balance_chart[:year][:forecast], zero_line: @balance_chart[:year][:zero_line], time: @balance_chart[:year][:timeline]  } %>
-    </div>
-    <div id="chart"></div>
-  </fieldset>
+    <script>
+    function redraw_chart(elem){
+      var source;
+      switch (+elem.value) {
+        case 1:
+          source = jQuery('#month');
+          break;
+        case 2:
+          source = jQuery('#halfyear');
+          break;
+        case 3:
+          source = jQuery('#year');
+          break;
 
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css" rel="stylesheet" type="text/css">
+      }
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.9/c3.js"></script>
-
-
-  <script>
-
-  function redraw_chart(elem){
-    var source;
-    switch (+elem.value) {
-      case 1:
-        source = jQuery('#month');
-        break;
-      case 2:
-        source = jQuery('#halfyear');
-        break;
-      case 3:
-        source = jQuery('#year');
-        break;
-
+      chart.load({
+              unload: ['Zero', 'Balance', 'Balance Forecast', 'Time'],
+              json: {
+                    Zero: source.data('zero-line'),
+                    Balance: source.data('balance'),
+                    'Balance Forecast': source.data('forecast'),
+                    Time: source.data('time')
+                }
+          });
     }
 
-    chart.load({
-            unload: ['Zero', 'Balance', 'Balance Forecast', 'Time'],
-            json: {
-                  Zero: source.data('zero-line'),
-                  Balance: source.data('balance'),
-                  'Balance Forecast': source.data('forecast'),
-                  Time: source.data('time')
+    var chart = c3.generate({
+      bindto: '#chart',
+      size: {
+          height: 300,
+          width: +jQuery('.chart_container').width() - 50
+      },
+      data: {
+        x: 'Time',
+        json: {
+              Zero: jQuery('#month').data('zero-line'),
+              Balance: jQuery('#month').data('balance'),
+              'Balance Forecast': jQuery('#month').data('forecast'),
+              Time: jQuery('#month').data('time')
+          },
+        type: 'spline',
+        colors: {
+              Zero: 'red'
+          }
+      },
+      point: {
+        show: false
+      },
+      axis: {
+          x: {
+              type: 'timeseries',
+              localtime: false,
+              tick: {
+                  format: '%Y-%m-%d'
               }
-        });
-  }
-
-  var chart = c3.generate({
-    bindto: '#chart',
-    size: {
-        height: 300,
-        width: +jQuery('.chart_container').width() - 50
-    },
-    data: {
-      x: 'Time',
-      json: {
-            Zero: jQuery('#month').data('zero-line'),
-            Balance: jQuery('#month').data('balance'),
-            'Balance Forecast': jQuery('#month').data('forecast'),
-            Time: jQuery('#month').data('time')
-        },
-      type: 'spline',
-      colors: {
-            Zero: 'red'
-        }
-    },
-    point: {
-      show: false
-    },
-    axis: {
-        x: {
-            type: 'timeseries',
-            localtime: false,
-            tick: {
-                format: '%Y-%m-%d'
-            }
-        },
-        y : {
-            tick: {
-                format: d3.format("$")
-            }
-        },
-    },
-    tooltip: {
-        format: {
-            title: function (d) { return d; },
-            value: function (value, ratio, id) {
-              if (id != 'Zero'){
-                return '$' + value;
+          },
+          y : {
+              tick: {
+                  format: d3.format("$")
               }
-            }
-        }
-    }
-});
-
-  </script>
-</div>
+          },
+      },
+      tooltip: {
+          format: {
+              title: function (d) { return d; },
+              value: function (value, ratio, id) {
+                if (id != 'Zero'){
+                  return '$' + value;
+                }
+              }
+          }
+      }
+    });
+    </script>
+  </div>
+<% end %>
