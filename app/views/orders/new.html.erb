@@ -25,8 +25,8 @@
           <% else %>
             <p><%= f.select :team, options_for_select(@groups.collect {|t| [t.name, t.id]} ), {:required => true} %></p>
           <% end %>
-          <p><%= f.number_field :invoiced_budget, :class => 'invoiced_budget', :step => 0.5, :required => true %></p>
-          <p><%= f.number_field :allocatable_budget, :class => 'allocatable_budget', :step => 0.5, :required => true %></p>
+          <p><%= f.number_field :invoiced_budget, :class => 'invoiced_budget', :step => 0.00001, :required => true %></p>
+          <p><%= f.number_field :allocatable_budget, :class => 'allocatable_budget', :step => 0.00001, :required => true %></p>
           <% if @order.parent_order.present?%>
             <%= f.hidden_field :parent_order, value: @order.parent_order %>
           <% end %>
