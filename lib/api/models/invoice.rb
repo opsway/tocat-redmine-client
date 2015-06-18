@@ -26,14 +26,10 @@ class TocatInvoice < ActiveResource::Base
     attribute 'paid', :boolean
   end
 
-  def editable?
-    true
-  end
-
   def activity
     begin
       records = []
-      JSON.parse(connection.get("#{self.class.prefix}/activity?owner=invoice&owner_id=#{self.id}").body).each do |record|
+      JSON.parse(connection.get("#{self.class.prefix}activity?trackable=invoice&trackable_id=#{self.id}&current_user=#{User.current.name}").body).each do |record|
         recipient = nil
         unless record["recipient_id"].nil?
           case record["recipient_type"]
