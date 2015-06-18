@@ -219,7 +219,7 @@ class TocatController < ApplicationController
         month = (1.month.ago.to_date..Date.today)
         halfyear = (6.months.ago.to_date..Date.today)
         year = (1.year.ago.to_date..Date.today)
-        accepted_not_paid_events = accepted_not_paid_events.select{ |r| r.parameters['new'] == true }.uniq!(&:id)
+        accepted_not_paid_events = accepted_not_paid_events.select{ |r| r.parameters['new'] == true }.uniq(&:id)
         events_count = accepted_not_paid_events.count
         (1.year.ago.to_date..Date.today).each do |date|
           events_sum = accepted_not_paid_events.select{ |r| r.created_at.to_date == date }.sum { |r| r.parameters["balance"].to_i}
@@ -245,6 +245,7 @@ class TocatController < ApplicationController
         end
       end
     rescue Exception => e
+      Rails.logger.info "\e[31mException in Tocat. #{e.message}, #{e.backtrace.first}\e[0m"
       return render_404
     end
     respond_to do |format|

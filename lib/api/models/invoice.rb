@@ -55,7 +55,8 @@ class TocatInvoice < ActiveResource::Base
         records << OpenStruct.new(key: record["key"], recipient: recipient, parameters: record['parameters'], created_at: record['created_at'], owner: owner)
       end
        return records
-     rescue
+     rescue => error
+       Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
        return []
      end
   end
@@ -64,7 +65,7 @@ class TocatInvoice < ActiveResource::Base
     begin
       connection.post(element_path.gsub('?', '/paid?'))
     rescue => error
-      # TODO add logger
+      Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error
     end
     return true, nil
@@ -74,7 +75,7 @@ class TocatInvoice < ActiveResource::Base
     begin
       connection.delete(element_path.gsub('?', '/paid?'))
     rescue => error
-      # TODO add logger
+      Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error
     end
     return true, nil

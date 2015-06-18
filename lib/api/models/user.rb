@@ -30,7 +30,7 @@ class TocatUser < ActiveResource::Base
     begin
       connection.post("#{self.class.prefix}/user/#{id}/add_payment", { comment: comment, total: total, current_user: User.current.name }.to_json)
     rescue => error
-      # TODO add logger
+      Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error
     end
     return true, nil
@@ -40,7 +40,7 @@ class TocatUser < ActiveResource::Base
     begin
       connection.post("#{self.class.prefix}/user/#{id}/pay_bonus", { income: income, bonus: bonus, current_user: User.current.name }.to_json)
     rescue => error
-      # TODO add logger
+      Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error
     end
     return true, nil

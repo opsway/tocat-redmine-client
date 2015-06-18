@@ -67,7 +67,7 @@ class TocatOrder < ActiveResource::Base
       begin
         connection.post(element_path.gsub('?', '/complete?'))
       rescue => error
-        # TODO add logger
+        Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
       end
       return true, nil
@@ -75,7 +75,7 @@ class TocatOrder < ActiveResource::Base
       begin
         connection.delete(element_path.gsub('?', '/complete?'))
       rescue => error
-        # TODO add logger
+        Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
       end
       return true, nil
@@ -118,7 +118,8 @@ class TocatOrder < ActiveResource::Base
     unless parent_order.attributes.empty?
       begin
         return TocatOrder.find(parent_order.id)
-      rescue
+      rescue => error
+        Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return OpenStruct.new id: parent_order.id, name: 'Parent order doesn\'t exists'
       end
     else
@@ -134,7 +135,7 @@ class TocatOrder < ActiveResource::Base
     begin
       connection.post("#{self.class.prefix}/order/#{self.id}/invoice", {invoice_id: id}.to_json)
     rescue => error
-      # TODO add logger
+      Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error
     end
     return true, nil
@@ -144,7 +145,7 @@ class TocatOrder < ActiveResource::Base
     begin
       connection.delete("#{self.class.prefix}/order/#{self.id}/invoice")
     rescue => error
-      # TODO add logger
+      Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error
     end
     return true, nil
@@ -162,7 +163,7 @@ class TocatOrder < ActiveResource::Base
     begin
       response = connection.post("#{self.class.prefix}/order/#{self.id}/suborder", query.to_json)
     rescue => error
-      # TODO add logger
+      Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error, nil
     end
     return true, nil, JSON.parse(response.body)

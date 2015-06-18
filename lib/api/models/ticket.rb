@@ -23,7 +23,8 @@ class TocatTicket < ActiveResource::Base
   def activity
     begin
        return JSON.parse(connection.get("#{self.class.prefix}/activity?owner=task&owner_id=#{self.id}").body)
-     rescue
+     rescue => error
+       Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
        return []
      end
   end
@@ -38,7 +39,8 @@ class TocatTicket < ActiveResource::Base
         records << OpenStruct.new(id: record["trackable_id"], key: record["key"], parameters: record['parameters'], created_at: record['created_at'])
       end
      return records
-   rescue => e
+   rescue => error
+     Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
      return []
    end
   end
@@ -48,7 +50,7 @@ class TocatTicket < ActiveResource::Base
       begin
         connection.post(element_path.gsub('?', '/accept?'))
       rescue => error
-        # TODO add logger
+        Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
       end
       return true, nil
@@ -56,7 +58,7 @@ class TocatTicket < ActiveResource::Base
       begin
         connection.delete(element_path.gsub('?', '/accept?'))
       rescue => error
-        # TODO add logger
+        Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
       end
       return true, nil
@@ -126,7 +128,7 @@ class TocatTicket < ActiveResource::Base
       begin
         connection.post("#{self.prefix}/task/#{id}/resolver", {user_id: resolver}.to_json)
       rescue => error
-        # TODO add logger
+        Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
       end
       return true, nil
@@ -134,7 +136,7 @@ class TocatTicket < ActiveResource::Base
       begin
         connection.delete(element_path(id).gsub('?', '/resolver?'))
       rescue => error
-        # TODO add logger
+        Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
       end
       return true, nil
@@ -145,7 +147,7 @@ class TocatTicket < ActiveResource::Base
     begin
       connection.post("#{self.prefix}/task/#{id}/budget", {budget: budgets}.to_json)
     rescue => error
-      # TODO add logger
+      Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error
     end
     return true, nil
@@ -175,8 +177,8 @@ class TocatTicket < ActiveResource::Base
         # TODO add logger
         return false, JSON.parse(request.body)
       end
-    rescue => e
-      # TODO add logger
+    rescue => error
+      Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, e
     end
   end
