@@ -20,7 +20,7 @@ class TocatTicket < ActiveResource::Base
     end
   end
 
-  def activity
+  def activity # FIXME Is this method even used?
     begin
        return JSON.parse(connection.get("#{self.class.prefix}/activity?owner=task&owner_id=#{self.id}").body)
      rescue => error
@@ -56,7 +56,7 @@ class TocatTicket < ActiveResource::Base
       return true, nil
     else
       begin
-        connection.delete(element_path.gsub('?', '/accept?'))
+        connection.delete(TocatTicket.element_path(self.id).gsub('?', '/accept?'))
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
@@ -65,11 +65,11 @@ class TocatTicket < ActiveResource::Base
     end
   end
 
-  def get_budget
+  def get_budget # FIXME Probably not need this anymore
     if attributes.include? "budget"
       budget
     else
-      '0'
+      0
     end
   end
 
@@ -98,7 +98,7 @@ class TocatTicket < ActiveResource::Base
     end
   end
 
-  def self.find_by_external_id(id)
+  def self.find_by_external_id(id) # FIXME Refactor to use real search
     ticket = TocatTicket.find(:all, params: {search: id}).first
     if ticket.present?
       return TocatTicket.find(ticket.id)
@@ -106,7 +106,7 @@ class TocatTicket < ActiveResource::Base
     nil
   end
 
-  def get_orders
+  def get_orders # FIXME Probably not need this anymore
     if respond_to? ('orders')
       return orders
     else
@@ -123,10 +123,10 @@ class TocatTicket < ActiveResource::Base
   end
 
 
-  def self.update_resolver(id, resolver)
+  def self.update_resolver(id, resolver) # FIXME Why class method?
     if resolver.present? && resolver.to_i != 0
-      begin
-        connection.post("#{self.prefix}/task/#{id}/resolver", {user_id: resolver}.to_json)
+      begin #          FIXME Use element_path(id) below
+        connection.post("#{self.prefix}task/#{id}/resolver", {user_id: resolver, current_user: User.current.name}.to_json)
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
@@ -143,9 +143,9 @@ class TocatTicket < ActiveResource::Base
     end
   end
 
-  def self.set_budgets(id, budgets)
-    begin
-      connection.post("#{self.prefix}/task/#{id}/budget", {budget: budgets}.to_json)
+  def self.set_budgets(id, budgets) # FIXME Why class method?
+    begin  #          FIXME Use element_path(id) below
+      connection.post("#{self.prefix}task/#{id}/budget", {budget: budgets, current_user: User.current.name}.to_json)
     rescue => error
       Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error
@@ -153,10 +153,10 @@ class TocatTicket < ActiveResource::Base
     return true, nil
   end
 
-  def self.get_budgets(id)
+  def self.get_budgets(id) # FIXME Why class method?
     budgets = []
-    begin
-      request = connection.get("#{self.prefix}/task/#{id}/budget")
+    begin#          FIXME Use element_path(id) below
+      request = connection.get("#{self.prefix}task/#{id}/budget?current_user=#{User.current.name}")
       if request.code.to_i == 200
         return true, [] unless JSON.parse(request.body)['budget'].present?
         budgets_ = JSON.parse(request.body)
@@ -179,11 +179,11 @@ class TocatTicket < ActiveResource::Base
       end
     rescue => error
       Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
-      return false, e
+      return false, error
     end
   end
 
-  def self.get_accepted_tasks(accepted=false, id)
+  def self.get_accepted_tasks(accepted=false, id) # FIXME Why class method?
     if accepted
       tasks = TocatTicket.find(:all, params: {search: "accepted=1 paid=0 resolver=#{id}", sort: 'external_id:desc', limit:9999999})
     else

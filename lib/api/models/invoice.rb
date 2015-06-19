@@ -57,6 +57,7 @@ class TocatInvoice < ActiveResource::Base
      end
   end
 
+  # FIXME Probably paid setters should be in one method?
   def set_paid
     begin
       connection.post(element_path.gsub('?', '/paid?'))

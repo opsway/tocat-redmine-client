@@ -28,6 +28,7 @@ describe 'Tocat Invoice API' do
     before(:each) do
       webmock_element(invoice)
     end
+
     let!(:record) { TocatInvoice.find(invoice.id) }
 
     it 'should make invoice paid' do

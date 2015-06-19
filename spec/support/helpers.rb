@@ -18,6 +18,17 @@ module Helpers
         .with(query: hash_including({current_user: 'Anonymous'}.merge(params)))
   end
 
+  def webmock_action_with_body(model, method, action, body, params = {})
+    if method == 'get'
+      stub_request(method.to_sym, "#{model.class.site}#{model.class.element_name}/#{model.id}/#{action}")
+          .with(query: {current_user: 'Anonymous'})
+          .to_return(body: body.to_json)
+    else
+      stub_request(method.to_sym, "#{model.class.site}#{model.class.element_name}/#{model.id}/#{action}")
+          .with(body: body.merge({current_user: 'Anonymous'}).to_json)
+    end
+  end
+
   def webmock_activity(site, trackable, id)
     stub_request(:get, "#{site}activity")
         .with(query: {current_user: 'Anonymous', trackable: trackable, trackable_id: id})
