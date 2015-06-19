@@ -156,7 +156,7 @@ class TocatTicket < ActiveResource::Base
   def self.get_budgets(id) # FIXME Why class method?
     budgets = []
     begin#          FIXME Use element_path(id) below
-      request = connection.get("#{self.prefix}task/#{id}/budget?current_user=#{User.current.name}")
+      request = connection.get("#{self.prefix}task/#{id}/budget")
       if request.code.to_i == 200
         return true, [] unless JSON.parse(request.body)['budget'].present?
         budgets_ = JSON.parse(request.body)
