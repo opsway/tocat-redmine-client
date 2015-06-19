@@ -82,8 +82,18 @@ class TocatOrder < ActiveResource::Base
     end
   end
 
+  def budget
+    begin
+      return JSON.parse(connection.get(element_path.gsub('?', '/budget?')).body)
+    rescue
+      return []
+    end
+  end
+
   def issues
     issues = []
+    budgets = {}
+    budget['budget'].each { |r| budgets[r['task_id']] = r['budget']  }
     tasks.each do |task|
       issue = Issue.where(id: task.external_id).first
       if issue.present?
@@ -94,14 +104,14 @@ class TocatOrder < ActiveResource::Base
         end
         issues << OpenStruct.new( id: task.external_id,
                                   project: issue.project,
-                                  budget: task.budget,
+                                  budget: budgets[task.id],
                                   resolver: resolver,
                                   subject: issue.subject
                                 )
       else
         issues << OpenStruct.new( id: task.external_id,
                                   project: nil,
-                                  budget: task.budget,
+                                  budget: budgets[task.id],
                                   resolver: resolver,
                                   subject: 'Can not found task. Please, contact administrator.'
                                 )
