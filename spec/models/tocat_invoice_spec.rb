@@ -1,84 +1,75 @@
-require "rails_helper"
+require 'plugin_helper'
 
 describe 'Tocat Invoice API' do
   before :all do
-    @invoices = File.read('plugins/redmine_tocat_client/spec/support/fixtures/invoices/invoices.json')
-    @invoice = File.read('plugins/redmine_tocat_client/spec/support/fixtures/invoices/invoice.json')
-    @site = "http://tocat.test"
+    @site = "http://tocat.test/"
     TocatInvoice.site = @site
   end
 
+  let!(:invoices) { FactoryGirl.build_list(:invoice, 3) }
+  let!(:invoice) { FactoryGirl.build(:invoice) }
+
   it 'should test collection path' do
-    stub_request(:get, "#{@site}/invoices?current_user=Anonymous").
-        with(:headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
-        to_return(:status => 200, :body => @invoices, :headers => {})
+    webmock_collection(invoices)
     response = TocatInvoice.find(:all)
 
-    expect(response.first.external_id).to eq('test_1')
+    expect(response.first.external_id).to eq(invoices.first.external_id)
   end
 
   it 'should test element path' do
-    stub_request(:get, "#{@site}/invoice/1?current_user=Anonymous").
-        with(:headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
-        to_return(:status => 200, :body => @invoice, :headers => {})
-    response = TocatInvoice.find(1)
+    webmock_element(invoice)
+    response = TocatInvoice.find(invoice.id)
 
-    expect(response.external_id).to eq('test_1')
+    expect(response.external_id).to eq(invoice.external_id)
   end
 
   describe 'actions' do
 
     before(:each) do
-      stub_request(:get, "#{@site}/invoice/1?current_user=Anonymous").
-          with(:headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
-          to_return(:status => 200, :body => @invoice, :headers => {})
-      @record = TocatInvoice.find(1)
+      webmock_element(invoice)
     end
+    let!(:record) { TocatInvoice.find(invoice.id) }
 
     it 'should make invoice paid' do
-      stub = stub_request(:post, "#{@site}/invoice/1/paid?current_user=Anonymous").
-          with(:headers => {'Accept'=>'*/*', 'Content-Type'=>'application/json', 'User-Agent'=>'Ruby'})
+      stub = webmock_action(invoice, 'post', 'paid')
 
-      expect(@record.set_paid).to eq([true, nil])
+      expect(record.set_paid).to eq([true, nil])
       expect(stub).to have_been_requested
     end
 
     it 'should make invoice unpaid' do
-      stub = stub_request(:delete, "#{@site}/invoice/1/paid?current_user=Anonymous").
-          with(:headers => {'Accept'=>'application/json', 'User-Agent'=>'Ruby'})
+      stub = webmock_action(invoice, 'delete', 'paid')
 
-      expect(@record.remove_paid).to eq([true, nil])
+      expect(record.remove_paid).to eq([true, nil])
       expect(stub).to have_been_requested
     end
 
     it 'should get invoice feed' do
-      feed = File.read('plugins/redmine_tocat_client/spec/support/fixtures/invoices/activity.json')
-      stub = stub_request(:get, "#{@site}/activity?trackable=invoice&trackable_id=1&current_user=Anonymous").
-          with(:headers => {'Accept'=>'application/json', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Ruby'}).
-          to_return(:status => 200, :body => feed, :headers => {})
-      expect(@record.activity.first.key).to eq('invoice.paid_update')
+      stub = webmock_activity(@site, 'invoice', invoice.id)
+      record.activity
+
       expect(stub).to have_been_requested
     end
 
     describe 'when server unavailable' do
+      let!(:exception) { SocketError.new }
 
       before(:each) do
-        @exception = SocketError.new
-        stub_request(:post, "#{@site}/invoice/1/paid?current_user=Anonymous").to_raise(@exception)
-        stub_request(:delete, "#{@site}/invoice/1/paid?current_user=Anonymous").to_raise(@exception)
-        stub_request(:get, "#{@site}/activity?trackable=invoice&trackable_id=1&current_user=Anonymous").to_raise(@exception)
+        webmock_action(invoice, 'post', 'paid').to_raise(exception)
+        webmock_action(invoice, 'delete', 'paid').to_raise(exception)
+        webmock_activity(@site, 'invoice', invoice.id).to_raise(exception)
       end
 
       it 'should not raise exception' do
-        expect{@record.set_paid}.to_not raise_error
-        expect{@record.remove_paid}.to_not raise_error
-        expect{@record.activity}.to_not raise_error
+        expect{record.set_paid}.to_not raise_error
+        expect{record.remove_paid}.to_not raise_error
+        expect{record.activity}.to_not raise_error
       end
 
       it 'should fail gracefully' do
-        expect(@record.set_paid).to eq([false, @exception])
-        expect(@record.remove_paid).to eq([false, @exception])
-        expect(@record.activity).to eq([])
+        expect(record.set_paid).to eq([false, exception])
+        expect(record.remove_paid).to eq([false, exception])
+        expect(record.activity).to eq([])
       end
     end
   end

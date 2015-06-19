@@ -11,4 +11,5 @@ group :test do
   gem 'shoulda'
   gem 'capybara'
   gem 'webmock'
+  gem 'factory_girl'
 end
