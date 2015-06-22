@@ -21,7 +21,6 @@ module Helpers
   def webmock_action_with_body(model, method, action, body, params = {})
     if method == 'get'
       stub_request(method.to_sym, "#{model.class.site}#{model.class.element_name}/#{model.id}/#{action}")
-          .with(query: {current_user: 'Anonymous'})
           .to_return(body: body.to_json)
     else
       stub_request(method.to_sym, "#{model.class.site}#{model.class.element_name}/#{model.id}/#{action}")
@@ -33,5 +32,17 @@ module Helpers
     stub_request(:get, "#{site}activity")
         .with(query: {current_user: 'Anonymous', trackable: trackable, trackable_id: id})
 
+  end
+
+  def log_user(login, password)
+    visit '/my/page'
+    save_and_open_page
+    assert_equal '/login', current_path
+    within('#login-form form') do
+      fill_in 'username', :with => login
+      fill_in 'password', :with => password
+      find('input[name=login]').click
+    end
+    assert_equal '/my/page', current_path
   end
 end

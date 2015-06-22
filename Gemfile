@@ -12,4 +12,5 @@ group :test do
   gem 'capybara'
   gem 'webmock'
   gem 'factory_girl'
+  gem 'chromedriver-helper'
 end
