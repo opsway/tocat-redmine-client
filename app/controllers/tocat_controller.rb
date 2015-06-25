@@ -18,7 +18,7 @@ class TocatController < ApplicationController
       end
     else
       respond_to do |format|
-        flash[:error] = JSON.parse(errors.response.body)['errors'].join(', ')
+        flash[:error] = JSON.parse(messages.response.body)['errors'].join(', ')
         format.html { render :action => 'new_payment' }
       end
     end
@@ -200,7 +200,7 @@ class TocatController < ApplicationController
       @user_tocat = TocatUser.find(TocatUser.find_by_name(@user.name).id)
       @team_tocat = TocatTeam.find(@user_tocat.team.id)
       if @user_tocat.role == 'Manager'
-        @team_income_transactions = TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "account = income" })
+        @team_income_transactions = TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "account = payment" })
       else
         @team_balance_transactions = TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "account = balance" })
       end
