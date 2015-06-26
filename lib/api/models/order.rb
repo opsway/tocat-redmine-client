@@ -32,7 +32,7 @@ class TocatOrder < ActiveResource::Base
   def activity
     begin
       records = []
-      JSON.parse(connection.get("#{self.class.prefix}/activity?owner=order&owner_id=#{self.id}").body).each do |record|
+      JSON.parse(connection.get("#{self.class.prefix}/activity?trackable=order&trackable_id=#{self.id}").body).each do |record|
         recipient = nil
         unless record["recipient_id"].nil?
           case record["recipient_type"]
@@ -143,7 +143,7 @@ class TocatOrder < ActiveResource::Base
 
   def set_invoice(id)
     begin
-      connection.post("#{self.class.prefix}/order/#{self.id}/invoice", {invoice_id: id}.to_json)
+      connection.post(element_path({invoice_id: id}).gsub('?', '/invoice?'))
     rescue => error
       Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error
@@ -153,7 +153,7 @@ class TocatOrder < ActiveResource::Base
 
   def delete_invoice
     begin
-      connection.delete("#{self.class.prefix}/order/#{self.id}/invoice")
+      connection.delete(element_path.gsub('?', '/invoice?'))
     rescue => error
       Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error

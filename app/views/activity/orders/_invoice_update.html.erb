@@ -1,5 +1,5 @@
 <% if activity.recipient.present? %>
-  <li><strong>Invoice</strong> changed from <i>nil</i> to <i><%= link_to activity.recipient.external_id, invoice_path(activity.recipient.id) %></i></li>
+  <li><strong>Ivoice</strong> set to <i><%= link_to activity.recipient.external_id, invoice_path(activity.recipient.id) %></i></li>
 <% else %>
-  <li><strong>Invoice</strong> changed from <i><%= link_to activity.parameters['invoice_external_id_was'], invoice_path(activity.parameters['invoice_id_was'])  %></i> to <i>nil</i></li>
+  <li><strong>Invoice</strong> <i><%= link_to activity.parameters['invoice_external_id_was'], invoice_path(activity.parameters['invoice_id_was'])  %> deleted</i></li>
 <% end %>

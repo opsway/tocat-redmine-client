@@ -20,29 +20,58 @@ class TocatTicket < ActiveResource::Base
     end
   end
 
-  def activity # FIXME Is this method even used?
+  def activity
+    return [] unless User.current.tocat_allowed_to?(:show_activity_feed)
     begin
-       return JSON.parse(connection.get("#{self.class.prefix}/activity?owner=task&owner_id=#{self.id}").body)
-     rescue => error
-       Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
-       return []
-     end
+      records = []
+      JSON.parse(connection.get("#{self.class.prefix}/activity?trackable=task&trackable_id=#{id}&limit=9999999").body).each do |record|
+        next if record['key'] == 'task.create'
+        data = OpenStruct.new(
+            id: "tocat_#{record['id']}",
+            css_classes: 'journal has-details',
+            created_on: Time.parse(record['created_at']),
+            notes: [],
+            details: [],
+            indice: 0
+        )
+        if record['owner_id'].present?
+          owner = TocatUser.find(record['owner_id'])
+          data.user = User.where(firstname: owner.name.split().first, lastname: owner.name.split().second).first
+        end
+        data.details << OpenStruct.new(
+            prop_key: record['key'].split('.').second,
+            property: 'attr',
+            old_value: record['parameters']['old'],
+            value: record['parameters']['new'],
+            resolver: nil
+        )
+        if record['recipient_id'].present?
+          recipient = TocatUser.find(record['recipient_id'])
+          data.details.first.recipient = User.where(firstname: recipient.name.split().first, lastname: recipient.name.split().second).first
+        end
+        records << data
+      end
+      return records
+    rescue => error
+      Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
+      return []
+    end
   end
 
   def self.events_for(ids, key = nil)
     begin
       records = []
       key.nil? ?
-        url = "#{self.prefix}/activity?trackable=task&trackable_id=#{ids.join(',')}&limit=9999999" :
-        url = "#{self.prefix}/activity?trackable=task&trackable_id=#{ids.join(',')}&key=#{key}&limit=9999999"
+          url = "#{self.prefix}/activity?trackable=task&trackable_id=#{ids.join(',')}&limit=9999999" :
+          url = "#{self.prefix}/activity?trackable=task&trackable_id=#{ids.join(',')}&key=#{key}&limit=9999999"
       JSON.parse(connection.get(url).body).each do |record|
         records << OpenStruct.new(id: record["trackable_id"], key: record["key"], parameters: record['parameters'], created_at: record['created_at'])
       end
-     return records
-   rescue => error
-     Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
-     return []
-   end
+      return records
+    rescue => error
+      Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
+      return []
+    end
   end
 
   def toggle_paid # FIXME WTF? Rename to toggle_accepted
