@@ -52,35 +52,17 @@ class TocatController < ApplicationController
     @users = TocatUser.find(:all, params: { search: "role == Manager" }).sort_by!(&:name)
   end
 
-  def request_review
+  def toggle_review_requested
     issue = Issue.find(params[:issue_id])
-    issue.review_requested = true
-    respond_to do |format|
-      if issue.save
-        status = ActiveRecord::Base.connection.execute("SHOW TABLE STATUS LIKE 'journals';").first
-        journal_id = status[10]
-        ActiveRecord::Base.connection.execute("INSERT INTO `journals` (`journalized_id`, `journalized_type`, `user_id`, `created_on`, `private`) VALUES (#{issue.id}, 'Issue', #{User.current.id.to_i}, '#{Time.now.to_s(:db)}', 1);")
-        ActiveRecord::Base.connection.execute("INSERT INTO `journal_details` (`journal_id`, `old_value`, `prop_key`, `property`, `value`) VALUES (#{journal_id}, '0', 'review_requested', 'attr', '1');")
-        format.js { render :text => "OK", :status => 200 }
-      else
-        format.js { render :text => "Fail", :status => 406 }
-      end
-    end
-  end
-
-  def review_handler
-    issue = Issue.find(params[:issue_id])
-    issue.review_requested = false
-    if issue.save
-      status = ActiveRecord::Base.connection.execute("SHOW TABLE STATUS LIKE 'journals';").first
-      journal_id = status[10]
-      ActiveRecord::Base.connection.execute("INSERT INTO `journals` (`journalized_id`, `journalized_type`, `user_id`, `created_on`, `private`) VALUES (#{issue.id}, 'Issue', #{User.current.id.to_i}, '#{Time.now.to_s(:db)}', 1);")
-      ActiveRecord::Base.connection.execute("INSERT INTO `journal_details` (`journal_id`, `old_value`, `prop_key`, `property`, `value`) VALUES (#{journal_id}, '1', 'review_requested', 'attr', '0');")
+    status, payload = issue.tocat.toggle_review_requested
+    if status
       respond_to do |format|
         format.js { render :text => "OK", :status => 200 }
       end
     else
-      format.js { render :text => "Fail", :status => 406 }
+      respond_to do |format|
+        format.js { render :text => "Fail", :status => 406 }
+      end
     end
   end
 

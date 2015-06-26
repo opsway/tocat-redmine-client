@@ -14,6 +14,10 @@ module RedmineTocatClient
           task
         end
 
+        def review_requested
+          tocat.review_requested
+        end
+
         def available_resolvers
           if tocat.orders.present?
             team = TocatOrder.find(tocat.orders.first.id).team.name

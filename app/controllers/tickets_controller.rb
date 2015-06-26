@@ -11,6 +11,7 @@ class TicketsController < ApplicationController
     query_params[:search] = params[:search] if params[:search].present?
     query_params[:search] = "#{query_params[:search]} paid == #{params[:paid]}" if params[:paid].present?
     query_params[:search] = "#{query_params[:search]} accepted == #{params[:accepted]}" if params[:accepted].present?
+    query_params[:search] = "#{query_params[:search]} review_requested == #{params[:review]}" if params[:review].present?
     if params[:resolver].present?
       if params[:resolver] === 'false' || params[:resolver] === 'true'
         params[:resolver] == 'true' ?
@@ -34,10 +35,6 @@ class TicketsController < ApplicationController
       query[:project_id] = params[:project]
     end
 
-    if params[:review].present?
-      query[:review_requested] = params[:review]
-    end
-
     if params[:status].present?
       query[:status_id] = params[:status]
     end
@@ -49,10 +46,10 @@ class TicketsController < ApplicationController
     @limit = per_page_option
     @offset = params[:page]
 
-    if (params[:paid].present? || params[:accepted].present? || params[:resolver].present? || params[:budget].present?) &&
-       (params[:project].present? || params[:status].present? || params[:statuses].present? || params[:review].present?)
+    if (params[:paid].present? || params[:accepted].present? || params[:resolver].present? || params[:budget].present?  || params[:review].present?) &&
+       (params[:project].present? || params[:status].present? || params[:statuses].present?)
       tasks = TocatTicket.all(params: query_params)
-      tasks = tasks.each_with_object({}){ |c,h| h[c.external_id.to_i] = { id:c.id, accepted: c.accepted, paid:c.paid, budget:c.budget, resolver:c.get_resolver } }
+      tasks = tasks.each_with_object({}){ |c,h| h[c.external_id.to_i] = { id:c.id, accepted: c.accepted, paid:c.paid, budget:c.budget, resolver:c.get_resolver, review_requested: c.review_requested } }
       issues = Issue.joins(:project).joins(:status).where(query)
       @issues = []
       issues.each do |issue|
@@ -63,7 +60,7 @@ class TicketsController < ApplicationController
                     project: issue.project,
                     status: issue.status,
                     subject: issue.subject,
-                    review: issue.review_requested,
+                    review: task[:review_requested],
                     budget: task[:budget],
                     resolver: task[:resolver],
                     accepted: task[:accepted],
@@ -75,13 +72,13 @@ class TicketsController < ApplicationController
       offset_start = (@limit * (@offset.to_i - 1))
       offset_start = 0 if offset_start < 0
       @issues = @issues[offset_start..((@limit * @offset.to_i) + @limit)]
-    elsif params[:project].present? || params[:status].present? || params[:review].present?
+    elsif params[:project].present? || params[:status].present?
       @limit = per_page_option
       @issue_count = Issue.where(query).count
       issues = Issue.joins(:project).joins(:status).where(query).order('created_on desc').limit(@limit).offset(@offset.to_i * @limit.to_i)
       @issues = []
       tasks = TocatTicket.all(params: query_params)
-      tasks = tasks.each_with_object({}){ |c,h| h[c.external_id.to_i] = { id:c.id, accepted: c.accepted, paid:c.paid, budget:c.budget, resolver:c.get_resolver } }
+      tasks = tasks.each_with_object({}){ |c,h| h[c.external_id.to_i] = { id:c.id, accepted: c.accepted, paid:c.paid, budget:c.budget, resolver:c.get_resolver, review_requested: c.review_requested } }
       query_params[:limit] = 999999999
       issues.each do |issue|
         task = tasks[issue.id]
@@ -91,7 +88,7 @@ class TicketsController < ApplicationController
                     project: issue.project,
                     status: issue.status,
                     subject: issue.subject,
-                    review: issue.review_requested,
+                    review: task[:review_requested],
                     budget: task[:budget],
                     resolver: task[:resolver],
                     accepted: task[:accepted],
@@ -105,7 +102,7 @@ class TicketsController < ApplicationController
       @limit = tasks.http_response['X-Per-Page'].to_i
       @issue_count = tasks.http_response['X-total'].to_i
       issues = Issue.joins(:project).joins(:status).find_all_by_id(tasks.collect(&:external_id))
-      tasks = tasks.each_with_object({}){ |c,h| h[c.external_id.to_i] = { id:c.id, accepted: c.accepted, paid:c.paid, budget:c.budget, resolver:c.get_resolver } }
+      tasks = tasks.each_with_object({}){ |c,h| h[c.external_id.to_i] = { id:c.id, accepted: c.accepted, paid:c.paid, budget:c.budget, resolver:c.get_resolver, review_requested: c.review_requested } }
       @issues = []
       issues.each do |issue|
         task = tasks[issue.id]
@@ -115,7 +112,7 @@ class TicketsController < ApplicationController
                     project: issue.project,
                     status: issue.status,
                     subject: issue.subject,
-                    review: issue.review_requested,
+                    review: task[:review_requested],
                     budget: task[:budget],
                     resolver: task[:resolver],
                     accepted: task[:accepted],

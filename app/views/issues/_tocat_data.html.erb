@@ -46,7 +46,7 @@
       <%= ticket.get_paid ? image_tag('true.png') : image_tag('false.png') %>
     </td>
   </tr>
-  <% if @issue.review_requested%>
+  <% if @issue.review_requested && User.current.tocat_allowed_to?(:can_review_task)%>
     <tr>
       <th>
         <%= l(:label_review_requested) %>

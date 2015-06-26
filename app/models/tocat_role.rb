@@ -49,6 +49,8 @@ class TocatRole < ActiveRecord::Base
     paths[:tocat][:create_payment] = :create_transactions
     paths[:tocat][:new_bonus] = :create_transactions
     paths[:tocat][:pay_bonus] = :create_transactions
+    paths[:tocat][:toggle_review_requested] = :can_request_review
+    paths[:tocat][:toggle_review_requested] = :can_review_task
 
     paths[:tickets] = {}
     paths[:tickets][:index] = :show_issues
@@ -72,7 +74,7 @@ class TocatRole < ActiveRecord::Base
     data = {}
     data[:orders] = [:create_orders, :show_orders, :edit_orders, :destroy_orders, :complete_orders]
     data[:invoices] = [:create_invoices, :show_invoices, :destroy_invoices, :paid_invoices]
-    data[:issues] = [:modify_accepted, :modify_resolver, :modify_budgets, :show_budgets, :show_issues, :show_aggregated_info]
+    data[:issues] = [:modify_accepted, :modify_resolver, :modify_budgets, :show_budgets, :show_issues, :show_aggregated_info, :can_request_review, :can_review_task]
     data[:transactions] = [:show_transactions, :create_transactions]
     data[:dashboard] = [:show_tocat_page, :has_protected_page, :can_see_public_pages, :is_admin, :show_status_page, :mark_alerts_as_checked, :show_activity_feed]
     return data

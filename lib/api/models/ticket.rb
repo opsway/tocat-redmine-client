@@ -36,6 +36,8 @@ class TocatTicket < ActiveResource::Base
         )
         if record['owner_id'].present?
           owner = TocatUser.find(record['owner_id'])
+          owner = User.where(firstname: owner.name.split().first, lastname: owner.name.split().second).first
+          owner = AnonymousUser.first unless owner.present?        
           data.user = User.where(firstname: owner.name.split().first, lastname: owner.name.split().second).first
         end
         data.details << OpenStruct.new(
@@ -71,6 +73,26 @@ class TocatTicket < ActiveResource::Base
     rescue => error
       Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return []
+    end
+  end
+
+  def toggle_review_requested
+    unless review_requested
+      begin
+        connection.post(element_path.gsub('?', '/review?'))
+      rescue => error
+        Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
+        return false, error
+      end
+      return true, nil
+    else
+      begin
+        connection.delete(TocatTicket.element_path(self.id).gsub('?', '/review?'))
+      rescue => error
+        Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
+        return false, error
+      end
+      return true, nil
     end
   end
 
