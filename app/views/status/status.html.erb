@@ -45,7 +45,13 @@
           <td><%= message.alert %></td>
           <td>
             <% if User.current.tocat_allowed_to?(:mark_alerts_as_checked) %>
-              <%= link_to(checked_path(message.id), :method => message.checked ? :delete : :post) do %>
+              <%= link_to(checked_path(message.id, :params => {:checked => params[:checked]}),
+                          :method => message.checked ?
+                                        :delete :
+                                        :post,
+                          :confirm => message.checked ?
+                                        'Are you sure you want to set this alert as un-checked?' :
+                                        'Are you sure you want to set this alert as checked?') do %>
                 <%= message.checked ? image_tag('true.png') : image_tag('false.png') %>
               <% end %>
             <% else %>
