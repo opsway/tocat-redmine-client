@@ -6,7 +6,7 @@ module RedmineTocatClient
           unloadable
           def render(options = nil, extra_options = {}, &block)
             # here you define related products
-            if action_name == 'show'
+            if action_name == 'show' && @issue.present?
               @journals += @issue.tocat.activity
               @journals.sort_by!(&:created_on)
             end
