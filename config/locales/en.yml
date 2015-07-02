@@ -138,4 +138,4 @@ en:
   field_resolver_update: 'Resolver'
   field_accepted_update: 'Accepted'
   field_paid_update: 'Paid'
-  field_review_requested: 'Review requested'
+  field_review_updated: 'Review requested'

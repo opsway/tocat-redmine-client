@@ -15,7 +15,7 @@ module RedmineTocatClient
         end
 
         def review_requested
-          tocat.review_requested
+          tocat.try(:review_requested)
         end
 
         def available_resolvers
