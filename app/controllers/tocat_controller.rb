@@ -194,7 +194,7 @@ class TocatController < ApplicationController
         @balance_chart = { month: { balance: [], forecast: [], zero_line: [], timeline: [] },
                            halfyear: { balance: [], forecast: [], zero_line: [], timeline: [] },
                            year: { balance: [], forecast: [], zero_line: [], timeline: [] } }
-        balance_transactions_ = TocatTransaction.find(:all, params: { search: "accountable_type == User accountable_id == #{@user_tocat.id} created_at >= #{1.year.ago.strftime('%Y-%m-%e')} account = balance", limit: 9999999})
+        balance_transactions_ = TocatTransaction.find(:all, params: { search: "accountable_type == User accountable_id == #{@user_tocat.id} created_at >= #{1.year.ago.strftime('%Y-%m-%d')} account = balance", limit: 9999999})
         accepted_not_paid_events = TocatTicket.events_for(@accepted_tasks.collect(&:task_id), "task.accepted_update")
         balance_with_tasks = balance =  @user_tocat.balance_account_state - balance_transactions_.sum { |r| r.total.to_i}
         week = (1.week.ago.to_date..Date.today)
