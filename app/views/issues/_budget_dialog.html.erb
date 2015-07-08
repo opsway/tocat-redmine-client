@@ -19,7 +19,7 @@
           <%= label_tag 'free_budget', l(:label_free_budget_on_issue_page) %>
         </td>
         <td>
-          <span id='free_budget'><%= @order.free_budget + @order.balance if @order.present? %></span>
+          <span id='free_budget'><%= @order.free_budget if @order.present? %></span>
         </td>
       </tr><tr>
         <td>
