@@ -13,7 +13,7 @@
               <tbody>
                 <tr class="filter" id="account_type">
                   <td style='width: 70px;'><%= label_tag(:checked, l(:label_checked)) %></td>
-                  <td><%= select_tag(:checked, options_for_select([[l(:label_yes), 1], [l(:label_no), 0]], selected: params[:checked]), include_blank: true) %></td>
+                  <td><%= select_tag(:checked, options_for_select([[l(:label_yes), 1], [l(:label_no), 0]], selected: (params[:checked] || 0))) %></td>
                 </tr>
               </tbody>
             </table>

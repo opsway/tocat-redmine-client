@@ -5,7 +5,11 @@ class StatusController < ApplicationController
 
   def status
     params_ = {}
-    params_[:search] = "checked == #{params[:checked]}" if params[:checked].present?
+    if params[:checked].present?
+      params_[:search] = "checked == #{params[:checked]}"
+    else
+      params_[:search] = "checked == false"
+    end
     @messages = []
     response = JSON.parse(RestClient.get("#{RedmineTocatClient.settings[:host]}/status", {:params => params_}))
     response['messages'].each do |r|
