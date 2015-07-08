@@ -7,8 +7,13 @@ module RedmineTocatClient
           def render(options = nil, extra_options = {}, &block)
             # here you define related products
             if action_name == 'show' && @issue.present?
-              @journals += @issue.tocat.activity
-              @journals.sort_by!(&:created_on)
+              begin
+                temp = @issue.tocat.activity
+              rescue
+              ensure
+                @journals += @issue.tocat.activity
+                @journals.sort_by!(&:created_on)
+              end
             end
 
             # don't forget to call super
