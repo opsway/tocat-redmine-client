@@ -27,9 +27,9 @@
         </td>
         <td>
           <% if @order.present?%>
-            <%= number_field_tag "budget", @order.balance, max: @order.free_budget + @order.balance , min: 0.5, step: 0.5, disabled:false, required:true %>
+            <%= number_field_tag "budget", @order.balance, max: @order.free_budget + @order.balance , min: 0.01, step: 0.01, disabled:false, required:true %>
           <% else %>
-            <%= number_field_tag "budget", 0, min: 0.5, step: 0.5, disabled:true, required:true %>
+            <%= number_field_tag "budget", 0, min: 0.01, step: 0.01, disabled:true, required:true %>
           <% end %>
         </td>
       </tr>

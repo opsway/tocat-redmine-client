@@ -35,7 +35,7 @@ class TocatController < ApplicationController
       end
     else
       respond_to do |format|
-        flash[:error] = JSON.parse(errors.response.body)['errors'].join(', ')
+        flash[:error] = JSON.parse(messages.response.body)['errors'].join(', ')
         format.html { render :action => 'new_bonus' }
       end
     end

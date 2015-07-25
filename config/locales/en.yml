@@ -84,7 +84,7 @@ en:
   notice_invoice_successful_deattached: "Invoice was successfully deattached!"
   confirm_order_deattach: "Are you sure you want to deattach order?"
   notice_order_successful_deattached: "Order was successfully deattached!"
-  message_invoice_paid_failed: "Paid status can\'t be changed!"
+  message_invoice_paid_failed: "Paid status can't be changed! Invoice has linked completed orders."
   label_transaction_plural: "Transactions"
   label_account_type: "Account Type"
   label_owner: "Owner"
