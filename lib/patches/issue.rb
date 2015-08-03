@@ -15,7 +15,11 @@ module RedmineTocatClient
         end
 
         def review_requested
-          tocat.try(:review_requested)
+          begin
+            tocat.try(:review_requested)
+          rescue
+            false
+          end
         end
 
         def available_resolvers
