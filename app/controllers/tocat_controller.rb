@@ -210,18 +210,18 @@ class TocatController < ApplicationController
           forecast_balance = (balance_with_tasks += (events_sum + transactions_sum)).round(2)
           if month.include?(date)
             @balance_chart[:month][:balance] << balance_with_transactions
-            @balance_chart[:month][:forecast] << forecast_balance if events_count == @accepted_tasks.count
+            @balance_chart[:month][:forecast] << forecast_balance
             @balance_chart[:month][:zero_line] << 0
             @balance_chart[:month][:timeline] << date
           end
           if halfyear.include?(date)
             @balance_chart[:halfyear][:balance] << balance_with_transactions
-            @balance_chart[:halfyear][:forecast] << forecast_balance if events_count == @accepted_tasks.count
+            @balance_chart[:halfyear][:forecast] << forecast_balance
             @balance_chart[:halfyear][:zero_line] << 0
             @balance_chart[:halfyear][:timeline] << date
           end
           @balance_chart[:year][:balance] << balance_with_transactions
-          @balance_chart[:year][:forecast] << forecast_balance if events_count == @accepted_tasks.count
+          @balance_chart[:year][:forecast] << forecast_balance
           @balance_chart[:year][:zero_line] << 0
           @balance_chart[:year][:timeline] << date
         end
