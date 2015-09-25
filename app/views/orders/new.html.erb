@@ -31,10 +31,9 @@
             <%= f.hidden_field :parent_order, value: @order.parent_order %>
           <% end %>
         <% end %>
-        <%# binding.pry %>
         <% if params[:redirect_to].present? %>
           <%= hidden_field_tag 'redirect_to', params[:redirect_to] %>
-          <p><%= label_tag "Budget" %> <%= number_field_tag :budget, '', :class => 'budget', :step => 0.01, :required => true, :disabled => true %></p>
+          <p><%= label_tag "Task budget" %> <%= number_field_tag :budget, '', :class => 'budget', :step => 0.01, :required => true, :disabled => true %></p>
           <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
           <script charset="utf-8">jQuery.noConflict();</script>
           <script>
