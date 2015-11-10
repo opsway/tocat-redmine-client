@@ -28,7 +28,11 @@
   </fieldset>
 <% end %>
 <% if @timestamp.present? %>
-  <h4>Last run: <%= Time.parse(@timestamp) %></h4>
+  <% if @timestamp <= 25.hours.ago %>
+    <h3 style='color: red;'> WARNING: STATUS IS OUTDATED! Last run: <%= @timestamp %></h4>
+  <% else %>
+    <h4> Last run: <%= @timestamp %></h4>
+  <% end %>
 <% end %>
 <div class = "problemsContainer">
   <div class="autoscroll">

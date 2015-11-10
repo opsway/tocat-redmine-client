@@ -15,7 +15,7 @@ class StatusController < ApplicationController
     response['messages'].each do |r|
       @messages << OpenStruct.new(:id => r['id'], :alert => r['alert'], :checked => r['checked'])
     end
-    @timestamp = response['timestamp']
+    @timestamp = Time.parse(response['timestamp']) if response['timestamp'].present?
   end
 
   def checked
