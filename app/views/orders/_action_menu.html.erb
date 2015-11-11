@@ -9,7 +9,9 @@
       <% if @order.completed %>
         <%= link_to l(:button_uncomplete), order_uncomplete_path(@order), :data => {:confirm => l(:confirm_order_uncompleted)}, :method => :delete, :class => 'icon icon-checked' %>
       <% else %>
-        <%= link_to l(:button_complete), order_complete_path(@order), :data => {:confirm => l(:confirm_order_completed)}, :method => :put, :class => 'icon icon-checked' %>
+        <% if @order.paid %>
+            <%= link_to l(:button_complete), order_complete_path(@order), :data => {:confirm => l(:confirm_order_completed)}, :method => :put, :class => 'icon icon-checked' %>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>
