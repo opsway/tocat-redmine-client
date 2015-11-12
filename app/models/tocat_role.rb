@@ -22,11 +22,11 @@ class TocatRole < ActiveRecord::Base
     paths[:orders][:invoices] = :create_invoices
     paths[:orders][:set_invoice] = :create_invoices
     paths[:orders][:delete_invoice] = :create_invoices
-    paths[:orders][:toggle_completed] = :create_invoices
     paths[:orders][:edit] = :edit_orders
     paths[:orders][:update] = :edit_orders
     paths[:orders][:destroy] = :destroy_orders
-    paths[:orders][:destroy] = :complete_orders
+    paths[:orders][:toggle_complete] = :complete_invoices
+    paths[:orders][:toggle_uncomplete] = :uncomplete_invoices
 
     paths[:invoices] = {}
     paths[:invoices][:create] = :create_invoices
