@@ -66,13 +66,25 @@ class TocatRole < ActiveRecord::Base
     paths[:transactions][:edit] = :create_transactions
     return false unless paths[request[:controller].to_sym].present?
     return false unless paths[request[:controller].to_sym][request[:action].to_sym].present?
+    #debug print
+    p 'request debug'
+    p '!'
+    p '!'
+    p '!'
+    p '!'
+    p paths
+    p request[:controller]
+    p request[:action]
+    p '!'
+    p '!'
+    p '!'
     return false unless User.current.tocat_allowed_to?(paths[request[:controller].to_sym][request[:action].to_sym])
     true
   end
 
   def self.permissions #load from config?
     data = {}
-    data[:orders] = [:create_orders, :show_orders, :edit_orders, :destroy_orders, :complete_orders]
+    data[:orders] = [:create_orders, :show_orders, :edit_orders, :destroy_orders, :complete_orders, :uncomplete_orders]
     data[:invoices] = [:create_invoices, :show_invoices, :destroy_invoices, :paid_invoices]
     data[:issues] = [:modify_accepted, :modify_resolver, :modify_budgets, :show_budgets, :show_issues, :show_aggregated_info, :can_request_review, :can_review_task]
     data[:transactions] = [:show_transactions, :create_transactions]

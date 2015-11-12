@@ -105,6 +105,7 @@ en:
   edit_orders: 'Edit orders'
   destroy_orders: 'Delete orders'
   complete_orders: 'Complete orders'
+  uncomplete_orders: 'Uncomplete orders'
   create_invoices: 'Create invoice'
   show_invoices: 'View invoices'
   destroy_invoices: 'Delete invoices'
