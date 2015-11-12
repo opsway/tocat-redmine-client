@@ -25,8 +25,8 @@ class TocatRole < ActiveRecord::Base
     paths[:orders][:edit] = :edit_orders
     paths[:orders][:update] = :edit_orders
     paths[:orders][:destroy] = :destroy_orders
-    paths[:orders][:toggle_complete] = :complete_invoices
-    paths[:orders][:toggle_uncomplete] = :uncomplete_invoices
+    paths[:orders][:toggle_complete] = :complete_orders
+    paths[:orders][:toggle_uncomplete] = :uncomplete_orders
 
     paths[:invoices] = {}
     paths[:invoices][:create] = :create_invoices
