@@ -49,8 +49,8 @@ class TocatRole < ActiveRecord::Base
     paths[:tocat][:create_payment] = :create_transactions
     paths[:tocat][:new_bonus] = :create_transactions
     paths[:tocat][:pay_bonus] = :create_transactions
-    paths[:tocat][:toggle_review_requested] = :can_request_review
-    paths[:tocat][:toggle_review_requested] = :can_review_task
+    paths[:tocat][:request_review] = :can_request_review
+    paths[:tocat][:review_handler] = :can_review_task
 
     paths[:tickets] = {}
     paths[:tickets][:index] = :show_issues

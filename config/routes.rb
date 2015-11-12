@@ -32,5 +32,5 @@ match '/tocat/bonus' => 'tocat#pay_bonus', as: :bonus, via: [:post]
 
 match '/issues/:id/accepted' => 'tocat#toggle_accepted', as: :issue_accepted, via: [:post, :put]
 
-match '/tocat/request_review' => 'tocat#toggle_review_requested', :via => :put
-match '/tocat/review_handler' => 'tocat#toggle_review_requested', :via => :put
+match '/tocat/request_review' => 'tocat#request_review', :via => :put
+match '/tocat/review_handler' => 'tocat#review_handler', :via => :put

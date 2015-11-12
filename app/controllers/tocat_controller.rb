@@ -51,6 +51,13 @@ class TocatController < ApplicationController
   def new_bonus
     @users = TocatUser.find(:all, params: { search: "role == Manager" }).sort_by!(&:name)
   end
+  
+  def request_review
+    toggle_review_requested
+  end
+  def review_handler
+    toggle_review_requested
+  end
 
   def toggle_review_requested
     issue = Issue.find(params[:issue_id])
