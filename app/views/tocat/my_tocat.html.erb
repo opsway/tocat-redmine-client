@@ -11,11 +11,6 @@
     <%= render 'transactions', :transactions => @income_transactions %>
 </div>
 <div class="splitcontentright">
-  <% if @user_tocat.role == 'Manager' %>
-      <label>  <%=t 'label_team_payment', name: @team_tocat.name %></label>
-      <strong> $<%= @team_tocat.income_account_state.round(2) %></strong><br/>
-      <%= render 'transactions', :transactions => @team_income_transactions %>
-  <% end %>
       <br/>
       <label><%=	l(:label_not_accepted_issues)  %> <strong>$<%= @not_accepted_tasks.sum(&:budget).round(1) %> </strong> </label>
       <%= render 'issues', :issues => @not_accepted_tasks, :accepted => 0 %>
