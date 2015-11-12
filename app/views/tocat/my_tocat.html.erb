@@ -5,10 +5,8 @@
 <strong> $<%= @team_tocat.balance_account_state.round(2)%></strong><br/>
 <hr/>
 <div class="splitcontentleft">
-  <% unless @user_tocat.role == 'Manager' %>
     <label><%=	l(:label_balance)  %></label><strong> $<%= @user_tocat.balance_account_state.round(2)%></strong><br/>
     <%= render 'transactions', :transactions => @balance_transactions %>
-  <% end %>
     <label><%=	l(:label_payment_balance)  %></label><strong> $<%= @user_tocat.income_account_state.round(1) %></strong><br/>
     <%= render 'transactions', :transactions => @income_transactions %>
 </div>
@@ -17,19 +15,17 @@
       <label>  <%=t 'label_team_payment', name: @team_tocat.name %></label>
       <strong> $<%= @team_tocat.income_account_state.round(2) %></strong><br/>
       <%= render 'transactions', :transactions => @team_income_transactions %>
-  <% else %>
+  <% end %>
       <br/>
       <label><%=	l(:label_not_accepted_issues)  %> <strong>$<%= @not_accepted_tasks.sum(&:budget).round(1) %> </strong> </label>
       <%= render 'issues', :issues => @not_accepted_tasks, :accepted => 0 %>
       <label><%=	l(:label_accepted_issues)  %> <strong>$<%= @accepted_tasks.sum(&:budget).round(1) %> </strong> </label>
       <%= render 'issues', :issues => @accepted_tasks, :accepted => 1, :balance => @accepted_tasks.sum(&:budget).round(1) %>
-  <% end %>
 </div>
 <div style="clear:both;"></div>
 
 
 <% html_title "TOCAT : My dashboard" %>
-<% unless @user_tocat.role == 'Manager' %>
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
   <script charset="utf-8">jQuery.noConflict()</script>
@@ -129,4 +125,3 @@
     });
     </script>
   </div>
-<% end %>
