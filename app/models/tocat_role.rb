@@ -66,18 +66,6 @@ class TocatRole < ActiveRecord::Base
     paths[:transactions][:edit] = :create_transactions
     return false unless paths[request[:controller].to_sym].present?
     return false unless paths[request[:controller].to_sym][request[:action].to_sym].present?
-    #debug print
-    p 'request debug'
-    p '!'
-    p '!'
-    p '!'
-    p '!'
-    p paths
-    p request[:controller]
-    p request[:action]
-    p '!'
-    p '!'
-    p '!'
     return false unless User.current.tocat_allowed_to?(paths[request[:controller].to_sym][request[:action].to_sym])
     true
   end

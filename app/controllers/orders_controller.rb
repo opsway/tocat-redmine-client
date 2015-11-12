@@ -184,6 +184,13 @@ class OrdersController < ApplicationController
     end
   end
 
+  def toggle_complete
+    toggle_completed
+  end
+  def toggle_uncomplete
+    toggle_completed
+  end
+
   def toggle_completed
     status, payload = @order.toggle_campleted
     if status
