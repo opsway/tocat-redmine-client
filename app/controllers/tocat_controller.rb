@@ -188,11 +188,7 @@ class TocatController < ApplicationController
     begin
       @user_tocat = TocatUser.find(TocatUser.find_by_name(@user.name).id)
       @team_tocat = TocatTeam.find(@user_tocat.team.id)
-      if @user_tocat.role == 'Manager'
-        @team_income_transactions = TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "account = payment" })
-      else
-        @team_balance_transactions = TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "account = balance" })
-      end
+      @team_balance_transactions = TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "account = balance" })
       @income_transactions = TocatTransaction.find(:all, params:{user: @user_tocat.id, limit:9999999, search: "account = payment" })
       @balance_transactions = TocatTransaction.find(:all, params:{user: @user_tocat.id, limit:9999999, search: "account = balance" })
       @accepted_tasks = TocatTicket.get_accepted_tasks(true, @user_tocat.id)
@@ -218,18 +214,33 @@ class TocatController < ApplicationController
         forecast_balance = (balance_with_tasks += (events_sum + transactions_sum)).round(2)
         if month.include?(date)
           @balance_chart[:month][:balance] << balance_with_transactions
-          @balance_chart[:month][:forecast] << forecast_balance
+
+          if @user_tocat.role == 'Manager'
+            @balance_chart[:month][:forecast] << balance_with_transactions
+          else
+            @balance_chart[:month][:forecast] << forecast_balance
+          end
           @balance_chart[:month][:zero_line] << 0
           @balance_chart[:month][:timeline] << date
         end
         if halfyear.include?(date)
           @balance_chart[:halfyear][:balance] << balance_with_transactions
-          @balance_chart[:halfyear][:forecast] << forecast_balance
+
+          if @user_tocat.role == 'Manager'
+            @balance_chart[:halfyear][:forecast] << balance_with_transactions
+          else
+            @balance_chart[:halfyear][:forecast] << forecast_balance
+          end
           @balance_chart[:halfyear][:zero_line] << 0
           @balance_chart[:halfyear][:timeline] << date
         end
+
         @balance_chart[:year][:balance] << balance_with_transactions
-        @balance_chart[:year][:forecast] << forecast_balance
+        if @user_tocat.role == 'Manager'
+          @balance_chart[:year][:forecast] << balance_with_transactions
+        else
+          @balance_chart[:year][:forecast] << forecast_balance
+        end
         @balance_chart[:year][:zero_line] << 0
         @balance_chart[:year][:timeline] << date
       end
