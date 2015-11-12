@@ -7,9 +7,11 @@
   <% if User.current.tocat_allowed_to?(:complete_orders) %>
     <% unless @order.parent %>
       <% if @order.completed %>
-        <%= link_to l(:button_uncomplete), order_uncomplete_path(@order), :data => {:confirm => l(:confirm_order_uncompleted)}, :method => :delete, :class => 'icon icon-checked' %>
+        <% if User.current.tocat_allowed_to?(:uncomplete_orders) %>
+            <%= link_to l(:button_uncomplete), order_uncomplete_path(@order), :data => {:confirm => l(:confirm_order_uncompleted)}, :method => :delete, :class => 'icon icon-checked' %>
+        <% end %>
       <% else %>
-        <% if @order.paid and User.current.tocat_allowed_to?(:uncomplete_orders) %>
+        <% if @order.paid  %>
             <%= link_to l(:button_complete), order_complete_path(@order), :data => {:confirm => l(:confirm_order_completed)}, :method => :put, :class => 'icon icon-checked' %>
         <% end %>
       <% end %>
