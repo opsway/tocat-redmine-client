@@ -1,0 +1,21 @@
+= error_messages_for 'tocat_user' 
+h3= l(:label_user)
+.box.users
+  = form_for @user do |f|
+    = f.label :name, l(:label_name)
+    = f.text_field :name
+    br
+    = f.label :login, l(:label_loginname)
+    = f.text_field :login
+    br
+    = f.label :role, l(:label_tocat_role)
+    = f.select :role, options_for_select(TocatServerRole.all.map{|r| [r.name, r.id]}, selected: @user.role.try(:id))
+    br
+    = f.label :team, l(:label_team)
+    = f.select :team, options_for_select(TocatTeam.all.map{|t| [t.name, t.id]}, selected: @user.team.try(:id))
+    br
+    = f.label :daily_rate, l(:label_rate)
+    = f.text_field :daily_rate
+    / f.check_box :active
+    br
+    = f.submit 

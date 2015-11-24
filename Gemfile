@@ -1,5 +1,6 @@
 gem 'activeresource'
 gem 'activeresource-response'
+gem 'slim'
 
 group :development do
   gem 'pry'

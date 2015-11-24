@@ -16,6 +16,7 @@ Redmine::Plugin.register :redmine_tocat_client do
                           :if => Proc.new{ User.current.tocat_allowed_to?(:show_tocat_page) }, :caption => 'TOCAT'
 
   menu :admin_menu, :tocat_roles, { :controller => 'tocat_roles', :action => 'index' }, :caption => 'TOCAT Roles and Permissions'
+  menu :admin_menu, :tocat_users, { :controller => 'tocat_users', :action => 'index' }, :caption => 'TOCAT Users'
 
 
   Redmine::MenuManager.map :tocat_menu do |menu|

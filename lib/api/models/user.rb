@@ -3,6 +3,16 @@ class TocatUser < ActiveResource::Base
   self.site = RedmineTocatClient.settings[:host]
   self.collection_name = 'users'
   self.element_name = 'user'
+  add_response_method :http_response
+
+  schema do
+    attribute 'id', :integer
+    attribute 'login', :string
+    attribute 'name', :string
+    attribute 'team', :integer
+    attribute 'role', :integer
+    decimal 'daily_rate'
+  end
 
   class << self
     def element_path(id, prefix_options = {}, query_options = nil)

@@ -140,3 +140,16 @@ en:
   field_accepted_update: 'Accepted'
   field_paid_update: 'Paid'
   field_review_updated: 'Review requested'
+  #users
+  label_users_plural: 'Tocat Users'
+  label_email: 'Email'
+  label_rate: 'Daily Rate'
+  label_team: 'Team'
+  label_admin: 'Admin'
+  label_active: 'Active'
+  label_make_inactive: 'Make inactive'
+  label_edit: 'Edit'
+  label_user_new: 'New User'
+  error_can_not_remove_user: "Can't make user inactive"
+  label_edit_user: 'Edit User'
+  label_loginname: 'Login'

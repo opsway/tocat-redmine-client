@@ -1,3 +1,15 @@
-#admin-menu a.tocat-roles {
+#admin-menu a.tocat-roles,a.tocat-users {
   background-image: url(/images/database_key.png);
+}
+
+.box.users label{
+    min-width: 7%;
+    display: inline-block;
+}
+.box.users input{
+    width: 30%;
+}
+
+.box.users select{
+    width: 20%;
 }
