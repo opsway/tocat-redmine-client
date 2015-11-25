@@ -6,7 +6,7 @@ class TocatUsersController < ApplicationController
   before_filter :find_user, :only => [:edit, :update, :destroy]
 
   def index
-    query_params = {}
+    query_params = {anyuser: true}
     query_params[:limit] = params[:per_page] if params[:per_page].present?
     query_params[:page] = params[:page] if params[:page].present?
 
