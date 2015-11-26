@@ -141,7 +141,7 @@ en:
   field_paid_update: 'Paid'
   field_review_updated: 'Review requested'
   #users
-  label_users_plural: 'Tocat Users'
+  label_users_plural: 'Users'
   label_email: 'Email'
   label_rate: 'Daily Rate'
   label_team: 'Team'

@@ -1,7 +1,7 @@
 .contextual
   - if User.current.tocat_allowed_to? :create_user
     = link_to l(:label_user_new), new_tocat_user_path, class: 'icon icon-add' 
-h2= link_to l(:label_users_plural), tocat_users_path 
+h2= l(:label_users_plural)
 .autoscroll
   table.list
     thead
