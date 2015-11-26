@@ -23,5 +23,5 @@ h2= link_to l(:label_users_plural), tocat_users_path
             td= link_to l(:label_make_inactive), tocat_user_path(user), method: :delete, confirm: 'Are you sure?'
           - else
             td
-            td
+            td= link_to l(:label_make_active), tocat_user_path(user), method: :delete, confirm: 'Are you sure?'
 p.pagination= pagination_links_full @users_pages, @users_count

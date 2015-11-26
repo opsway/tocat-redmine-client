@@ -148,6 +148,7 @@ en:
   label_admin: 'Admin'
   label_active: 'Active'
   label_make_inactive: 'Make inactive'
+  label_make_active: 'Make active'
   label_edit: 'Edit'
   label_user_new: 'New User'
   error_can_not_remove_user: "Can't make user inactive"
