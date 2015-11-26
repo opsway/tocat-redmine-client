@@ -33,7 +33,6 @@ Redmine::Plugin.register :redmine_tocat_client do
               :if => Proc.new{ User.current.tocat_allowed_to?(:show_transactions)},
               :caption => :label_transaction_plural
     menu.push :users, { :controller => 'tocat_users', :action => 'index' },
-              :if => Proc.new { User.current.admin? },
               :caption => 'Users'
     menu.push :status, { :controller => 'status', :action => 'status' },
               :if => Proc.new{ User.current.tocat_allowed_to?(:show_status_page)},
