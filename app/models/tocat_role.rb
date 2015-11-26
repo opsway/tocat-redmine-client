@@ -58,7 +58,18 @@ class TocatRole < ActiveRecord::Base
     paths[:status] = {}
     paths[:status][:status] = :show_status_page
     paths[:status][:checked] = :mark_alerts_as_checked
+    
+    #users
+    paths[:tocat_users] = {}
+    paths[:tocat_users][:index] = :show_issues
+    paths[:tocat_users][:new] = :create_user
+    paths[:tocat_users][:create] = :create_user
+    paths[:tocat_users][:edit] = :update_user
+    paths[:tocat_users][:update] = :update_user
+    paths[:tocat_users][:destroy] = :deactivate_user
+    paths[:tocat_users][:makeactive] = :activate_user
 
+    #transactions
     paths[:transactions] = {}
     paths[:transactions][:index] = :show_transactions
     #paths[:transactions][:create] = :create_transactions
@@ -77,6 +88,7 @@ class TocatRole < ActiveRecord::Base
     data[:issues] = [:modify_accepted, :modify_resolver, :modify_budgets, :show_budgets, :show_issues, :show_aggregated_info, :can_request_review, :can_review_task]
     data[:transactions] = [:show_transactions, :create_transactions]
     data[:dashboard] = [:show_tocat_page, :has_protected_page, :can_see_public_pages, :is_admin, :show_status_page, :mark_alerts_as_checked, :show_activity_feed]
+    data[:users] = [:create_user,:update_user, :activate_user, :deactivate_user]
     return data
   end
 

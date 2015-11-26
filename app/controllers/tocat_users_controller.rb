@@ -2,8 +2,9 @@ class TocatUsersController < ApplicationController
   unloadable
   layout 'tocat_base'
 
-  before_filter :require_admin
-  before_filter :find_user, :only => [:edit, :update, :destroy]
+  #before_filter :require_admin
+  before_filter :check_action
+  before_filter :find_user, :only => [:edit, :update, :destroy, :makeactive]
 
   def index
     query_params = {anyuser: true}
@@ -13,6 +14,7 @@ class TocatUsersController < ApplicationController
     @users = TocatUser.all(params: query_params)
     @users_count = @users.http_response['X-total'].to_i
     @users_pages = Paginator.new self, @users_count, @users.http_response['X-Per-Page'].to_i, params['page']
+    @real_users = User.where(login: @users.map(&:login))
   end
 
   def new
@@ -50,6 +52,9 @@ class TocatUsersController < ApplicationController
     flash[:error] =  l(:error_can_not_remove_user)
     redirect_to :action => 'index'
   end
+  def makeactive
+    self.destroy
+  end
 
   private
 
@@ -57,6 +62,17 @@ class TocatUsersController < ApplicationController
     @user = TocatUser.find(params[:id])
   rescue ActiveRecord::RecordNotFound
     render_404
+  end
+
+  def check_action
+    p '!'
+    p '!'
+    p request.env['PATH_INFO']
+    p request.env['REQUEST_METHOD']
+    p Rails.application.routes.recognize_path(request.env['PATH_INFO'], {:method => request.env['REQUEST_METHOD'].to_sym})
+    p '!'
+    p '!'
+    render_403 unless TocatRole.check_path(Rails.application.routes.recognize_path(request.env['PATH_INFO'], {:method => request.env['REQUEST_METHOD'].to_sym}))
   end
 
 end

@@ -154,3 +154,7 @@ en:
   error_can_not_remove_user: "Can't make user inactive"
   label_edit_user: 'Edit User'
   label_loginname: 'Login'
+  create_user: 'Create User'
+  update_user: 'Edit User'
+  activate_user: 'Activate User'
+  deactivate_user: 'Deactivate User'

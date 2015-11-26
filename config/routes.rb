@@ -5,7 +5,9 @@ match '/tocat' => 'tocat#my_tocat', as: :my_tocat, via: [:get]
 #match '/tocat/invoices' => 'tocat#invoices', as: :invoices, via: [:get]
 #match '/tocat/invoices/:invoice_id' => 'tocat#show_invoice', as: :show_invoice, via: [:get]
 resources :invoices, path: '/tocat/invoices'
-resources :tocat_users, path: '/tocat/users'
+resources :tocat_users, path: '/tocat/users' do
+  delete :makeactive, on: :member
+end
 resources :orders, path: '/tocat/orders'
 resources :tickets, path: '/tocat/issues'
 resources :tocat_roles, path: '/tocat/roles'

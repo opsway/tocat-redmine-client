@@ -1,5 +1,6 @@
 .contextual
-  = link_to l(:label_user_new), new_tocat_user_path, class: 'icon icon-add' 
+  - if User.current.tocat_allowed_to? :create_user
+    = link_to l(:label_user_new), new_tocat_user_path, class: 'icon icon-add' 
 h2= link_to l(:label_users_plural), tocat_users_path 
 .autoscroll
   table.list
@@ -14,14 +15,20 @@ h2= link_to l(:label_users_plural), tocat_users_path
     tbody
       - @users.each do |user|
         tr
-          td= user.name
+          td= link_to user.name, my_tocat_path(user_id: @real_users.find{|u|u.login == user.login}.try(:id))
           td= user.team.try(:name)
           td= user.role.try(:name)
           td= user.active ? image_tag('true.png') : image_tag('false.png')
           - if user.active
-            td= link_to l(:label_edit), edit_tocat_user_path(user)
-            td= link_to l(:label_make_inactive), tocat_user_path(user), method: :delete, confirm: 'Are you sure?'
+            td
+              - if User.current.tocat_allowed_to? :update_user
+                = link_to l(:label_edit), edit_tocat_user_path(user)
+            td
+              - if User.current.tocat_allowed_to? :deactivate_user
+                = link_to l(:label_make_inactive), tocat_user_path(user), method: :delete, confirm: 'Are you sure?'
           - else
             td
-            td= link_to l(:label_make_active), tocat_user_path(user), method: :delete, confirm: 'Are you sure?'
+            td
+              - if User.current.tocat_allowed_to? :activate_user
+                = link_to l(:label_make_active), makeactive_tocat_user_path(user), method: :delete, confirm: 'Are you sure?'
 p.pagination= pagination_links_full @users_pages, @users_count
