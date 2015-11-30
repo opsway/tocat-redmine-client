@@ -27,7 +27,7 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
       success: function(data) {
         document.getElementById('orders_box').innerHTML = data[0];
         document.getElementById('tocat_box').innerHTML = data[1];
-        var orders = JSON.parse(jQuery.noConflict()('#teams').val())
+        //var orders = JSON.parse(jQuery.noConflict()('#teams').val())
         jQuery.noConflict()('#ajax-indicator').hide();
       },
       error: function(data) {;
