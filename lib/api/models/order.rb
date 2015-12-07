@@ -49,7 +49,6 @@ class TocatOrder < ActiveResource::Base
         owner = nil
         if record['owner_id'].present?
           owner = TocatUser.find(record['owner_id'])
-          owner = User.where(firstname: owner.name.split().first, lastname: owner.name.split().second).first
         end
         records << OpenStruct.new(key: record["key"], recipient: recipient, parameters: record['parameters'], created_at: record['created_at'], owner: owner)      end
        return records
@@ -97,18 +96,13 @@ class TocatOrder < ActiveResource::Base
     tasks.each do |task|
       issue = Issue.where(id: task.external_id).first
       if issue.present?
-       #resolver = task.resolver
-       if task.resolver.attributes.include? 'name'
-         resolver =  User.where(firstname: task.resolver.name.split.first, lastname: task.resolver.name.split.last).first
-       else
-         resolver = nil
-       end
-        issues << OpenStruct.new( id: task.external_id,
-                                  project: issue.project,
-                                  budget: budgets[task.id],
-                                  resolver: resolver,
-                                  subject: issue.subject
-                                )
+       resolver = task.resolver if task.resolver.try(:id)
+       issues << OpenStruct.new( id: task.external_id,
+                                 project: issue.project,
+                                 budget: budgets[task.id],
+                                 resolver: resolver,
+                                 subject: issue.subject
+                               )
       else
         issues << OpenStruct.new( id: task.external_id,
                                   project: nil,

@@ -15,7 +15,7 @@ module RedmineTocatClient
       end
       module InstanceMethods
         def tocat
-          TocatUser.find_by_name(name)
+          TocatUser.find_by_login(login)
         end
         def tocat_allowed_to?(action)
           return false unless self.tocat_role.present?

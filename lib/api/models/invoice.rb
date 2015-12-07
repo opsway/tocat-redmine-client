@@ -46,7 +46,6 @@ class TocatInvoice < ActiveResource::Base
         owner = nil
         if record['owner_id'].present?
           owner = TocatUser.find(record['owner_id'])
-          owner = User.where(firstname: owner.name.split().first, lastname: owner.name.split().second).first
         end
         records << OpenStruct.new(key: record["key"], recipient: recipient, parameters: record['parameters'], created_at: record['created_at'], owner: owner)
       end

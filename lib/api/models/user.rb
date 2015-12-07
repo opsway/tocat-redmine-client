@@ -56,6 +56,9 @@ class TocatUser < ActiveResource::Base
     return true, nil
   end
 
+  def self.find_by_login(login)
+    return TocatUser.find(:all, params:{search:"login=#{login}"}).first
+  end
 
   def self.find_by_name(name)
     return TocatUser.find(:all, params:{search:"#{name}"}).first

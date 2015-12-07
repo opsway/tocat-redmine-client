@@ -36,9 +36,8 @@ class TocatTicket < ActiveResource::Base
         )
         if record['owner_id'].present?
           owner = TocatUser.find(record['owner_id'])
-          owner = User.where(firstname: owner.name.split().first, lastname: owner.name.split().second).first
           owner = AnonymousUser.first unless owner.present?        
-          data.user = User.where(firstname: owner.name.split().first, lastname: owner.name.split().second).first
+          data.user = owner # TODO - change from just user to TocatUser
         end
         data.details << OpenStruct.new(
             prop_key: record['key'].split('.').second,
@@ -49,7 +48,7 @@ class TocatTicket < ActiveResource::Base
         )
         if record['recipient_id'].present?
           recipient = TocatUser.find(record['recipient_id'])
-          data.details.first.recipient = User.where(firstname: recipient.name.split().first, lastname: recipient.name.split().second).first
+          data.details.first.recipient = recipient
         end
         records << data
       end
@@ -145,7 +144,7 @@ class TocatTicket < ActiveResource::Base
     if resolver.attributes.empty?
       nil
     else
-      User.find_by_lastname(resolver.name.split.second)
+      resolver
     end
   end
 

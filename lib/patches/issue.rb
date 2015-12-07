@@ -29,8 +29,7 @@ module RedmineTocatClient
           else
             _users =  TocatUser.all
           end
-          users = []
-          _users.each { |u| users << User.find_by_lastname(u.name.split.second) }
+          users = _users
           return users.sort_by(&:name)
         end
 

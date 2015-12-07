@@ -91,11 +91,7 @@ class TocatController < ApplicationController
 
   def update_resolver
     @issue = Issue.find(params[:issue_id])
-    resolver_id = nil
-    resolver = User.where(id:params[:resolver_id]).last
-    if resolver.present?
-      resolver_id = resolver.tocat.id
-    end
+    resolver_id = params[:resolver_id]
     status, errors = TocatTicket.update_resolver(@issue.tocat.id, resolver_id)
     if status
       data = []
@@ -175,8 +171,9 @@ class TocatController < ApplicationController
   end
 
   def my_tocat
-    if params[:user_id].present? && params[:user_id].to_i != User.current.id
-      target = User.where(id:params[:user_id]).first
+    if params[:user_id].present? 
+      @user_tocat = TocatUser.find(params[:user_id])
+      target = User.find_by_login(@user_tocat.login) 
       if target.present? && check_permissions(target)
         @user = target
       else
@@ -184,9 +181,10 @@ class TocatController < ApplicationController
       end
     else
       @user = User.current
+      @user_tocat = @user.tocat
     end
     begin
-      @user_tocat = TocatUser.find(TocatUser.find_by_name(@user.name).id)
+      #@user_tocat = TocatUser.find(TocatUser.find_by_name(@user.name).id) #!!!
       @team_tocat = TocatTeam.find(@user_tocat.team.id)
       @team_balance_transactions = TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "account = balance" })
       @income_transactions = TocatTransaction.find(:all, params:{user: @user_tocat.id, limit:9999999, search: "account = payment" })
