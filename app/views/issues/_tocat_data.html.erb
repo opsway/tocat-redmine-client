@@ -13,7 +13,7 @@
     <td>
       <% if User.current.tocat_allowed_to?(:modify_resolver)%>
         <% if ticket.get_resolver %>
-          <% if @issue.available_resolvers.include?(ticket.get_resolver) %>
+          <% if @issue.available_resolvers.map(&:id).include?(ticket.get_resolver.id) %>
             <%= select_tag "resolver", options_from_collection_for_select(@issue.available_resolvers, "id", "name", selected: ticket.get_resolver.id ), include_blank: true, onChange: 'set_resolver(this)' %>
           <% else %>
             <%= ticket.get_resolver.name if ticket.get_resolver.present? %>
