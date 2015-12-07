@@ -15,7 +15,7 @@ h2= l(:label_users_plural)
     tbody
       - @users.each do |user|
         tr
-          td= link_to user.name, my_tocat_path(user_id: u.id)
+          td= link_to user.name, my_tocat_path(user_id: user.id)
           td= user.team.try(:name)
           td= user.role.try(:name)
           td= user.active ? image_tag('true.png') : image_tag('false.png')
