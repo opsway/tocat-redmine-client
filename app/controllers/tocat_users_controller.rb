@@ -65,13 +65,6 @@ class TocatUsersController < ApplicationController
   end
 
   def check_action
-    p '!'
-    p '!'
-    p request.env['PATH_INFO']
-    p request.env['REQUEST_METHOD']
-    p Rails.application.routes.recognize_path(request.env['PATH_INFO'], {:method => request.env['REQUEST_METHOD'].to_sym})
-    p '!'
-    p '!'
     render_403 unless TocatRole.check_path(Rails.application.routes.recognize_path(request.env['PATH_INFO'], {:method => request.env['REQUEST_METHOD'].to_sym}))
   end
 

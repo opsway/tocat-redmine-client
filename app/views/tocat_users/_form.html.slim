@@ -3,19 +3,19 @@ h3= l(:label_user)
 .box.users
   = form_for @user do |f|
     = f.label :name, l(:label_name)
-    = f.text_field :name
+    = f.text_field :name, required: true
     br
     = f.label :login, l(:label_loginname)
-    = f.text_field :login
+    = f.text_field :login, required: true
     br
     = f.label :role, l(:label_tocat_role)
-    = f.select :role, options_for_select(TocatServerRole.all.map{|r| [r.name, r.id]}, selected: @user.role.try(:id))
+    = f.select :role, options_for_select(TocatServerRole.all.map{|r| [r.name, r.id]}, selected: @user.role.try(:id), required: true), include_blank: 'Select Role', required: true
     br
     = f.label :team, l(:label_team)
-    = f.select :team, options_for_select(TocatTeam.all.map{|t| [t.name, t.id]}, selected: @user.team.try(:id))
+    = f.select :team, options_for_select(TocatTeam.all.map{|t| [t.name, t.id]}, selected: @user.team.try(:id), required: true), include_blank: 'Select Team', required: true
     br
     = f.label :daily_rate, l(:label_rate)
-    = f.text_field :daily_rate
+    = f.text_field :daily_rate, required: true
     / f.check_box :active
     br
     = f.submit 
