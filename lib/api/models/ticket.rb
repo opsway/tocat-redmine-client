@@ -62,6 +62,7 @@ class TocatTicket < ActiveResource::Base
   def self.events_for(ids, key = nil)
     begin
       records = []
+      return records if ids.blank?
       key.nil? ?
           url = "#{self.prefix}/activity?trackable=task&trackable_id=#{ids.join(',')}&limit=9999999" :
           url = "#{self.prefix}/activity?trackable=task&trackable_id=#{ids.join(',')}&key=#{key}&limit=9999999"
