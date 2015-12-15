@@ -35,6 +35,7 @@ module RedmineTocatClient
         end
         if context[:detail].prop_key == 'resolver_update'
           if context[:detail].recipient
+            #context[:detail].value = "#{link_to_user(context[:detail].recipient.redmine)}".html_safe
             context[:detail].value = "#{link_to_user(context[:detail].recipient)}".html_safe
           else
             context[:detail].value = nil

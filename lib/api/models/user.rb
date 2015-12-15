@@ -15,6 +15,9 @@ class TocatUser < ActiveResource::Base
     decimal 'daily_rate'
   end
   validates :login, :name, :team, :role, :daily_rate, presence: true
+  def to_s
+    self.name
+  end
 
   class << self
     def element_path(id, prefix_options = {}, query_options = nil)
@@ -64,6 +67,9 @@ class TocatUser < ActiveResource::Base
 
   def self.find_by_name(name)
     return TocatUser.find(:all, params:{search:"#{name}"}).first
+  end
+  def redmine
+    User.where(login: self.login).first
   end
   protected
 

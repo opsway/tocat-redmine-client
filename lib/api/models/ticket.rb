@@ -37,7 +37,7 @@ class TocatTicket < ActiveResource::Base
         if record['owner_id'].present?
           owner = TocatUser.find(record['owner_id'])
           owner = AnonymousUser.first unless owner.present?        
-          data.user = owner # TODO - change from just user to TocatUser
+          data.user = owner 
         end
         data.details << OpenStruct.new(
             prop_key: record['key'].split('.').second,
