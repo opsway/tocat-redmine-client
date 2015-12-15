@@ -23,6 +23,11 @@ class TocatUsersController < ApplicationController
 
   def create
     @user= TocatUser.new(params[:tocat_user])
+    unless @user.valid?
+      @user.role = OpenStruct.new(id: @user.role)
+      @user.team = OpenStruct.new(id: @user.team)
+      return render :action => 'new'
+    end
     if request.post? && @user.save
       # workflow copy
       flash[:notice] = l(:notice_successful_create)
@@ -37,6 +42,11 @@ class TocatUsersController < ApplicationController
   end
 
   def update
+    unless @user.valid?
+      @user.role = OpenStruct.new(id: @user.role)
+      @user.team = OpenStruct.new(id: @user.team)
+      return render :action => 'edit'
+    end
     if request.put? and @user.update_attributes(params[:tocat_user])
       flash[:notice] = l(:notice_successful_update)
       redirect_to :action => 'index'

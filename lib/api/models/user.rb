@@ -1,5 +1,6 @@
 class TocatUser < ActiveResource::Base
   unloadable
+  include ActiveModel::Validations
   self.site = RedmineTocatClient.settings[:host]
   self.collection_name = 'users'
   self.element_name = 'user'
@@ -13,6 +14,7 @@ class TocatUser < ActiveResource::Base
     attribute 'role', :integer
     decimal 'daily_rate'
   end
+  validates :login, :name, :team, :role, :daily_rate, presence: true
 
   class << self
     def element_path(id, prefix_options = {}, query_options = nil)
@@ -63,5 +65,6 @@ class TocatUser < ActiveResource::Base
   def self.find_by_name(name)
     return TocatUser.find(:all, params:{search:"#{name}"}).first
   end
+  protected
 
 end
