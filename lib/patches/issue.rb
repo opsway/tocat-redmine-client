@@ -9,7 +9,7 @@ module RedmineTocatClient
         def tocat
           task = TocatTicket.find_by_external_id(id)
           unless task
-            task = TocatTicket.create(external_id: id)
+            task = TocatTicket.create(external_id: "#{TocatTicket.company}_#{id}")
           end
           task
         end

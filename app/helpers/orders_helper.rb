@@ -48,7 +48,7 @@ module OrdersHelper
   end
 
   def link_to_task(task)
-    return link_to "#{task.external_id}", issue_path(task.external_id)
+    return link_to "#{task.internal_id}", issue_path(task.internal_id)
   end
 
   def link_to_new_invoice(order)

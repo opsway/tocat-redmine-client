@@ -66,6 +66,7 @@ en:
   label_not_accepted_issues: "Not accepted tickets:"
   field_accepted: "Accepted"
   label_tocat_server_address: 'API server address, for instance'
+  label_tocat_company_name: 'API company prefix, for instance'
   label_host_change: "You'll need to restart your webserver if API address is changed"
   message_invoice_paid: 'Paid status saved!'
   confirm_invoice_paid: 'Are you sure you want to paid invoice?'

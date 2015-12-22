@@ -7,6 +7,9 @@ class TocatTicket < ActiveResource::Base
 
 
   class << self
+    def company
+      RedmineTocatClient.settings[:company]
+    end
     def element_path(id, prefix_options = {}, query_options = nil)
       prefix_options, query_options = split_options(prefix_options) if query_options.nil?
       query_options.merge!({:current_user => User.current.name})
@@ -18,6 +21,9 @@ class TocatTicket < ActiveResource::Base
       query_options.merge!({:current_user => User.current.name})
       "#{prefix(prefix_options)}#{collection_name}#{query_string(query_options)}"
     end
+  end
+  def internal_id
+    self.external_id.gsub("#{TocatTicket.company}_",'')
   end
 
   def activity
@@ -150,9 +156,9 @@ class TocatTicket < ActiveResource::Base
   end
 
   def self.find_by_external_id(id) # FIXME Refactor to use real search
-    ticket = TocatTicket.find(:all, params: {search: id}).first
+    ticket = TocatTicket.find(:all, params: {search: "#{TocatTicket.company}_#{id}"}).first
     if ticket.present?
-      return TocatTicket.find(ticket.id)
+      return TocatTicket.find(ticket.id) # WTF?? FIXME TODO - different serializers
     end
     nil
   end
@@ -167,7 +173,7 @@ class TocatTicket < ActiveResource::Base
 
   def redmine
     begin
-      return Issue.find(external_id)
+      return Issue.find(internal_id)
     rescue ActiveRecord::RecordNotFound
       return nil
     end
@@ -242,7 +248,7 @@ class TocatTicket < ActiveResource::Base
     end
     issues = []
     tasks.each do |task|
-      issue = Issue.where(id:task.external_id).first
+      issue = Issue.where(id: task.internal_id).first
       if issue.present?
         params = {
           id:      issue.id,

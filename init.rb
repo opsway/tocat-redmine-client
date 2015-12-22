@@ -9,7 +9,8 @@ Redmine::Plugin.register :redmine_tocat_client do
   requires_redmine :version_or_higher => '2.0.3'
 
   settings :default => {
-    'host' => 'http://tocat.opsway.com'
+    'host' => 'http://tocat.opsway.com',
+    'company' => 'opsway'
           },:partial => 'settings/tocat_settings'
 
   menu :top_menu, :tocat, { :controller => 'tocat', :action => 'my_tocat' },

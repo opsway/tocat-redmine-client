@@ -49,7 +49,7 @@ class TicketsController < ApplicationController
     if (params[:paid].present? || params[:accepted].present? || params[:resolver].present? || params[:budget].present?  || params[:review].present?) &&
        (params[:project].present? || params[:status].present? || params[:statuses].present?)
       tasks = TocatTicket.all(params: query_params)
-      tasks = tasks.each_with_object({}){ |c,h| h[c.external_id.to_i] = { id:c.id, accepted: c.accepted, paid:c.paid, budget:c.budget, resolver:c.get_resolver, review_requested: c.review_requested } }
+      tasks = tasks.each_with_object({}){ |c,h| h[c.internal_id.to_i] = { id:c.id, accepted: c.accepted, paid:c.paid, budget:c.budget, resolver:c.get_resolver, review_requested: c.review_requested } }
       issues = Issue.joins(:project).joins(:status).where(query)
       @issues = []
       issues.each do |issue|
@@ -78,7 +78,7 @@ class TicketsController < ApplicationController
       issues = Issue.joins(:project).joins(:status).where(query).order('created_on desc').limit(@limit).offset(@offset.to_i * @limit.to_i)
       @issues = []
       tasks = TocatTicket.all(params: query_params)
-      tasks = tasks.each_with_object({}){ |c,h| h[c.external_id.to_i] = { id:c.id, accepted: c.accepted, paid:c.paid, budget:c.budget, resolver:c.get_resolver, review_requested: c.review_requested } }
+      tasks = tasks.each_with_object({}){ |c,h| h[c.internal_id.to_i] = { id:c.id, accepted: c.accepted, paid:c.paid, budget:c.budget, resolver:c.get_resolver, review_requested: c.review_requested } }
       query_params[:limit] = 999999999
       issues.each do |issue|
         task = tasks[issue.id]
@@ -101,8 +101,8 @@ class TicketsController < ApplicationController
       tasks = TocatTicket.all(params: query_params)
       @limit = tasks.http_response['X-Per-Page'].to_i
       @issue_count = tasks.http_response['X-total'].to_i
-      issues = Issue.joins(:project).joins(:status).find_all_by_id(tasks.collect(&:external_id))
-      tasks = tasks.each_with_object({}){ |c,h| h[c.external_id.to_i] = { id:c.id, accepted: c.accepted, paid:c.paid, budget:c.budget, resolver:c.get_resolver, review_requested: c.review_requested } }
+      issues = Issue.joins(:project).joins(:status).find_all_by_id(tasks.collect(&:internal_id))
+      tasks = tasks.each_with_object({}){ |c,h| h[c.internal_id.to_i] = { id:c.id, accepted: c.accepted, paid:c.paid, budget:c.budget, resolver:c.get_resolver, review_requested: c.review_requested } }
       @issues = []
       issues.each do |issue|
         task = tasks[issue.id]

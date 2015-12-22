@@ -1,10 +1,18 @@
 <table>
   <tbody>
-    <th><%= l(:label_tocat_server_address) %></th>
+    <tr>
+      <th><%= l(:label_tocat_server_address) %></th>
       <td>
         <input type="text" id="host" value="<%= @settings['host'] %>" name="settings[host]" >
       </td>
-      <span><%= l(:label_host_change) %></span>
+    </tr>
+    <tr>
+        <th><%= l(:label_tocat_company_name) %></th>
+        <td>
+          <input type="text" id="host" value="<%= @settings['company'] %>" name="settings[company]" >
+        </td>
+     </tr>
+    <span><%= l(:label_host_change) %></span>
   </tbody>
 </table>
 
