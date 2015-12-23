@@ -94,17 +94,18 @@ class TocatOrder < ActiveResource::Base
     budgets = {}
     budget['budget'].each { |r| budgets[r['task_id']] = r['budget']  }
     tasks.each do |task|
-      issue = Issue.where(id: task.internal_id).first
+      task.external_id = task.external_id.gsub("#{TocatTicket.company}_",'')
+      issue = Issue.where(id: task.external_id).first
       if issue.present?
        resolver = task.resolver if task.resolver.try(:id)
-       issues << OpenStruct.new( id: task.internal_id,
+       issues << OpenStruct.new( id: task.external_id,
                                  project: issue.project,
                                  budget: budgets[task.id],
                                  resolver: resolver,
                                  subject: issue.subject
                                )
       else
-        issues << OpenStruct.new( id: task.internal_id,
+        issues << OpenStruct.new( id: task.external_id,
                                   project: nil,
                                   budget: budgets[task.id],
                                   resolver: resolver,
