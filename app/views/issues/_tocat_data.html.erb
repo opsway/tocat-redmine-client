@@ -89,4 +89,28 @@
       <td>
     </tr>
   <% end %>
+  <tr>
+    <th>
+      <%=l(:label_tocat_expenses)%>
+    </th>
+    <td> 
+      <% if ticket.expenses %>
+        <% if User.current.tocat_allowed_to?(:remove_expenses) %>
+         <%= link_to(remove_expenses_path(@issue.id), :data => {:confirm => l(:confirm_issue_expenses_remove)}, :method => :delete) do %>
+           <%= image_tag('true.png') %>
+         <% end %>
+        <% else %>
+           <%= image_tag('true.png') %>
+        <% end %>
+      <% else %>
+        <% if User.current.tocat_allowed_to?(:set_expenses) %>
+         <%= link_to(set_expenses_path(@issue.id), :data => {:confirm => l(:confirm_issue_expenses)}, :method => :post) do %>
+           <%= image_tag('false.png') %>
+         <% end %>
+        <% else %>
+           <%= image_tag('false.png') %>
+        <% end %>
+      <% end %>
+    </td>
+  </tr>
 </table>

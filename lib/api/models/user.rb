@@ -51,16 +51,6 @@ class TocatUser < ActiveResource::Base
     return true, nil
   end
 
-  def pay_bonus(income, bonus)
-    begin
-      connection.post("#{self.class.prefix}/user/#{id}/pay_bonus", { income: income, bonus: bonus, current_user: User.current.name }.to_json)
-    rescue => error
-      Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
-      return false, error
-    end
-    return true, nil
-  end
-
   def self.find_by_login(login)
     return TocatUser.find(:all, params:{search:"login=#{login}"}).first
   end

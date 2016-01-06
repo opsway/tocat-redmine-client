@@ -22,6 +22,10 @@ match '/tocat/orders/:id/invoice' => 'orders#set_invoice', as: :order_invoices, 
 match '/tocat/orders/:id/invoice' => 'orders#delete_invoice', as: :order_invoices, via: [:delete]
 match '/tocat/orders/:id/completed' => 'orders#toggle_complete', as: :order_complete, via: [:post, :put]
 match '/tocat/orders/:id/completed' => 'orders#toggle_uncomplete', as: :order_uncomplete, via: [:delete]
+match '/tocat/orders/:id/commission' => 'orders#commission', as: :order_commission, via: [:post]
+
+match '/tocat/orders/:id/internal' => 'orders#set_internal', as: :order_set_internal, via: [:post, :put]
+match '/tocat/orders/:id/internal' => 'orders#remove_internal', as: :order_unset_internal, via: [:delete]
 match '/tocat/budget' => 'tocat#delete_budget', via: :delete
 match '/tocat/budget' => 'tocat#save_budget_dialog', via: [:post, :put]
 match '/tocat/resolver' => 'tocat#update_resolver', via: [:post, :put]
@@ -30,10 +34,10 @@ match '/tocat/invoices/:id/paid' => 'invoices#set_unpaid', as: :invoice_paid, vi
 match '/tocat/invoices/:id/orders' => 'invoices#deattach_order', as: :invoice_orders, via: [:delete]
 match '/tocat/payment' => 'tocat#new_payment', as: :payment, via: [:get]
 match '/tocat/payment' => 'tocat#create_payment', as: :payment, via: [:post]
-match '/tocat/bonus' => 'tocat#new_bonus', as: :bonus, via: [:get]
-match '/tocat/bonus' => 'tocat#pay_bonus', as: :bonus, via: [:post]
 
 match '/issues/:id/accepted' => 'tocat#toggle_accepted', as: :issue_accepted, via: [:post, :put]
+post '/issues/:id/expenses' => 'tocat#set_expenses', as: :set_expenses
+delete '/issues/:id/expenses' => 'tocat#remove_expenses', as: :remove_expenses
 
 match '/tocat/request_review' => 'tocat#request_review', :via => :put
 match '/tocat/review_handler' => 'tocat#review_handler', :via => :put

@@ -36,6 +36,10 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
         rows.left l(:field_team), @order.get_team.name, :class => 'team'
       end
 
+      if @order.attributes.include? 'internal_order'
+        rows.right l(:field_internal_order), (@order.internal_order ? image_tag('true.png') : image_tag('false.png')), :class => 'completed'
+      end
+
       if @parent.present?
         if @parent.class == OpenStruct
           rows.right l(:field_parent_order),  @parent.name, :class => 'parent_order'
@@ -46,9 +50,24 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
 
       rows.right l(:label_suborder),  (@parent.present? ? image_tag('true.png') : image_tag('false.png')), :class => 'sub_order'
 
-      rows.left l(:field_fmr), @order.fmr, :class => 'fmr'
 
     end %>
+    <tr>
+    <% if User.current.tocat_allowed_to?(:show_commission) %>
+      <th> <%= l(:field_commission) %> </th> <td> <%= (@order.commission||40) %>% </td> 
+    <%  end %>
+
+    <% if User.current.tocat_allowed_to?(:update_commission) %>
+      <%= form_for @order, url: order_commission_path(@order), method: :post do |f| %>
+        <th>
+            <%= f.label :commission, l(:new_commission) %>
+        </th>
+        <td>
+            <%= f.text_field :commission %>
+        </td>
+      <% end %>
+    <% end %>
+    </tr>
   </table>
   <hr />
   <div class="description">

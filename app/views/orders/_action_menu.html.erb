@@ -6,16 +6,24 @@
   <% end %>
   <% if User.current.tocat_allowed_to?(:complete_orders) %>
     <% unless @order.parent %>
-      <% if @order.completed %>
-        <% if User.current.tocat_allowed_to?(:uncomplete_orders) %>
-            <%= link_to l(:button_uncomplete), order_uncomplete_path(@order), :data => {:confirm => l(:confirm_order_uncompleted)}, :method => :delete, :class => 'icon icon-checked' %>
-        <% end %>
-      <% else %>
+      <% unless @order.completed %>
         <% if @order.paid  %>
             <%= link_to l(:button_complete), order_complete_path(@order), :data => {:confirm => l(:confirm_order_completed)}, :method => :put, :class => 'icon icon-checked' %>
         <% end %>
       <% end %>
     <% end %>
   <% end %>
+  <% if User.current.tocat_allowed_to?(:set_internal_orders) %>
+    <% unless @order.invoice.try(:id) %>
+        <% unless @order.internal_order %>
+            <%= link_to l(:button_internal), order_set_internal_path(@order), :data => {:confirm => l(:confirm_order_internal)}, :method => :put, :class => 'icon icon-checked' %>
+        <% else %>
+          <% if User.current.tocat_allowed_to?(:remove_internal_orders) %>
+            <%= link_to l(:button_internal_remove), order_set_internal_path(@order), :data => {:confirm => l(:confirm_order_uninternal)}, :method => :delete, :class => 'icon icon-checked' %>
+          <% end %>
+        <% end %>
+    <% end %>
+  <% end %>
+  
   <%= delete_link(@order)  %>
 </div>

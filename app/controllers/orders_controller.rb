@@ -7,6 +7,8 @@ class OrdersController < ApplicationController
   helper :sort
   include SortHelper
   before_filter :check_action
+  
+
 
 
   def new
@@ -146,6 +148,7 @@ class OrdersController < ApplicationController
     query_params[:search] = "#{query_params[:search]} paid == #{params[:paid]}" if params[:paid].present?
     query_params[:search] = "#{query_params[:search]} completed == #{params[:completed]}" if params[:completed].present?
     query_params[:search] = "#{query_params[:search]} team == #{params[:team]}" if params[:team].present?
+    query_params[:search] = "#{query_params[:search]} internal_order == #{params[:internal_order]}" if params[:internal_order].present?
     if params[:suborder].present?
       params[:suborder].to_i == 1 ?
         query_params[:search] = "#{query_params[:search]} set? parent_id" :
@@ -181,6 +184,22 @@ class OrdersController < ApplicationController
       end
     else
       render :json =>  JSON.parse(errors.response.body)['errors'].join(', '), :status => :bad_request
+    end
+  end
+
+  def commission
+    begin
+      status, errors = @order.set_commission(params[:tocat_order][:commission].to_i)
+      errors
+    rescue ActiveResource::ResourceNotFound
+    end
+    if status
+      flash[:notice] = l(:message_order_commission)
+    else
+      flash[:error] = JSON.parse(errors.response.body)['errors'].join(', ')
+    end
+    respond_to do |format|
+      format.html { redirect_back_or_default({ :action => 'show', id: @order })}
     end
   end
 
@@ -227,6 +246,36 @@ class OrdersController < ApplicationController
   def invoices
     @invoices = TocatInvoice.find(:all, params: { search: "paid = 0" })
     return render template: 'orders/invoice_dialog'
+  end
+  
+  def set_internal
+    status, payload = @order.set_internal
+    if status
+      respond_to do |format|
+        flash[:notice] = l(:message_order_internal)
+        format.html { redirect_back_or_default({ :action => 'show', id: @order })}
+      end
+    else
+      respond_to do |format|
+        flash[:error] = JSON.parse(payload.response.body)['errors'].join(', ')
+        format.html { redirect_back_or_default({ :action => 'show', id: @order })}
+      end
+    end
+  end
+  
+  def remove_internal
+    status, payload = @order.remove_internal
+    if status
+      respond_to do |format|
+        flash[:notice] = l(:message_order_noninternal)
+        format.html { redirect_back_or_default({ :action => 'show', id: @order })}
+      end
+    else
+      respond_to do |format|
+        flash[:error] = JSON.parse(payload.response.body)['errors'].join(', ')
+        format.html { redirect_back_or_default({ :action => 'show', id: @order })}
+      end
+    end
   end
 
   private

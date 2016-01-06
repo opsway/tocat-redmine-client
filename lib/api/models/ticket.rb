@@ -101,6 +101,32 @@ class TocatTicket < ActiveResource::Base
       return true, nil
     end
   end
+ 
+  def set_expenses
+    set_expense_param(true)
+  end
+  def remove_expenses
+    set_expense_param(false)
+  end
+
+  def set_expense_param(val)
+    if val
+      begin
+        connection.post(element_path.gsub('?', '/expenses?'))
+      rescue => error
+        Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
+        return false, error
+      end
+      return true, nil
+    else
+      begin
+        connection.delete(element_path.gsub('?', '/expenses?'))
+      rescue => error
+        Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
+        return false, error
+      end
+    end
+  end
 
   def toggle_paid # FIXME WTF? Rename to toggle_accepted
     unless accepted

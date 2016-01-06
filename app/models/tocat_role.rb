@@ -27,6 +27,9 @@ class TocatRole < ActiveRecord::Base
     paths[:orders][:destroy] = :destroy_orders
     paths[:orders][:toggle_complete] = :complete_orders
     paths[:orders][:toggle_uncomplete] = :uncomplete_orders
+    paths[:orders][:set_internal] = :set_internal_orders
+    paths[:orders][:remove_internal] = :remove_internal_orders
+    paths[:orders][:commission] = :update_commission
 
     paths[:invoices] = {}
     paths[:invoices][:create] = :create_invoices
@@ -51,6 +54,8 @@ class TocatRole < ActiveRecord::Base
     paths[:tocat][:pay_bonus] = :create_transactions
     paths[:tocat][:request_review] = :can_request_review
     paths[:tocat][:review_handler] = :can_review_task
+    paths[:tocat][:set_expenses] = :set_expenses
+    paths[:tocat][:remove_expenses] = :remove_expenses
 
     paths[:tickets] = {}
     paths[:tickets][:index] = :show_issues
@@ -83,9 +88,9 @@ class TocatRole < ActiveRecord::Base
 
   def self.permissions #load from config?
     data = {}
-    data[:orders] = [:create_orders, :show_orders, :edit_orders, :destroy_orders, :complete_orders, :uncomplete_orders]
+    data[:orders] = [:create_orders, :show_orders, :edit_orders, :destroy_orders, :complete_orders, :uncomplete_orders, :set_internal_orders, :remove_internal_orders, :show_commission, :update_commission]
     data[:invoices] = [:create_invoices, :show_invoices, :destroy_invoices, :paid_invoices]
-    data[:issues] = [:modify_accepted, :modify_resolver, :modify_budgets, :show_budgets, :show_issues, :show_aggregated_info, :can_request_review, :can_review_task]
+    data[:issues] = [:modify_accepted, :modify_resolver, :modify_budgets, :show_budgets, :show_issues, :show_aggregated_info, :can_request_review, :can_review_task, :set_expenses, :remove_expenses]
     data[:transactions] = [:show_transactions, :create_transactions]
     data[:dashboard] = [:show_tocat_page, :has_protected_page, :can_see_public_pages, :is_admin, :show_status_page, :mark_alerts_as_checked, :show_activity_feed]
     data[:users] = [:create_user,:update_user, :activate_user, :deactivate_user]

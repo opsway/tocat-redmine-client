@@ -27,6 +27,7 @@ class TocatOrder < ActiveResource::Base
     attribute 'description', :text
     attribute 'team', :string
     decimal 'invoiced_budget', 'allocatable_budget', 'free_budget'
+    attribute 'internal_order', :boolean
   end
 
   def activity
@@ -81,6 +82,35 @@ class TocatOrder < ActiveResource::Base
     end
   end
 
+  def set_internal
+    begin
+      connection.post(element_path.gsub('?', '/internal?'))
+    rescue => error
+      Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
+      return false, error
+    end
+    return true, nil
+  end
+
+  def set_commission(commission)
+    begin
+      connection.post(element_path(commission: commission).gsub('?', '/commission?'))
+    rescue => error
+      Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
+      return false, error
+    end
+    return true, nil
+  end
+
+  def remove_internal
+    begin
+      connection.delete(element_path.gsub('?', '/internal?'))
+    rescue => error
+      Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
+      return false, error
+    end
+    return true, nil
+  end
   def budget
     begin
       return JSON.parse(connection.get(element_path.gsub('?', '/budget?')).body)

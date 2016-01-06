@@ -24,23 +24,6 @@ class TocatController < ApplicationController
     end
   end
 
-
-  def pay_bonus
-    user = TocatUser.find(params[:user_id].to_i)
-    status, messages = user.pay_bonus(params[:income], params[:bonus])
-    if status
-      flash[:notice] = l(:notice_transaction_successful_created)
-      respond_to do |format|
-        format.html { redirect_back_or_default({:controller => 'transactions', :action => 'index'}) }
-      end
-    else
-      respond_to do |format|
-        flash[:error] = JSON.parse(messages.response.body)['errors'].join(', ')
-        format.html { render :action => 'new_bonus' }
-      end
-    end
-  end
-
   def new_payment
     @users = TocatUser.find(:all, params: { limit: 99999 }).sort_by!(&:name)
     @users_data = {}
@@ -48,10 +31,6 @@ class TocatController < ApplicationController
     @users_data = @users_data.to_json
   end
 
-  def new_bonus
-    @users = TocatUser.find(:all, params: { search: "role == Manager" }).sort_by!(&:name)
-  end
-  
   def request_review
     toggle_review_requested
   end
@@ -79,6 +58,38 @@ class TocatController < ApplicationController
     if status
       respond_to do |format|
         flash[:notice] = l(:message_issue_accepted)
+        format.html { redirect_back_or_default({:controller => 'issues', :action => 'show', id: issue.id })}
+      end
+    else
+      respond_to do |format|
+        flash[:error] = JSON.parse(payload.response.body)['errors'].join(', ')
+        format.html { redirect_back_or_default({:controller => 'issues', :action => 'show', id: issue.id })}
+      end
+    end
+  end
+
+  def set_expenses
+    issue = Issue.find(params[:id])
+    status, payload = issue.tocat.set_expenses
+    if status
+      respond_to do |format|
+        flash[:notice] = l(:message_expense_accepted)
+        format.html { redirect_back_or_default({:controller => 'issues', :action => 'show', id: issue.id })}
+      end
+    else
+      respond_to do |format|
+        flash[:error] = JSON.parse(payload.response.body)['errors'].join(', ')
+        format.html { redirect_back_or_default({:controller => 'issues', :action => 'show', id: issue.id })}
+      end
+    end
+  end
+  
+  def remove_expenses
+    issue = Issue.find(params[:id])
+    status, payload = issue.tocat.remove_expenses
+    if status
+      respond_to do |format|
+        flash[:notice] = l(:message_remove_expense_accepted)
         format.html { redirect_back_or_default({:controller => 'issues', :action => 'show', id: issue.id })}
       end
     else
