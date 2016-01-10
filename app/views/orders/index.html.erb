@@ -35,9 +35,6 @@ fieldset#filters table td {
           </th>
           <%= sort_header_tag('invoiced_budget', :caption => l(:label_invoiced_budget)) %>
           <%= sort_header_tag('allocatable_budget', :caption => l(:label_allocatable_budget)) %>
-          <th>
-            <%= l(:field_fmr)%>
-          </th>
           <%= sort_header_tag('free_budget', :caption => l(:label_free_budget)) %>
           <th>
             <%= l(:field_team)%>
@@ -50,6 +47,10 @@ fieldset#filters table td {
           </th>
           <th>
             <%= l(:field_completed)%>
+          </th>
+
+          <th>
+            <%= l(:field_internal)%>
           </th>
           </tr></thead>
 
@@ -68,9 +69,6 @@ fieldset#filters table td {
           <td class = 'allocatable_budget'>
             <%= order.allocatable_budget %>
           </td>
-          <td class = 'fmr'>
-            <%= order.fmr %>
-          </td>
           <td class = 'free_budget'>
             <%= order.free_budget %>
           </td>
@@ -85,6 +83,10 @@ fieldset#filters table td {
           </td>
           <td class = 'completed'>
             <%= order.completed ? image_tag('true.png') : image_tag('false.png') %>
+          </td>
+
+          <td class = 'internal'>
+            <%= order.internal_order ? image_tag('true.png') : image_tag('false.png') %>
           </td>
         </tr>
       <% end %>

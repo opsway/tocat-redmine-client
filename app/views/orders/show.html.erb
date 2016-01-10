@@ -82,7 +82,7 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
     <% unless @order.attributes[:parent_order].attributes[:id].present? %>
       <% unless invoice.present? %>
         <div class="contextual">
-        <% if User.current.tocat_allowed_to?(:create_invoices) %>
+        <% if User.current.tocat_allowed_to?(:create_invoices) && !@order.internal_order %>
           <span class='icon icon-edit' style='cursor:pointer;' onclick='invoice_dialog(this)'>Add</span>
         <% end %>
         </div>
