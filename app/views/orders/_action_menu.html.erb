@@ -14,12 +14,12 @@
     <% end %>
   <% end %>
   <% if User.current.tocat_allowed_to?(:set_internal_orders) %>
-    <% unless @order.invoice.try(:id) %>
+    <% unless @order.invoice.try(:id) || @order.parent_order.try(:id) %>
         <% unless @order.internal_order %>
-            <%= link_to l(:button_internal), order_set_internal_path(@order), :data => {:confirm => l(:confirm_order_internal)}, :method => :put, :class => 'icon icon-checked' %>
+            <%= link_to l(:button_internal), order_set_internal_path(@order), :data => {:confirm => l(:confirm_order_internal)}, :method => :put, :class => 'fi-arrows-in green'%>
         <% else %>
           <% if User.current.tocat_allowed_to?(:remove_internal_orders) %>
-            <%= link_to l(:button_internal_remove), order_set_internal_path(@order), :data => {:confirm => l(:confirm_order_uninternal)}, :method => :delete, :class => 'icon icon-checked' %>
+            <%= link_to l(:button_internal_remove), order_set_internal_path(@order), :data => {:confirm => l(:confirm_order_uninternal)}, :method => :delete, :class => 'fi-arrows-out red' %>
           <% end %>
         <% end %>
     <% end %>
