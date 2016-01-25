@@ -27,11 +27,11 @@
       </td>
 
       <td class = 'expenses'>
-        <%= issue.expenses ? 'yes' : 'no' %>
+        <%= issue.expenses ? 'Yes' : 'No' %>
       </td>
 
       <td class = 'accepted'>
-        <%= issue.accepted  ? 'yes' : 'no' %>
+        <%= issue.accepted ? image_tag('true.png') : image_tag('false.png') %>
       </td>
 
       <td class = 'resolver'>
