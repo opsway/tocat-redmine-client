@@ -5,6 +5,8 @@
       <td><%= l(:label_subject) %></td>
       <td><%= l(:label_project) %></td>
       <td><%= l(:label_budget) %></td>
+      <td><%= l(:label_tocat_expenses) %></td>
+      <td><%= l(:label_accepted) %></td>
       <td><%= l(:label_resolver) %></td>
     </tr>
   </thead>
@@ -23,6 +25,15 @@
       <td class = 'budget'>
         <%= issue.budget %>
       </td>
+
+      <td class = 'expenses'>
+        <%= issue.expenses ? 'yes' : 'no' %>
+      </td>
+
+      <td class = 'accepted'>
+        <%= issue.accepted  ? 'yes' : 'no' %>
+      </td>
+
       <td class = 'resolver'>
         <% if issue.resolver.present? %>
           <%= link_to issue.resolver.name, {:controller => 'tocat', :action => 'my_tocat', :user_id => issue.resolver.id}%>
