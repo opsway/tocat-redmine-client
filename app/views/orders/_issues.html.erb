@@ -27,7 +27,9 @@
       </td>
 
       <td class = 'expenses'>
-        <%= issue.tocat.try(:expenses) ? 'Yes' : 'No' %>
+        <p>
+        <%= issue.expenses  ? 'Yes' : 'No' %>
+        </p>
       </td>
 
       <td class = 'accepted'>
