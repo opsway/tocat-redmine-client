@@ -11,6 +11,13 @@
           <p><%= f.text_field :name, :size => 80, :maxlength => 255, :required => true %></p>
           <p><%= f.check_box :internal_order %></p>
 
+          <% if User.current.tocat_allowed_to?(:update_commission) %>
+            <p>
+              <%= f.label_for_field :commission %>
+              <%= f.text_field :commission %>
+            </p>
+          <% end %>
+
           <p>
             <%= f.label_for_field :description %>
             <%= f.text_area :description,

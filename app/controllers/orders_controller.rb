@@ -71,6 +71,7 @@ class OrdersController < ApplicationController
     @order = TocatOrder.new(params[:order])
     begin
       if @order.save
+        process_commission
         respond_to do |format|
           if params[:redirect_to].present?
             array = params[:redirect_to].split(':')
@@ -118,6 +119,7 @@ class OrdersController < ApplicationController
   def update
     if @order.update_attributes(params[:order])
       flash[:notice] = l(:notice_order_successful_update)
+      process_commission
       respond_to do |format|
         format.html { redirect_back_or_default({:action => 'show', :id => @order}) }
         format.js do
@@ -308,4 +310,15 @@ class OrdersController < ApplicationController
     end
   end
 
+  def process_commission
+    if params[:order][:commission].present? && User.current.tocat_allowed_to?(:update_commission)
+      begin
+        status, errors = @order.set_commission(params[:order][:commission].to_i)
+      rescue ActiveResource::ResourceNotFound
+      end
+      unless status
+        flash[:error] = JSON.parse(errors.response.body)['errors'].join(', ')
+      end
+    end
+  end
 end

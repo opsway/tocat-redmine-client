@@ -56,17 +56,6 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
     <% if User.current.tocat_allowed_to?(:show_commission) %>
       <th> <%= l(:field_commission) %> </th> <td> <%= (@order.commission||40) %>% </td> 
     <%  end %>
-
-    <% if User.current.tocat_allowed_to?(:update_commission) %>
-      <%= form_for @order, url: order_commission_path(@order), method: :post do |f| %>
-        <th>
-            <%= f.label :commission, l(:new_commission) %>
-        </th>
-        <td>
-            <%= f.text_field :commission %>
-        </td>
-      <% end %>
-    <% end %>
     </tr>
   </table>
   <hr />
