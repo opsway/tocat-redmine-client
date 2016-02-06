@@ -197,19 +197,25 @@ class TocatController < ApplicationController
     begin
       #@user_tocat = TocatUser.find(TocatUser.find_by_name(@user.name).id) #!!!
       @team_tocat = TocatTeam.find(@user_tocat.team.id)
-      @team_balance_transactions = TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "account = balance" })
-      @income_transactions = TocatTransaction.find(:all, params:{user: @user_tocat.id, limit:9999999, search: "account = payment" })
+      #@team_balance_transactions = TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "account = balance" })
+
+      @team_income_transactions =  TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "created_at > #{1.year.ago.strftime('%Y-%m-%d')} account = payment" })
+
+      @team_balance_income_year = @team_tocat.income_account_state - @team_income_transactions.sum{|t| t.total.to_f}
+
       @balance_transactions = TocatTransaction.find(:all, params:{user: @user_tocat.id, limit:9999999, search: "account = balance" })
       @accepted_tasks = TocatTicket.get_accepted_tasks(true, @user_tocat.id)
       @not_accepted_tasks = TocatTicket.get_accepted_tasks(false, @user_tocat.id)
       
+      
       #removed if manager?
-      @balance_chart = { month: { balance: [], forecast: [], zero_line: [], timeline: [] },
-                        halfyear: { balance: [], forecast: [], zero_line: [], timeline: [] },
-                        year: { balance: [], forecast: [], zero_line: [], timeline: [] } }
+      @balance_chart = { month: { balance: [], forecast: [], zero_line: [], timeline: [], income_team: [] },
+                        halfyear: { balance: [], forecast: [], zero_line: [], timeline: [], income_team: []  },
+                        year: { balance: [], forecast: [], zero_line: [], timeline: [], income_team: [] } }
       balance_transactions_ = TocatTransaction.find(:all, params: { search: "accountable_type == User accountable_id == #{@user_tocat.id} created_at >= #{1.year.ago.strftime('%Y-%m-%d')} account = balance", limit: 9999999})
       accepted_not_paid_events = TocatTicket.events_for(@accepted_tasks.collect(&:task_id), "task.accepted_update")
       balance_with_tasks = balance =  @user_tocat.balance_account_state - balance_transactions_.sum { |r| r.total.to_i}
+
       week = (1.week.ago.to_date..Date.today)
       month = (1.month.ago.to_date..Date.today)
       halfyear = (6.months.ago.to_date..Date.today)
@@ -219,10 +225,17 @@ class TocatController < ApplicationController
       (1.year.ago.to_date..Date.today).each do |date|
         events_sum = accepted_not_paid_events.select{ |r| r.created_at.to_date == date }.sum { |r| r.parameters["balance"].to_i}
         transactions_sum =  @balance_transactions.select{ |r| r.date.to_date == date}.sum { |r| r.total.to_i }
+        
+        team_transactions_sum = @team_income_transactions.select{|r| r.date.to_date == date}.sum{|r| r.total.to_f}
+        @team_balance_income_year += team_transactions_sum.round(2)
+
         balance_with_transactions = (balance += transactions_sum).round(2)
         forecast_balance = (balance_with_tasks += (events_sum + transactions_sum)).round(2)
+
         if month.include?(date)
           @balance_chart[:month][:balance] << balance_with_transactions
+          @balance_chart[:month][:income_team] << @team_balance_income_year
+          
 
           if @user_tocat.role == 'Manager'
             @balance_chart[:month][:forecast] << balance_with_transactions
@@ -234,6 +247,7 @@ class TocatController < ApplicationController
         end
         if halfyear.include?(date)
           @balance_chart[:halfyear][:balance] << balance_with_transactions
+          @balance_chart[:halfyear][:income_team] << @team_balance_income_year
 
           if @user_tocat.role == 'Manager'
             @balance_chart[:halfyear][:forecast] << balance_with_transactions
@@ -245,6 +259,7 @@ class TocatController < ApplicationController
         end
 
         @balance_chart[:year][:balance] << balance_with_transactions
+        @balance_chart[:year][:income_team] << @team_balance_income_year
         if @user_tocat.role == 'Manager'
           @balance_chart[:year][:forecast] << balance_with_transactions
         else

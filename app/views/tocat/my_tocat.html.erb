@@ -28,7 +28,7 @@
       <legend>Personal dynamics</legend>
       Period: <%= select_tag("period", options_for_select([['1 Month', 1], ['6 Months', 2], ['1 Year', 3]]), :onchange => 'redraw_chart(this);false;') %>
       <div style='display:none;'>
-        <%= content_tag :div, "", id: "month", data: { balance: @balance_chart[:month][:balance], forecast: @balance_chart[:month][:forecast], zero_line: @balance_chart[:month][:zero_line], time: @balance_chart[:month][:timeline]  } %>
+        <%= content_tag :div, "", id: "month", data: { balance: @balance_chart[:month][:balance], forecast: @balance_chart[:month][:forecast], zero_line: @balance_chart[:month][:zero_line], time: @balance_chart[:month][:timeline]} %>
         <%= content_tag :div, "", id: "halfyear", data: { balance: @balance_chart[:halfyear][:balance], forecast: @balance_chart[:halfyear][:forecast], zero_line: @balance_chart[:halfyear][:zero_line], time: @balance_chart[:halfyear][:timeline]  } %>
         <%= content_tag :div, "", id: "year", data: { balance: @balance_chart[:year][:balance], forecast: @balance_chart[:year][:forecast], zero_line: @balance_chart[:year][:zero_line], time: @balance_chart[:year][:timeline]  } %>
       </div>
@@ -118,3 +118,95 @@
     chart.flush();
     </script>
   </div>
+
+  <% if User.current.tocat_allowed_to? :show_transactions %>
+  <div class='chart_container chart2'>
+    <fieldset>
+      <legend>Team income dynamics</legend>
+      Period: <%= select_tag("period_income", options_for_select([['1 Month', 1], ['6 Months', 2], ['1 Year', 3]]), :onchange => 'redraw_income_chart(this);false;') %>
+      <div style='display:none;'>
+        <%= content_tag :div, "", id: "month_income", data: { balance: @balance_chart[:month][:income_team], zero_line: @balance_chart[:month][:zero_line], time: @balance_chart[:month][:timeline]} %>
+        <%= content_tag :div, "", id: "halfyear_income", data: { balance: @balance_chart[:halfyear][:income_team], zero_line: @balance_chart[:halfyear][:zero_line], time: @balance_chart[:halfyear][:timeline]  } %>
+        <%= content_tag :div, "", id: "year_income", data: { balance: @balance_chart[:year][:income_team], zero_line: @balance_chart[:year][:zero_line], time: @balance_chart[:year][:timeline]  } %>
+      </div>
+      <div id="chart_income"></div>
+    </fieldset>
+
+    <script>
+    function redraw_income_chart(elem){
+      console.log('income?');
+      var source;
+      switch (+elem.value) {
+        case 1:
+          source = jQuery('#month_income');
+          break;
+        case 2:
+          source = jQuery('#halfyear_income');
+          break;
+        case 3:
+          source = jQuery('#year_income');
+          break;
+
+      }
+    
+      console.log(source.data('balance'));
+      chart_income.load({
+              unload: ['Zero', 'Balance', 'Time'],
+              json: {
+                    Zero: source.data('zero-line'),
+                    Balance: source.data('balance'),
+                    Time: source.data('time')
+                }
+          });
+    }
+
+    var chart_income = c3.generate({
+      bindto: '#chart_income',
+      size: {
+          height: 300,
+          width: +jQuery('.chart_container.chart2').width() - 50
+      },
+      data: {
+        x: 'Time',
+        json: {
+              Zero: jQuery('#month_income').data('zero-line'),
+              Balance: jQuery('#month_income').data('balance'),
+              Time: jQuery('#month_income').data('time')
+          },
+        type: 'spline',
+        colors: {
+              Zero: 'red'
+          }
+      },
+      point: {
+        show: false
+      },
+      axis: {
+          x: {
+              type: 'timeseries',
+              localtime: false,
+              tick: {
+                  format: '%Y-%m-%d'
+              }
+          },
+          y : {
+              tick: {
+                  format: d3.format("$")
+              }
+          },
+      },
+      tooltip: {
+          format: {
+              title: function (d) { return d; },
+              value: function (value, ratio, id) {
+                if (id != 'Zero'){
+                  return '$' + value;
+                }
+              }
+          }
+      }
+    });
+    chart_income.flush();
+    </script>
+  </div>
+<% end %>
