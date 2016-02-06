@@ -127,6 +127,7 @@ class TocatOrder < ActiveResource::Base
     tasks.each do |task|
       task.external_id = task.external_id.gsub("#{TocatTicket.company}_",'')
       issue = Issue.where(id: task.external_id).first
+      next unless issue # don't take issue if it not present
       resolver = task.resolver if task.resolver.try(:id)
       if task.present?
        issues << OpenStruct.new( id: task.external_id,
