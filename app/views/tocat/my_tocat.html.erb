@@ -119,7 +119,7 @@
     </script>
   </div>
 
-  <% if User.current.tocat_allowed_to? :show_transactions %>
+  <% if User.current.tocat_allowed_to? :has_protected_page %>
   <div class='chart_container chart2'>
     <fieldset>
       <legend>Team income dynamics</legend>
