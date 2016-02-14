@@ -4,6 +4,7 @@ class TocatUser < ActiveResource::Base
   self.site = RedmineTocatClient.settings[:host]
   self.collection_name = 'users'
   self.element_name = 'user'
+  self.include_root_in_json = true
   add_response_method :http_response
 
   schema do
