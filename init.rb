@@ -40,6 +40,7 @@ Redmine::Plugin.register :redmine_tocat_client do
               :caption => :label_status
             
   end
+  ActiveResource::Base.include_root_in_json = true
 end
 
 require_dependency 'redmine_tocat_client'

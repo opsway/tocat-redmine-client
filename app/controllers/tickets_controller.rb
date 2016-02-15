@@ -101,7 +101,7 @@ class TicketsController < ApplicationController
       tasks = TocatTicket.all(params: query_params)
       @limit = tasks.http_response['X-Per-Page'].to_i
       @issue_count = tasks.http_response['X-total'].to_i
-      issues = Issue.joins(:project).joins(:status).find_all_by_id(tasks.collect(&:internal_id))
+      issues = Issue.joins(:project).joins(:status).where(id: tasks.collect(&:internal_id))
       tasks = tasks.each_with_object({}){ |c,h| h[c.internal_id.to_i] = { id:c.id, accepted: c.accepted, paid:c.paid, budget:c.budget, resolver:c.get_resolver, review_requested: c.review_requested } }
       @issues = []
       issues.each do |issue|
@@ -126,6 +126,7 @@ class TicketsController < ApplicationController
   private
 
   def check_action
+    params.permit!
     render_403 unless TocatRole.check_path(Rails.application.routes.recognize_path(request.env['PATH_INFO'], {:method => request.env['REQUEST_METHOD'].to_sym}))
   end
 end

@@ -299,6 +299,7 @@ class OrdersController < ApplicationController
   end
 
   def check_for_setup
+    params.permit!
     errors = false
     errors = true unless RedmineTocatClient.settings[:host].present?
 
