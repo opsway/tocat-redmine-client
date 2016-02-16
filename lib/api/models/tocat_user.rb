@@ -7,6 +7,7 @@ class TocatUser < ActiveResource::Base
   self.element_name = 'user'
   #self.include_root_in_json = true
   add_response_method :http_response
+  attr_accessor :tocat_server_role, :tocat_team
 
   schema do
     attribute 'id', :integer
