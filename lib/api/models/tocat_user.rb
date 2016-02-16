@@ -3,8 +3,8 @@ class TocatUser < ActiveResource::Base
   unloadable
   include ActiveModel::Validations
   self.site = RedmineTocatClient.settings[:host]
-  self.collection_name = 'users'
-  self.element_name = 'user'
+  self.collection_name = 'tocat_users'
+  self.element_name = 'tocat_user'
   #self.include_root_in_json = true
   add_response_method :http_response
 
