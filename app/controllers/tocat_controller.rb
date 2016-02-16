@@ -196,7 +196,7 @@ class TocatController < ApplicationController
     end
     begin
       #@user_tocat = TocatUser.find(TocatUser.find_by_name(@user.name).id) #!!!
-      @team_tocat = TocatTeam.find(@user_tocat.team.id)
+      @team_tocat = TocatTeam.find(@user_tocat.tocat_team.id)
       #@team_balance_transactions = TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "account = balance" })
 
       @team_income_transactions =  TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "created_at > #{1.year.ago.strftime('%Y-%m-%d')} account = payment" })
@@ -237,7 +237,7 @@ class TocatController < ApplicationController
           @balance_chart[:month][:income_team] << @team_balance_income_year
           
 
-          if @user_tocat.role == 'Manager'
+          if @user_tocat.tocat_role.name == 'Manager'
             @balance_chart[:month][:forecast] << balance_with_transactions
           else
             @balance_chart[:month][:forecast] << forecast_balance
@@ -249,7 +249,7 @@ class TocatController < ApplicationController
           @balance_chart[:halfyear][:balance] << balance_with_transactions
           @balance_chart[:halfyear][:income_team] << @team_balance_income_year
 
-          if @user_tocat.role == 'Manager'
+          if @user_tocat.tocat_role == 'Manager'
             @balance_chart[:halfyear][:forecast] << balance_with_transactions
           else
             @balance_chart[:halfyear][:forecast] << forecast_balance
@@ -260,7 +260,7 @@ class TocatController < ApplicationController
 
         @balance_chart[:year][:balance] << balance_with_transactions
         @balance_chart[:year][:income_team] << @team_balance_income_year
-        if @user_tocat.role == 'Manager'
+        if @user_tocat.tocat_role == 'Manager'
           @balance_chart[:year][:forecast] << balance_with_transactions
         else
           @balance_chart[:year][:forecast] << forecast_balance
