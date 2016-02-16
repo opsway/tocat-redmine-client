@@ -4,7 +4,7 @@ Rails.configuration.to_prepare do
   require 'api/models/ticket'
   require 'api/models/order'
   require 'api/models/invoice'
-  require 'api/models/user'
+  require 'api/models/tocat_user'
   require 'api/models/team'
   require 'api/models/transaction'
   require 'api/models/server_role'

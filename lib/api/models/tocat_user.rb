@@ -1,3 +1,4 @@
+require 'active_resource'
 class TocatUser < ActiveResource::Base
   unloadable
   include ActiveModel::Validations
