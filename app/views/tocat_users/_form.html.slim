@@ -9,11 +9,11 @@ h3= l(:label_user)
     = f.text_field :login, required: true
     br
     = f.label :role, l(:label_tocat_role)
-    - selected_role = @user.role.id if @user.role && @user.role.respond_to?(:id)
+    - selected_role = @user.tocat_server_role.id if @user.tocat_server_role && @user.tocat_server_role.respond_to?(:id)
     = f.select :role, options_for_select(TocatServerRole.all.map{|r| [r.name, r.id]}, selected: selected_role, required: true), include_blank: 'Select Role', required: true
     br
     = f.label :team, l(:label_team)
-    - selected_team = @user.team.id if @user.team && @user.team.respond_to?(:id)
+    - selected_team = @user.tocat_team.id if @user.tocat_team && @user.tocat_team.respond_to?(:id)
     = f.select :team, options_for_select(TocatTeam.all.map{|t| [t.name, t.id]}, selected: selected_team, required: true), include_blank: 'Select Team', required: true
     br
     = f.label :daily_rate, l(:label_rate)
