@@ -9,6 +9,7 @@ Rails.configuration.to_prepare do
   require 'api/models/team'
   require 'api/models/transaction'
   require 'api/models/server_role'
+  require 'api/models/track'
   # patches
   require 'api/patches/active_resource_errors'
   require 'patches/user'
