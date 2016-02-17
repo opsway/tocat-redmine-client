@@ -237,7 +237,7 @@ class TocatController < ApplicationController
           @balance_chart[:month][:income_team] << @team_balance_income_year
           
 
-          if @user_tocat.tocat_role.name == 'Manager'
+          if @user_tocat.tocat_server_role.name == 'Manager'
             @balance_chart[:month][:forecast] << balance_with_transactions
           else
             @balance_chart[:month][:forecast] << forecast_balance
@@ -249,7 +249,7 @@ class TocatController < ApplicationController
           @balance_chart[:halfyear][:balance] << balance_with_transactions
           @balance_chart[:halfyear][:income_team] << @team_balance_income_year
 
-          if @user_tocat.tocat_role == 'Manager'
+          if @user_tocat.tocat_server_role.name == 'Manager'
             @balance_chart[:halfyear][:forecast] << balance_with_transactions
           else
             @balance_chart[:halfyear][:forecast] << forecast_balance
@@ -260,7 +260,7 @@ class TocatController < ApplicationController
 
         @balance_chart[:year][:balance] << balance_with_transactions
         @balance_chart[:year][:income_team] << @team_balance_income_year
-        if @user_tocat.tocat_role == 'Manager'
+        if @user_tocat.tocat_server_role.name == 'Manager'
           @balance_chart[:year][:forecast] << balance_with_transactions
         else
           @balance_chart[:year][:forecast] << forecast_balance
