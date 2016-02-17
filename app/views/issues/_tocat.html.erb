@@ -99,7 +99,7 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
         <% if ticket.get_resolver.present?
           resolver = TocatUser.find(ticket.resolver.id)
             params = {:name => "#{@issue.project.name} #{@issue.id}",
-                      :team => resolver.team.id,
+                      :team => resolver.tocat_team.id,
                       :redirect_to => "issues:show:#{ticket.id}:#{@issue.id}"}
           else
             params = {:name => "#{@issue.project.name} #{@issue.id}",

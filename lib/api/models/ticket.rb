@@ -37,6 +37,7 @@ class TocatTicket < ActiveResource::Base
             css_classes: 'journal has-details',
             created_on: Time.parse(record['created_at']),
             notes: [],
+            visible_details: [],
             details: [],
             indice: 0
         )
@@ -45,15 +46,17 @@ class TocatTicket < ActiveResource::Base
           owner = AnonymousUser.first unless owner.present?        
           data.user = owner 
         end
-        data.details << OpenStruct.new(
+        data.visible_details << OpenStruct.new(
             prop_key: record['key'].split('.').second,
             property: 'attr',
             old_value: record['parameters']['old'],
             value: record['parameters']['new'],
             resolver: nil
         )
+        data.details = data.visible_details
         if record['recipient_id'].present?
           recipient = TocatUser.find(record['recipient_id'])
+          data.visible_details.first.recipient = recipient
           data.details.first.recipient = recipient
         end
         records << data
