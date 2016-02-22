@@ -57,7 +57,7 @@ en:
   label_select_order: 'Select Order'
   label_budget: 'Budget'
   label_free_budget_on_issue_page: 'Free Budget'
-  label_tocat_data: 'Tocat'
+  label_tocat_data: 'TOCAT'
   label_tocat_budget: 'Budget:'
   label_tocat_accepted: 'Accepted:'
   label_tocat_resolver: 'Resolver:'
