@@ -42,16 +42,18 @@ class TocatUsersController < ApplicationController
   end
 
   def update
-    unless @user.valid?
-      @user.role = OpenStruct.new(id: @user.role)
-      @user.team = OpenStruct.new(id: @user.team)
-      return render :action => 'edit'
-    end
-    if request.put? and @user.update_attributes(params[:tocat_user])
-      flash[:notice] = l(:notice_successful_update)
-      redirect_to :action => 'index'
-    else
-      render :action => 'edit'
+    begin
+      if @user.update_attributes(params[:tocat_user])
+        flash[:notice] = l(:notice_successful_update)
+        redirect_to :action => 'index'
+      else
+        render :action => 'edit'
+      end
+    rescue ActiveResource::ClientError => @e
+      respond_to do |format|
+        flash[:error] = JSON.parse(@e.response.body)['errors'].join(', ')
+        format.html { redirect_back_or_default({:action => 'edit', id: @user.id}) }
+      end
     end
   end
 
