@@ -105,7 +105,7 @@ class OrdersController < ApplicationController
       else
         @order_old = @order
         respond_to do |format|
-          format.html { render :template => 'orders/edit' }
+          format.html { render :template => 'orders/new' }
         end
       end
     rescue => e
