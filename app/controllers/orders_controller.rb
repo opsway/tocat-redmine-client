@@ -7,7 +7,7 @@ class OrdersController < ApplicationController
   helper :sort
   include SortHelper
   before_filter :check_action
-  
+
 
 
 
@@ -19,6 +19,8 @@ class OrdersController < ApplicationController
     @order.invoiced_budget = params[:invoiced_budget] if params[:invoiced_budget].present?
     @order.team = params[:team] if params[:team].present?
     @order.parent_order = params[:split] if params[:split].present?
+    parent_order = @order.load_parent_order
+    @order.invoiced_budget = parent_order.free_budget if parent_order
   end
 
   def destroy
@@ -44,7 +46,7 @@ class OrdersController < ApplicationController
 
   def create_suborder
     parent = TocatOrder.find(params[:order][:parent_order])
-    query = params[:order]
+    query = params[:order].clone
     query[:team] = { id: params[:order][:team] }
     status, error, response = parent.set_suborder(query)
     if status
@@ -61,7 +63,8 @@ class OrdersController < ApplicationController
       flash[:error] = JSON.parse(error.response.body)['errors'].join(', ')
       query[:split] = params[:order][:parent_order]
       respond_to do |format|
-        format.html { redirect_to :action => 'new', params: query }
+        @order = TocatOrder.new(params[:order])
+        format.html { render :template => 'orders/new' }
       end
       return
     end
@@ -105,7 +108,7 @@ class OrdersController < ApplicationController
       else
         @order_old = @order
         respond_to do |format|
-          format.html { render :template => 'orders/new' }
+          format.html { render :template => 'orders/edit' }
         end
       end
     rescue => e

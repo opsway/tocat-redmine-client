@@ -214,6 +214,13 @@ class TocatOrder < ActiveResource::Base
     true
   end
 
+  def load_parent_order
+    TocatOrder.find(parent_order)
+  rescue ActiveResource::ResourceNotFound => error
+    Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
+    nil
+  end
+
   protected
 
   def to_json(options = {})

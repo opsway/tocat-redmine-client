@@ -35,10 +35,11 @@
             </p>
             <%= f.hidden_field :team %>
           <% else %>
-            <p>
-              <%= f.select :team, options_for_select([['Select Team', 0]] + @groups.collect {|t| [t.name, t.id]}, disabled: 0, selected: 0),
-                                  { :required => true }, {} %>
-            </p>
+            <%= f.select :team, options_for_select(
+                                  [['Select Team', 0]] + @groups.collect {|t| [t.name, t.id]},
+                                  disabled: 0,
+                                  selected: @order.team.blank? ? 0 : @order.team),
+                                { :required => true }, {} %>
           <% end %>
           <p><%= f.number_field :invoiced_budget, :class => 'invoiced_budget', :step => 0.01, :required => true %></p>
           <p><%= f.number_field :allocatable_budget, :class => 'allocatable_budget', :step => 0.01, :required => true %></p>
