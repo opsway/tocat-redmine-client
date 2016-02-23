@@ -36,7 +36,10 @@
             <%= f.hidden_field :team %>
           <% else %>
             <p>
-              <%= f.select :team, options_for_select([['Select Team', 0]] + @groups.collect {|t| [t.name, t.id]}, disabled: 0, selected: @order.team),
+              <%= f.select :team, options_for_select(
+                                    [['Select Team', 0]] + @groups.collect {|t| [t.name, t.id]},
+                                    disabled: 0,
+                                    selected: @order.team.blank? ? 0 : @order.team),
                                   { :required => true }, {} %>
             </p>
           <% end %>
