@@ -93,7 +93,7 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
   <hr/>
   <div id="orders_tree">
     <div class="contextual">
-      <% if User.current.tocat_allowed_to?(:edit_orders)%>
+      <% if User.current.tocat_allowed_to?(:edit_orders) && !@issue.tocat.expenses? %>
         <span class='link' onclick="budget_dialog()"><%= l(:button_add) %></span>
         <% ticket = @issue.tocat %>
         <% if ticket.get_resolver.present?

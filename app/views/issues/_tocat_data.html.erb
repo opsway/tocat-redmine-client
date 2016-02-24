@@ -7,24 +7,26 @@
     <td>
       <%= ticket.get_budget %>
     </td>
-    <th>
-      <%=l(:label_tocat_resolver)%>
-    </th>
-    <td>
-      <% if User.current.tocat_allowed_to?(:modify_resolver)%>
-        <% if ticket.get_resolver %>
-          <% if @issue.available_resolvers.map(&:id).include?(ticket.get_resolver.id) %>
-            <%= select_tag "resolver", options_from_collection_for_select(@issue.available_resolvers, "id", "name", selected: ticket.get_resolver.id ), include_blank: true, onChange: 'set_resolver(this)' %>
+    <% unless ticket.expenses %>
+      <th>
+        <%=l(:label_tocat_resolver)%>
+      </th>
+      <td>
+        <% if User.current.tocat_allowed_to?(:modify_resolver) %>
+          <% if ticket.get_resolver %>
+            <% if @issue.available_resolvers.map(&:id).include?(ticket.get_resolver.id) %>
+              <%= select_tag "resolver", options_from_collection_for_select(@issue.available_resolvers, "id", "name", selected: ticket.get_resolver.id ), include_blank: true, onChange: 'set_resolver(this)' %>
+            <% else %>
+              <%= ticket.get_resolver.name if ticket.get_resolver.present? %>
+            <% end %>
           <% else %>
-            <%= ticket.get_resolver.name if ticket.get_resolver.present? %>
+            <%= select_tag "resolver", options_from_collection_for_select(@issue.available_resolvers, "id", "name"), include_blank: true, onChange: 'set_resolver(this)' %>
           <% end %>
         <% else %>
-          <%= select_tag "resolver", options_from_collection_for_select(@issue.available_resolvers, "id", "name"), include_blank: true, onChange: 'set_resolver(this)' %>
+        <%= ticket.get_resolver.name if ticket.get_resolver.present? %>
         <% end %>
-      <% else %>
-      <%= ticket.get_resolver.name if ticket.get_resolver.present? %>
-      <% end %>
-    </td>
+      </td>
+    <% end %>
   </tr>
   <tr>
     <th>
@@ -90,27 +92,29 @@
     </tr>
   <% end %>
   <tr>
-    <th>
-      <%=l(:label_tocat_expenses)%>
-    </th>
-    <td> 
-      <% if ticket.expenses %>
-        <% if User.current.tocat_allowed_to?(:remove_expenses) %>
-         <%= link_to(remove_expenses_path(@issue.id), :data => {:confirm => l(:confirm_issue_expenses_remove)}, :method => :delete) do %>
-           <%= image_tag('true.png') %>
-         <% end %>
+    <% if ticket.resolver.id.nil? %>
+      <th>
+        <%=l(:label_tocat_expenses)%>
+      </th>
+      <td>
+        <% if ticket.expenses %>
+          <% if User.current.tocat_allowed_to?(:remove_expenses) %>
+           <%= link_to(remove_expenses_path(@issue.id), :data => {:confirm => l(:confirm_issue_expenses_remove)}, :method => :delete) do %>
+             <%= image_tag('true.png') %>
+           <% end %>
+          <% else %>
+             <%= image_tag('true.png') %>
+          <% end %>
         <% else %>
-           <%= image_tag('true.png') %>
+          <% if User.current.tocat_allowed_to?(:set_expenses) %>
+           <%= link_to(set_expenses_path(@issue.id), :data => {:confirm => l(:confirm_issue_expenses)}, :method => :post) do %>
+             <%= image_tag('false.png') %>
+           <% end %>
+          <% else %>
+             <%= image_tag('false.png') %>
+          <% end %>
         <% end %>
-      <% else %>
-        <% if User.current.tocat_allowed_to?(:set_expenses) %>
-         <%= link_to(set_expenses_path(@issue.id), :data => {:confirm => l(:confirm_issue_expenses)}, :method => :post) do %>
-           <%= image_tag('false.png') %>
-         <% end %>
-        <% else %>
-           <%= image_tag('false.png') %>
-        <% end %>
-      <% end %>
-    </td>
+      </td>
+    <% end %>
   </tr>
 </table>

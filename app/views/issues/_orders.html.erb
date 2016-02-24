@@ -1,5 +1,6 @@
 <div class = 'autoscroll'>
   <% records = @issue.budgets %>
+  <% ticket = @issue.tocat %>
   <% if records.present? %>
     <table class = 'list issues'  style="text-align: center;">
       <thead><tr>
@@ -34,8 +35,17 @@
             <td class = 'paid'>
               <%= order.paid ? image_tag('true.png') : image_tag('false.png') %>
             </td>
-            <td><span class='icon icon-edit' style='cursor:pointer;' onclick='edit_order(this)'></span></td>
-            <td><span class='icon icon-del' style='cursor:pointer;' onclick='delete_order(this)'></span></td>
+            <% if ticket.expenses? %>
+              <td></td>
+              <td></td>
+            <% else %>
+              <td>
+                <span class='icon icon-edit' style='cursor:pointer;' onclick='edit_order(this)'></span>
+              </td>
+              <td>
+                <span class='icon icon-del' style='cursor:pointer;' onclick='delete_order(this)'></span>
+              </td>
+            <% end %>
           </tr>
         <% end %>
       </tbody>
