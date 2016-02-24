@@ -8,9 +8,10 @@
 <script type="text/javascript">
   function sendData(){
     var user_id = <%= @user.id %>;
-    var role = $$('#role')[0].value;
-    new Ajax.Request('/tocat/set_role', {asynchronous: true, evalScripts: true, method: 'post', parameters: {user_id: user_id, role: role},
-        onSuccess: function (transport) {
+    var role = $('#role').val();
+    $.ajax('/tocat/set_role', {method: 'post', data: {user_id: user_id, role: role},
+        complete: function (transport,data) {
+            console.log(data);
             if (200 != transport.status)
               alert('Failed to update role for <%= @user.name %>.');
         }});
