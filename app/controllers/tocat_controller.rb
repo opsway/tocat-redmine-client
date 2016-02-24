@@ -200,6 +200,7 @@ class TocatController < ApplicationController
       #@team_balance_transactions = TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "account = balance" })
 
       @team_income_transactions =  TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "created_at > #{1.year.ago.strftime('%Y-%m-%d')} account = payment" })
+      @income_transactions =  TocatTransaction.find(:all, params:{user: @user_tocat.id, limit:9999999, search: "created_at > #{1.year.ago.strftime('%Y-%m-%d')} account = payment" })
 
       @team_balance_income_year = @team_tocat.income_account_state - @team_income_transactions.sum{|t| t.total.to_f}
 
