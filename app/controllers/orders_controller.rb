@@ -302,7 +302,7 @@ class OrdersController < ApplicationController
   end
 
   def check_for_setup
-    params.permit!
+    params.permit! if params.respond_to? :permit!
     errors = false
     errors = true unless RedmineTocatClient.settings[:host].present?
 

@@ -86,7 +86,7 @@ class TocatRolesController < ApplicationController
   end
 
   def find_permissions
-    params.permit!
+    params.permit! if params.respond_to? :permit!
     @permissions = TocatRole.permissions
   end
 

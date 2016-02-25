@@ -6,6 +6,7 @@
 </div>
 
 <script type="text/javascript">
+<% if Redmine::VERSION.to_a[0] > 2 %>
   function sendData(){
     var user_id = <%= @user.id %>;
     var role = jQuery('#role').val();
@@ -17,4 +18,15 @@
         }});
 
   };
+<% else %>
+  function sendData(){
+    var user_id = <%= @user.id %>;
+    var role = $$('#role')[0].value;
+    new Ajax.Request('/tocat/set_role', {asynchronous: true, evalScripts: true, method: 'post', parameters: {user_id: user_id, role: role},
+                            onSuccess: function (transport) {
+                        if (200 != transport.status)
+                            alert('Failed to update role for <%= @user.name %>.');
+                            }});
+  }
+<% end %>
 </script>
