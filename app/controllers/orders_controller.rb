@@ -19,8 +19,8 @@ class OrdersController < ApplicationController
     @order.invoiced_budget = params[:invoiced_budget] if params[:invoiced_budget].present?
     @order.team = params[:team] if params[:team].present?
     @order.parent_order = params[:split] if params[:split].present?
-    parent_order = @order.load_parent_order
-    @order.invoiced_budget = parent_order.free_budget if parent_order
+    @parent_order = @order.load_parent_order
+    @order.invoiced_budget = @parent_order.free_budget if @parent_order
   end
 
   def destroy
