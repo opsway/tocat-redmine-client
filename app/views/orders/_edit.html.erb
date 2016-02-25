@@ -36,10 +36,12 @@
                             :value => des %>
           </p>
           <% if User.current.tocat_allowed_to?(:update_commission) %>
-            <p>
-              <%= f.label_for_field :commission %>
-              <%= f.text_field :commission %>
-            </p>
+            <% unless @order.internal_order? || (@order.parent && @order.parent.internal_order?) %>
+              <p>
+                <%= f.label_for_field :commission %>
+                <%= f.text_field :commission %>
+              </p>
+            <% end %>
           <% end %>
           <p>
             <%= f.select :team, options_for_select([['Select Team', 0]] + @groups.collect {|t| [t.name, t.id]}, selected: team.blank? ? 0 : team, disabled: 0),
