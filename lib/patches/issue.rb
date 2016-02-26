@@ -25,9 +25,9 @@ module RedmineTocatClient
         def available_resolvers
           if tocat.orders.present?
             team = TocatOrder.find(tocat.orders.first.id).team.name
-            _users = TocatUser.find(:all, params: { search: "team = #{team}", limit: 9999999999 })
+            _users = TocatUser.find(:all, params: { search: "team = #{team} && role != \"Manager\"", limit: 9999999999 })
           else
-            _users =  TocatUser.all
+            _users =  TocatUser.find(:all, params: { search: "role != \"Manager\"", limit: 9999999999 })
           end
           users = _users
           return users.sort_by(&:name)
