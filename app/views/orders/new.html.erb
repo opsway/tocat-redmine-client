@@ -74,14 +74,15 @@
 <% end %>
 
 <script type="text/javascript">
-  var internalOrderCheckbox = $('#order_internal_order');
-  var commissionBlock = $('#commission-container');
+  var internalOrderCheckbox = jQuery.noConflict()('#order_internal_order');
+  var commissionBlock = jQuery.noConflict()('#commission-container');
+  var commissionInput = jQuery.noConflict()('#order_commission');
   internalOrderCheckbox.change(function() {
     if(this.checked) {
-      $('#commission-container').hide();
-      $('#order_commission').val('');
+      commissionBlock.hide();
+      commissionInput.val('');
     } else {
-      $('#commission-container').show();
+      commissionBlock.show();
     }
   });
 </script>

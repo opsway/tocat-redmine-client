@@ -7,8 +7,10 @@
   <% if User.current.tocat_allowed_to?(:complete_orders) %>
     <% unless @order.parent %>
       <% unless @order.completed %>
-        <% if @order.paid  %>
-            <%= link_to l(:button_complete), order_complete_path(@order), :data => {:confirm => l(:confirm_order_completed)}, :method => :put, :class => 'icon icon-checked' %>
+        <% unless @order.internal_order && @order.free_budget > 0 %>
+          <% if @order.paid  %>
+              <%= link_to l(:button_complete), order_complete_path(@order), :data => {:confirm => l(:confirm_order_completed)}, :method => :put, :class => 'icon icon-checked' %>
+          <% end %>
         <% end %>
       <% end %>
     <% end %>
