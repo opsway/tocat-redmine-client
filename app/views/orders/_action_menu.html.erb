@@ -9,7 +9,7 @@
       <% unless @order.completed %>
         <% unless @order.internal_order && @order.free_budget > 0 %>
           <% if @order.paid  %>
-              <%= link_to l(:button_complete), order_complete_path(@order), :data => {:confirm => l(:confirm_order_completed)}, :method => :put, :class => 'icon icon-checked' %>
+            <%= link_to l(:button_complete), order_complete_path(@order), :data => {:confirm => l(:confirm_order_completed)}, :method => :post, :class => 'icon icon-checked' %>
           <% end %>
         <% end %>
       <% end %>

@@ -168,7 +168,8 @@ class OrdersController < ApplicationController
 
     @orders = TocatOrder.all(params: query_params)
     @order_count = @orders.http_response['X-total'].to_i
-    @order_pages = Paginator.new self, @order_count, @orders.http_response['X-Per-Page'].to_i, params['page']
+    page = params['page'].to_i > 0 ? params['page'].to_i : 1
+    @order_pages = Paginator.new(@order_count, @orders.http_response['X-Per-Page'].to_i, page)
     @teams = TocatTeam.all.sort_by(&:name)
   end
 
@@ -287,6 +288,7 @@ class OrdersController < ApplicationController
 
   def check_action
     render_403 unless TocatRole.check_path(Rails.application.routes.recognize_path(request.env['PATH_INFO'], {:method => request.env['REQUEST_METHOD'].to_sym}))
+    p 'finish check_action'
   end
 
   def find_groups
@@ -312,6 +314,7 @@ class OrdersController < ApplicationController
         format.any(:atom, :csv, :pdf) { render(:nothing => true) }
       end
     end
+    p 'finish check_for_setup'
   end
 
   def process_commission
