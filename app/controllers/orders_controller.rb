@@ -12,7 +12,7 @@ class OrdersController < ApplicationController
 
 
   def new
-    @order = TocatOrder.new
+    @order = TocatOrder.build
     @order.name = params[:name] if params[:name].present?
     @order.description = params[:description] if params[:description].present?
     @order.allocatable_budget = params[:allocatable_budget] if params[:allocatable_budget].present?
