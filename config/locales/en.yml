@@ -186,3 +186,4 @@ en:
   update_user: 'Edit User'
   activate_user: 'Activate User'
   deactivate_user: 'Deactivate User'
+  label_completed: 'Completed'
