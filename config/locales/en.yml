@@ -86,6 +86,7 @@ en:
   notice_suborder_successful_created: 'SubOrder was successfully created!'
   notice_order_successful_created: 'Order was successfully created!'
   notice_invoice_successful_created: 'Invoice was successfully created!'
+  notice_invoice_successful_updated: 'Invoice was successfully updated!'
   label_subject: 'Subject'
   label_resolver: 'Resolver'
   label_accepted_issues: "Accepted & NOT paid tickets:"

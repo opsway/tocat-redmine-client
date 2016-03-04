@@ -85,6 +85,25 @@ class InvoicesController < ApplicationController
   def edit
   end
 
+  def update
+    if @invoice.update_attributes(params[:invoice])
+      flash[:notice] = l(:notice_invoice_successful_updated)
+      respond_to do |format|
+        format.html { redirect_back_or_default({:action => 'show', :id => @invoice}) }
+        format.js do
+          render :update do |page|
+            page.replace_html 'inovice-form', :partial => 'tocat/invoices/edit', :locals => {:invoice => @invoice}
+          end
+        end
+      end
+    else
+      @invoice_old = @invoice
+      @invoice.reload
+      respond_to do |format|
+        format.html { render :template => 'invoices/edit' }
+      end
+    end
+  end
 
   def index
     sort_update %w(external_id total paid)

@@ -77,6 +77,10 @@ class TocatInvoice < ActiveResource::Base
     return true, nil
   end
 
+  def editable?
+    true
+  end
+
   protected
 
   def to_json(options = {})

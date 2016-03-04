@@ -1,8 +1,9 @@
 <div class="contextual">
   <% if @invoice.paid %>
-    <%= link_to l(:button_remove_paid), invoice_paid_path(@invoice.id),:data => {:confirm => l(:confirm_invoice_paid)}, :method => :delete, :class => 'icon icon-time-add' if User.current.tocat_allowed_to?(:paid_invoices) %>
+    <%= link_to l(:button_remove_paid), invoice_paid_path(@invoice.id), :data => {:confirm => l(:confirm_invoice_paid)}, :method => :delete, :class => 'icon icon-time-add' if User.current.tocat_allowed_to?(:paid_invoices) %>
   <% else %>
-    <%= link_to l(:button_set_paid), invoice_paid_path(@invoice.id),:data => {:confirm => l(:confirm_invoice_unpaid)}, :method => :put, :class => 'icon icon-time-add' if User.current.tocat_allowed_to?(:paid_invoices) %>
+    <%= link_to l(:button_set_paid), invoice_paid_path(@invoice.id), :data => {:confirm => l(:confirm_invoice_unpaid)}, :method => :put, :class => 'icon icon-time-add' if User.current.tocat_allowed_to?(:paid_invoices) %>
   <% end %>
+  <%= link_to l(:button_edit), edit_invoice_path(@invoice), :onclick => 'showAndScrollTo("update", "issue_notes"); return false;', :class => 'icon icon-edit' if User.current.tocat_allowed_to?(:edit_orders) && !@invoice.paid %>
   <%= link_to l(:button_delete), '', :data => {:confirm => l(:confirm_invoice_destroy)}, :method => :delete, :class => 'icon icon-del' if User.current.tocat_allowed_to?(:destroy_invoices) %>
 </div>

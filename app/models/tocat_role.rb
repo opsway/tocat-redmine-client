@@ -40,6 +40,8 @@ class TocatRole < ActiveRecord::Base
     paths[:invoices][:set_paid] = :paid_invoices
     paths[:invoices][:set_unpaid] = :paid_invoices
     paths[:invoices][:deattach_order] = :create_invoices
+    paths[:invoices][:edit] = :edit_orders
+    paths[:invoices][:update] = :edit_orders
 
     paths[:tocat] = {}
     paths[:tocat][:toggle_accepted] = :modify_accepted
@@ -63,7 +65,7 @@ class TocatRole < ActiveRecord::Base
     paths[:status] = {}
     paths[:status][:status] = :show_status_page
     paths[:status][:checked] = :mark_alerts_as_checked
-    
+
     #users
     paths[:tocat_users] = {}
     paths[:tocat_users][:index] = :show_issues
