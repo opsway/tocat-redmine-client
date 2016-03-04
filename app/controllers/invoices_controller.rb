@@ -87,7 +87,7 @@ class InvoicesController < ApplicationController
 
   def update
     if @invoice.update_attributes(params[:invoice])
-      flash[:notice] = l(:notice_invoice_successful_update)
+      flash[:notice] = l(:notice_invoice_successful_updated)
       respond_to do |format|
         format.html { redirect_back_or_default({:action => 'show', :id => @invoice}) }
         format.js do
