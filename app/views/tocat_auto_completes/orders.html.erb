@@ -1,0 +1,7 @@
+<%= raw @orders.map {|order| {
+            'id' => order.id,
+            'label' => "##{order.id}: #{order.name.to_s.truncate(60)}",
+            'value' => order.id
+        }
+      }.to_json
+%>
