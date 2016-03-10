@@ -18,7 +18,8 @@ class TocatUser < ActiveResource::Base
     attribute :tocat_server_role, :integer
     attribute :tocat_team, :integer
   end
-  validates :login, :name, :team, :role, :daily_rate, presence: true
+  validates :login, :name, :team, :daily_rate, presence: true
+  validates_presence_of  :role, on: :create
   def to_s
     self.name
   end

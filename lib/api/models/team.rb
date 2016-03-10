@@ -3,6 +3,21 @@ class TocatTeam < ActiveResource::Base
   self.site = RedmineTocatClient.settings[:host]
   self.element_name = 'team'
   self.collection_name = 'teams'
+  add_response_method :http_response
+
+  schema do
+    attribute 'id', :integer
+    attribute 'name', :string
+    attribute 'links', :integer
+    # attribute 'role', :integer
+    # decimal 'daily_rate'
+    # attribute :tocat_server_role, :integer
+    # attribute :tocat_team, :integer
+  end
+  validates :name, presence: true
+  def to_s
+    self.name
+  end
 
   class << self
     def element_path(id, prefix_options = {}, query_options = nil)

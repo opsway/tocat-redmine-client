@@ -188,3 +188,10 @@ en:
   activate_user: 'Activate User'
   deactivate_user: 'Deactivate User'
   label_completed: 'Completed'
+  #teams
+  label_teams_plural: 'Teams'
+  label_team_new: 'New Team'
+  create_team: 'Create Team'
+  update_team: 'Edit Team'
+  activate_team: 'Activate Team'
+  deactivate_team: 'Deactivate Team'

@@ -1,0 +1,8 @@
+= error_messages_for @team
+h3= l(:label_team)
+.box.teams
+  = form_for @team do |f|
+    = f.label :name, l(:label_name)
+    = f.text_field :name, required: true
+    br
+    = f.submit 'Save'
