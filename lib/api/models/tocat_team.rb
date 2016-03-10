@@ -9,10 +9,7 @@ class TocatTeam < ActiveResource::Base
     attribute 'id', :integer
     attribute 'name', :string
     attribute 'links', :integer
-    # attribute 'role', :integer
-    # decimal 'daily_rate'
-    # attribute :tocat_server_role, :integer
-    # attribute :tocat_team, :integer
+    attribute 'manager', :integer
   end
   validates :name, presence: true
   def to_s
@@ -33,6 +30,13 @@ class TocatTeam < ActiveResource::Base
     end
   end
 
+  def users
+    TocatUser.all.find_all { |x| x.tocat_team.id == id } # TODO refactor to get from api
+  end
+
+  def team_manager
+    TocatUser.all.find { |x| x.tocat_team.id == id && x.tocat_server_role.id == 1 }
+  end
 
   def self.find_by_name(name)
     TocatTeam.find(:all, params:{search:"#{name}"}).first

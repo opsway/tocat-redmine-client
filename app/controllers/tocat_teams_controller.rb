@@ -51,7 +51,6 @@ class TocatTeamsController < ApplicationController
       end
     rescue ActiveResource::ClientError => @e
       respond_to do |format|
-        binding.pry
         flash[:error] = JSON.parse(@e.response.body)['errors'].join(', ')
         format.html { redirect_back_or_default({:action => 'edit', id: @team.id}) }
       end

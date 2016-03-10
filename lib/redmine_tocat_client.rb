@@ -5,7 +5,7 @@ Rails.configuration.to_prepare do
   require 'api/models/order'
   require 'api/models/invoice'
   require 'api/models/tocat_user'
-  require 'api/models/team'
+  require 'api/models/tocat_team'
   require 'api/models/transaction'
   require 'api/models/server_role'
   # patches

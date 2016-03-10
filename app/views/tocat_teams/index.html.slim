@@ -7,9 +7,11 @@ h2= l(:label_teams_plural)
     thead
       tr
         td= l(:label_name)
+        td= l(:label_manager)
     tbody
       - @teams.each do |team|
         tr
           td= link_to team.name, my_tocat_path(team_id: team.id)
+          td= team.team_manager
           td= link_to l(:label_edit), edit_tocat_team_path(team)
 p.pagination= pagination_links_full @teams_pages, @teams_count
