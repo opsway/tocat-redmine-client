@@ -5,6 +5,8 @@ class TocatTeam < ActiveResource::Base
   self.collection_name = 'teams'
   add_response_method :http_response
 
+  has_many :tocat_users
+
   schema do
     attribute 'id', :integer
     attribute 'name', :string
@@ -31,12 +33,12 @@ class TocatTeam < ActiveResource::Base
     end
   end
 
-  def users
-    TocatUser.all.find_all { |x| x.tocat_team.id == id } # TODO refactor to get from api
+  def team_users
+    tocat_users.find_all { |user| user.tocat_team.id == id }
   end
 
   def team_manager
-    TocatUser.all.find { |x| x.tocat_team.id == id && x.tocat_server_role.id == 1 }
+    team_users.find { |user| user.tocat_server_role.id == 1 }
   end
 
   def self.find_by_name(name)
