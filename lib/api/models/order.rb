@@ -18,8 +18,8 @@ class TocatOrder < ActiveResource::Base
       "#{prefix(prefix_options)}#{collection_name}#{query_string(query_options)}"
     end
 
-    def auto_complete(term)
-      response = self.get(:auto_complete, { term: term })
+    def parent_auto_complete(term, child_id)
+      response = self.get(:parent_auto_complete, { term: term, child_id: child_id })
       instantiate_collection(response)
     end
   end
