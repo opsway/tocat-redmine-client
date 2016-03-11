@@ -4,7 +4,7 @@ class TocatTeamsController < ApplicationController
 
   #before_filter :require_admin
   before_filter :check_action
-  before_filter :find_team, :only => [:edit, :update, :destroy, :makeactive]
+  before_filter :find_team, :only => [:edit, :update, :destroy]
 
   def index
     query_params = {anyteam: true}
@@ -64,10 +64,7 @@ class TocatTeamsController < ApplicationController
     flash[:error] =  l(:error_can_not_remove_team)
     redirect_to :action => 'index'
   end
-  def makeactive
-    self.destroy
-  end
-
+  
   private
 
   def find_team
