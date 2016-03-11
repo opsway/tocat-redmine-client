@@ -197,3 +197,4 @@ en:
   update_team: 'Edit Team'
   activate_team: 'Activate Team'
   deactivate_team: 'Deactivate Team'
+  label_default_commission: 'Default Commission '

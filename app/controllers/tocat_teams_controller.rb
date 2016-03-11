@@ -22,7 +22,7 @@ class TocatTeamsController < ApplicationController
   end
 
   def create
-    @team= TocatTeam.new(params[:tocat_team])
+    @team = TocatTeam.new(params[:tocat_team])
     unless @team.valid?
       @team.role = OpenStruct.new(id: @team.role)
       @team.team = OpenStruct.new(id: @team.team)

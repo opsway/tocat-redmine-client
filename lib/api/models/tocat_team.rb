@@ -10,8 +10,9 @@ class TocatTeam < ActiveResource::Base
     attribute 'name', :string
     attribute 'links', :integer
     attribute 'manager', :integer
+    attribute 'default_commission', :integer
   end
-  validates :name, presence: true
+  validates :name, :default_commission, presence: true
   def to_s
     self.name
   end
