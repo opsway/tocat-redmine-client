@@ -19,6 +19,7 @@ match '/tocat/status' => 'status#status', via: :get
 match '/tocat/status/:id/checked' => 'status#checked', as: :checked, via: [:post, :delete]
 match '/tocat/orders/:id/invoice' => 'orders#invoices', as: :order_invoices, via: :get
 match '/tocat/orders/:id/invoice' => 'orders#set_invoice', as: :order_invoices, via: [:post, :put]
+get '/tocat/parent_auto_complete/orders' => 'tocat_auto_completes#parent_orders', as: :auto_complete_parent_orders
 match '/tocat/orders/:id/invoice' => 'orders#delete_invoice', as: :order_invoices, via: [:delete]
 match '/tocat/orders/:id/completed' => 'orders#toggle_complete', as: :order_complete, via: [:post, :put]
 match '/tocat/orders/:id/completed' => 'orders#toggle_uncomplete', as: :order_uncomplete, via: [:delete]
