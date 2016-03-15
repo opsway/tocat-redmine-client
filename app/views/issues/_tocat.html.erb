@@ -106,7 +106,7 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
                       :redirect_to => "issues:show:#{ticket.id}:#{@issue.id}"}
           end
             %>
-        <%= link_to "Create", new_order_path(params), :class => 'icon icon-add' if User.current.tocat_allowed_to?(:create_orders) %>
+        <%= link_to "(or Create new order)", new_order_path(params) if User.current.tocat_allowed_to?(:create_orders) %>
       <% end %>
     </div>
     <p><strong><%=l(:label_order_plural)%></strong></p>
