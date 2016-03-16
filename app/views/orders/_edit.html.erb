@@ -27,7 +27,7 @@
             <% if User.current.tocat_allowed_to?(:edit_orders) %>
               <p id="parent_order">
                 <%= f.text_field :parent_id, :size => 10, label: 'Parent' %>
-                <%= javascript_tag "observeAutocompleteField('order_parent_id', '#{escape_javascript auto_complete_parent_orders_path(order_id: @order.id) }')" %>
+                <%= javascript_tag "observeParentOrderField('order_parent_id', '#{escape_javascript auto_complete_parent_orders_path(order_id: @order.id) }')" %>
               </p>
             <% end %>
           <% end %>

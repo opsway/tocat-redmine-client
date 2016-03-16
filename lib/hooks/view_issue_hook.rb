@@ -50,5 +50,6 @@ end
 class RedmineMyPluginHookListener < Redmine::Hook::ViewListener
   def view_layouts_base_html_head(context)
       stylesheet_link_tag 'tocat_client', :plugin => :redmine_tocat_client
+      javascript_include_tag 'tocat_client', :plugin => :redmine_tocat_client
   end
 end
