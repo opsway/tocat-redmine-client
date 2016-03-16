@@ -1,11 +1,11 @@
 function observeParentOrderField(fieldId, url, options) {
-    $(document).ready(function() {
-        $('#'+fieldId).autocomplete($.extend({
+    jQuery.noConflict()(document).ready(function() {
+        jQuery.noConflict()('#'+fieldId).autocomplete($.extend({
             source: url,
             minLength: 2,
-            search: function(){$('#'+fieldId).addClass('ajax-loading');},
-            response: function(){$('#'+fieldId).removeClass('ajax-loading');}
+            search: function(){jQuery.noConflict()('#'+fieldId).addClass('ajax-loading');},
+            response: function(){jQuery.noConflict()('#'+fieldId).removeClass('ajax-loading');}
         }, options));
-        $('#'+fieldId).addClass('autocomplete');
+        jQuery.noConflict()('#'+fieldId).addClass('autocomplete');
     });
 }
