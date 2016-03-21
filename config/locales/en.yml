@@ -31,7 +31,7 @@ en:
   set_expenses: 'Set expenses'
   remove_expenses: 'Remove expenses'
   label_tocat_expenses: 'Expenses'
-  confirm_issue_expenses: 'Are you sure to make issue expenses flag?'
+  confirm_issue_expenses: 'This will lock Issue for future changes of resolver or budget. Are you sure?'
   confirm_issue_expenses_remove: 'Are you sure to remove expenses flag from issue?'
   message_expense_accepted: 'Flag expenses successfully added to issue'
   message_remove_expense_accepted: 'Flag expenses removed from issue successfully'
