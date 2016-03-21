@@ -5,8 +5,6 @@ class TocatTeam < ActiveResource::Base
   self.collection_name = 'teams'
   add_response_method :http_response
 
-  has_many :tocat_users
-
   schema do
     attribute 'id', :integer
     attribute 'name', :string
