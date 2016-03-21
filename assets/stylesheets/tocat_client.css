@@ -614,3 +614,12 @@ a.fi-arrows-out.red{
 .fi-yen:before { content: "\f218"; }
 .fi-zoom-in:before { content: "\f219"; }
 .fi-zoom-out:before { content: "\f21a"; }
+
+.fi-lock.green.medium {
+    font-size: 1.1rem;
+    color: green;
+}
+.fi-unlock.red.medium {
+    font-size: 1.1rem;
+    color: red;
+}
