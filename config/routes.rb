@@ -8,6 +8,10 @@ resources :invoices, path: '/tocat/invoices'
 resources :tocat_users, path: '/tocat/users' do
   delete :makeactive, on: :member
 end
+
+resources :tocat_teams, path: '/tocat/teams' do
+  delete :makeactive, on: :member
+end
 resources :orders, path: '/tocat/orders'
 resources :tickets, path: '/tocat/issues'
 resources :tocat_roles, path: '/tocat/roles'

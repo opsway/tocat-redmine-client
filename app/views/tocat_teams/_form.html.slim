@@ -1,0 +1,15 @@
+= error_messages_for @team
+h3= l(:label_team)
+.box.teams
+  = form_for @team do |f|
+    = f.label :name, l(:label_name)
+    = f.text_field :name, required: true
+    br
+    = f.label :manager, l(:label_manager)
+    = f.select :manager, options_for_select(@team.team_users.map{|t| [t.name, t.id]},
+            selected: @team.team_manager.try(:id), required: true), include_blank: 'Select User', required: true
+    br
+    = f.label :default_commission, l(:label_default_commission)
+    = f.number_field :default_commission, required: true, in: 1..100
+    br
+    = f.submit 'Save'

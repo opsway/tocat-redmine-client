@@ -76,6 +76,16 @@ class TocatRole < ActiveRecord::Base
     paths[:tocat_users][:destroy] = :deactivate_user
     paths[:tocat_users][:makeactive] = :activate_user
 
+    #teams
+    paths[:tocat_teams] = {}
+    paths[:tocat_teams][:index] = :show_issues
+    paths[:tocat_teams][:new] = :create_team
+    paths[:tocat_teams][:create] = :create_team
+    paths[:tocat_teams][:edit] = :update_team
+    paths[:tocat_teams][:update] = :update_team
+    paths[:tocat_teams][:destroy] = :deactivate_team
+    paths[:tocat_teams][:makeactive] = :activate_team
+
     #transactions
     paths[:transactions] = {}
     paths[:transactions][:index] = :show_transactions
@@ -95,7 +105,8 @@ class TocatRole < ActiveRecord::Base
     data[:issues] = [:modify_accepted, :modify_resolver, :modify_budgets, :show_budgets, :show_issues, :show_aggregated_info, :can_request_review, :can_review_task, :set_expenses, :remove_expenses]
     data[:transactions] = [:show_transactions, :create_transactions]
     data[:dashboard] = [:show_tocat_page, :has_protected_page, :can_see_public_pages, :is_admin, :show_status_page, :mark_alerts_as_checked, :show_activity_feed]
-    data[:users] = [:create_user,:update_user, :activate_user, :deactivate_user]
+    data[:users] = [:create_user, :update_user, :activate_user, :deactivate_user]
+    data[:teams] = [:create_team, :update_team, :activate_team, :deactivate_team]
     return data
   end
 

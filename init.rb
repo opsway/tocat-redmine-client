@@ -35,10 +35,12 @@ Redmine::Plugin.register :redmine_tocat_client do
               :caption => :label_transaction_plural
     menu.push :users, { :controller => 'tocat_users', :action => 'index' },
               :caption => 'Users'
+    menu.push :teams, { :controller => 'tocat_teams', :action => 'index' },
+              :caption => 'Teams'
     menu.push :status, { :controller => 'status', :action => 'status' },
               :if => Proc.new{ User.current.tocat_allowed_to?(:show_status_page)},
               :caption => :label_status
-            
+
   end
   ActiveResource::Base.include_root_in_json = true
 end

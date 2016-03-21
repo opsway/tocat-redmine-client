@@ -1,0 +1,19 @@
+.contextual
+  - if User.current.tocat_allowed_to? :create_team
+    = link_to l(:label_team_new), new_tocat_team_path, class: 'icon icon-add'
+h2= l(:label_teams_plural)
+.autoscroll
+  table.list
+    thead
+      tr
+        td= l(:label_name)
+        td= l(:label_manager)
+        td= l(:label_default_commission)
+    tbody
+      - @teams.each do |team|
+        tr
+          td= team.name
+          td= team.team_manager
+          td= team.default_commission
+          td= link_to l(:label_edit), edit_tocat_team_path(team)
+p.pagination= pagination_links_full @teams_pages, @teams_count
