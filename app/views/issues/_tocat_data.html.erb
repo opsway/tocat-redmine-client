@@ -99,19 +99,19 @@
       <td>
         <% if ticket.expenses %>
           <% if User.current.tocat_allowed_to?(:remove_expenses) %>
-           <%= link_to(remove_expenses_path(@issue.id), :data => {:confirm => l(:confirm_issue_expenses_remove)}, :method => :delete) do %>
-             <%= image_tag('true.png') %>
-           <% end %>
+            <%= link_to(remove_expenses_path(@issue.id), :data => {:confirm => l(:confirm_issue_expenses_remove)}, :method => :delete) do %>
+              <i class="fi-lock green medium"></i>
+            <% end %>
           <% else %>
-             <%= image_tag('true.png') %>
+            <i class="fi-lock green medium"></i>
           <% end %>
         <% else %>
           <% if User.current.tocat_allowed_to?(:set_expenses) %>
            <%= link_to(set_expenses_path(@issue.id), :data => {:confirm => l(:confirm_issue_expenses)}, :method => :post) do %>
-             <%= image_tag('false.png') %>
+             <i class="fi-unlock red medium"></i>
            <% end %>
           <% else %>
-             <%= image_tag('false.png') %>
+            <i class="fi-unlock red medium"></i>
           <% end %>
         <% end %>
       </td>
