@@ -12,7 +12,7 @@ h2= l(:label_teams_plural)
     tbody
       - @teams.each do |team|
         tr
-          td= link_to team.name, my_tocat_path(team_id: team.id)
+          td= team.name
           td= team.team_manager
           td= team.default_commission
           td= link_to l(:label_edit), edit_tocat_team_path(team)

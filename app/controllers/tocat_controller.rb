@@ -173,9 +173,10 @@ class TocatController < ApplicationController
     status, errors = TocatTicket.set_budgets(@issue.tocat.id, budgets)
     if status
       data = render_to_string :partial => 'issues/orders'
-      respond_to do |format|
-        format.js {   render( :text => data, :status => :ok ) }
-      end
+      render json: { :text => data }, :status => :ok
+      # respond_to do |format|
+        # format.js { render( :text => data, :status => :ok ) }
+      # end
     else
       render :json =>  errors.response.body, :status => :bad_request
     end

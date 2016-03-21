@@ -292,7 +292,7 @@ class OrdersController < ApplicationController
   end
 
   def find_groups
-    @groups = TocatTeam.all
+    @groups = TocatTeam.all.sort_by(&:name)
   rescue ActiveResource::ResourceNotFound
     render_404
   end

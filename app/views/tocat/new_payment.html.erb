@@ -20,8 +20,6 @@
 
 <%= hidden_field_tag 'users', @users_data.as_json %>
 
-<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
-<script charset="utf-8">jQuery.noConflict();</script>
 <script charset="utf-8">
 jQuery.noConflict()(function(){
   var users = JSON.parse(jQuery.noConflict()('#users').val())

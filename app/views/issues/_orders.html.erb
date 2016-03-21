@@ -89,13 +89,14 @@
           jQuery.noConflict()('#ajax-indicator').show();
         },
         success: function(data) {
-          document.getElementById('orders_box').innerHTML = data.responseText;
-          var orders = JSON.parse(jQuery.noConflict()('#teams').val())
+          document.getElementById('orders_box').innerHTML = data.text;
+          var orders = JSON.parse(jQuery.noConflict()('#teams').val());
           jQuery.noConflict()('#ajax-indicator').hide();
         },
         error: function(data) {
-          document.getElementById('orders_box').innerHTML = data.responseText;
-          var orders = JSON.parse(jQuery.noConflict()('#teams').val())
+          alert(JSON.parse(data.responseText).errors.join(', '));
+          // document.getElementById('orders_box').innerHTML = data.responseText;
+//          var orders = JSON.parse(jQuery.noConflict()('#teams').val());
           jQuery.noConflict()('#ajax-indicator').hide();
         }
       });

@@ -17,12 +17,18 @@ class TocatOrder < ActiveResource::Base
       query_options.merge!({:current_user => User.current.name})
       "#{prefix(prefix_options)}#{collection_name}#{query_string(query_options)}"
     end
+
+    def parent_auto_complete(term, child_id)
+      response = self.get(:parent_auto_complete, { term: term, child_id: child_id })
+      instantiate_collection(response)
+    end
   end
 
 
   schema do
     attribute 'id', :integer
     attribute 'parent_order', :string
+    attribute 'parent_id', :integer
     attribute 'name', :string
     attribute 'description', :text
     attribute 'team', :string

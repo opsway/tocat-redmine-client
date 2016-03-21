@@ -22,6 +22,7 @@ match '/tocat/budget' => 'tocat#budget_dialog', via: :get
 match '/tocat/status' => 'status#status', via: :get
 match '/tocat/status/:id/checked' => 'status#checked', as: :checked, via: [:post, :delete]
 get '/tocat/orders/:id/invoice' => 'orders#invoices', as: :order_invoices
+get '/tocat/parent_auto_complete/orders' => 'tocat_auto_completes#parent_orders', as: :auto_complete_parent_orders
 post '/tocat/orders/:id/invoice' => 'orders#set_invoice', as: :order_invoices_put
 put '/tocat/orders/:id/invoice' => 'orders#set_invoice', as: :order_invoices_post
 delete '/tocat/orders/:id/invoice' => 'orders#delete_invoice', as: :order_invoices_rem, via: [:delete]

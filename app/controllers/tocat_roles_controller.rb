@@ -48,7 +48,7 @@ class TocatRolesController < ApplicationController
   end
 
   def update
-    if request.patch? and @role.update_attributes(params[:tocat_role])
+    if @role.update_attributes(params[:tocat_role])
       flash[:notice] = l(:notice_successful_update)
       redirect_to :action => 'index'
     else
