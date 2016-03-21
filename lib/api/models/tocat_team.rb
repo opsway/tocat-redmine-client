@@ -5,8 +5,6 @@ class TocatTeam < ActiveResource::Base
   self.collection_name = 'teams'
   add_response_method :http_response
 
-  has_many :tocat_users
-
   schema do
     attribute 'id', :integer
     attribute 'name', :string
@@ -34,7 +32,7 @@ class TocatTeam < ActiveResource::Base
   end
 
   def team_users
-    tocat_users.find_all { |user| user.tocat_team.id == id }
+    TocatUser.find(:all, params:{search:"team=#{name}"})
   end
 
   def team_manager
