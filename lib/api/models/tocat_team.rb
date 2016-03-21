@@ -38,7 +38,7 @@ class TocatTeam < ActiveResource::Base
   end
 
   def team_manager
-    team_users.find { |user| user.tocat_server_role.id == 1 }
+    team_users.find { |user| user.tocat_server_role.name == 'Manager' }
   end
 
   def self.find_by_name(name)
