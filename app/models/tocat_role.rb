@@ -50,6 +50,7 @@ class TocatRole < ActiveRecord::Base
     paths[:tocat][:save_budget_dialog] = :modify_budgets
     paths[:tocat][:delete_budget] = :modify_budgets
     paths[:tocat][:my_tocat] = :show_tocat_page
+    paths[:tocat][:tocat_chart_data] = :show_tocat_page
     paths[:tocat][:new_payment] = :create_transactions
     paths[:tocat][:create_payment] = :create_transactions
     paths[:tocat][:new_bonus] = :create_transactions
