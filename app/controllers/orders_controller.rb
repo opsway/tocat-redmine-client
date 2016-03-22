@@ -7,7 +7,7 @@ class OrdersController < ApplicationController
   helper :sort
   include SortHelper
   before_filter :check_action
-  before_action :load_available_parents, only: [:show, :edit]
+  before_filter :load_available_parents, only: [:show, :edit]
 
 
 
