@@ -7,6 +7,7 @@ class OrdersController < ApplicationController
   helper :sort
   include SortHelper
   before_filter :check_action
+  before_action :load_available_parents, only: [:show, :edit]
 
 
 
@@ -323,5 +324,13 @@ class OrdersController < ApplicationController
         flash[:error] = JSON.parse(errors.response.body)['errors'].join(', ')
       end
     end
+  end
+
+  def load_available_parents
+    potential_parents = TocatOrder.available_parents(@order.id)
+    @available_parents = []
+    @available_parents << ['Select new parent order', 0] if !@order.parent_id && potential_parents.any?
+    @available_parents << ['You can not change parent order', 0] unless @order.parent_id || potential_parents.any?
+    @available_parents += potential_parents.map { |o| [o.name, o.id] }
   end
 end
