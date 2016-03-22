@@ -22,6 +22,11 @@ class TocatOrder < ActiveResource::Base
       response = self.get(:parent_auto_complete, { term: term, child_id: child_id })
       instantiate_collection(response)
     end
+
+    def available_parents(child_id)
+      response = self.get(:available_parents, { child_id: child_id })
+      instantiate_collection(response)
+    end
   end
 
 
