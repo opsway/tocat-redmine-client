@@ -24,7 +24,7 @@
       <div id="all_attributes">
         <%= labelled_fields_for :order, @order do |f| %>
           <% unless @order.internal_order? || @order.try(:invoice).try(:id).present? %>
-            <% if User.current.tocat_allowed_to?(:edit_orders) %>
+            <% if User.current.tocat_allowed_to?(:edit_orders) && @available_parents %>
               <p id="parent_order">
                 <%= f.select :parent_id,
                              options_for_select(@available_parents, selected: @order.parent_id.to_i, disabled: 0),
@@ -45,7 +45,7 @@
                             :value => des %>
           </p>
           <% if User.current.tocat_allowed_to?(:update_commission) %>
-            <% unless @order.internal_order? || (@order.parent && @order.parent.internal_order?) %>
+            <% if @order.new? || !(@order.internal_order? || (@order.parent && @order.parent.internal_order?)) %>
               <p>
                 <%= f.label_for_field :commission %>
                 <%= f.text_field :commission %>
