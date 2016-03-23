@@ -8,10 +8,10 @@ class TocatBalanceChart
   end
 
   def chart_data_for(period_identifier)
-    chart_data(period: PresetPeriods.period(period_identifier))
+    chart_data(PresetPeriods.period(period_identifier))
   end
 
-  def chart_data(period:)
+  def chart_data(period)
     @balance_chart = { balance: [], forecast: [], zero_line: [], timeline: [] }
     @accepted_tasks = TocatTicket.get_accepted_tasks(true, tocat_user.id)
     balance_transactions_by_date = user_balance_transactions_sum_by_date(tocat_user, period)
