@@ -332,11 +332,12 @@ class OrdersController < ApplicationController
 
   def load_available_parents
     potential_parents = TocatOrder.available_parents(@order.id)
-    parent_order = @order.load_parent_order
-    potential_parents += parent_order if parent_order
+    parent_order = @order.parent
     @available_parents = []
     @available_parents << ['Select new parent order', 0] if !@order.parent_id && potential_parents.any?
     @available_parents << ['You can not change parent order', 0] unless @order.parent_id || potential_parents.any?
     @available_parents += potential_parents.map { |o| [o.name, o.id] }
+    @available_parents << [parent_order.name, parent_order.id] if parent_order
+    @available_parents.uniq!
   end
 end
