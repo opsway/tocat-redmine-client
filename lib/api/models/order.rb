@@ -37,6 +37,7 @@ class TocatOrder < ActiveResource::Base
     attribute 'name', :string
     attribute 'description', :text
     attribute 'team', :string
+    attribute 'invoice', :integer
     decimal 'invoiced_budget', 'allocatable_budget', 'free_budget'
     attribute 'internal_order', :boolean
     attribute 'commission', :integer
