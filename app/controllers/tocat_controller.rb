@@ -196,80 +196,18 @@ class TocatController < ApplicationController
       @user_tocat = @user.tocat
     end
     begin
+      @balance_chart = TocatBalanceChart.new(@user_tocat).chart_data_for('this_quarter')
       #@user_tocat = TocatUser.find(TocatUser.find_by_name(@user.name).id) #!!!
       @team_tocat = TocatTeam.find(@user_tocat.tocat_team.id)
       #@team_balance_transactions = TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "account = balance" })
+      # @team_income_transactions =  TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "created_at > #{1.year.ago.strftime('%Y-%m-%d')} account = payment" })
+      @income_transactions =  TocatTransaction.find(:all, params:{user: @user_tocat.id, limit:9999999, search: "created_at > #{3.months.ago.strftime('%Y-%m-%d')} account = payment" })
 
-      @team_income_transactions =  TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "created_at > #{1.year.ago.strftime('%Y-%m-%d')} account = payment" })
-      @income_transactions =  TocatTransaction.find(:all, params:{user: @user_tocat.id, limit:9999999, search: "created_at > #{1.year.ago.strftime('%Y-%m-%d')} account = payment" })
-
-      @team_balance_income_year = @team_tocat.income_account_state - @team_income_transactions.sum{|t| t.total.to_f}
+      # @team_balance_income_year = @team_tocat.income_account_state - @team_income_transactions.sum{|t| t.total.to_f}
 
       @balance_transactions = TocatTransaction.find(:all, params:{user: @user_tocat.id, limit:9999999, search: "account = balance" })
       @accepted_tasks = TocatTicket.get_accepted_tasks(true, @user_tocat.id)
       @not_accepted_tasks = TocatTicket.get_accepted_tasks(false, @user_tocat.id)
-      
-      
-      #removed if manager?
-      @balance_chart = { month: { balance: [], forecast: [], zero_line: [], timeline: [], income_team: [] },
-                        halfyear: { balance: [], forecast: [], zero_line: [], timeline: [], income_team: []  },
-                        year: { balance: [], forecast: [], zero_line: [], timeline: [], income_team: [] } }
-      balance_transactions_ = TocatTransaction.find(:all, params: { search: "accountable_type == User accountable_id == #{@user_tocat.id} created_at >= #{1.year.ago.strftime('%Y-%m-%d')} account = balance", limit: 9999999})
-      accepted_not_paid_events = TocatTicket.events_for(@accepted_tasks.collect(&:task_id), "task.accepted_update")
-      balance_with_tasks = balance =  @user_tocat.balance_account_state - balance_transactions_.sum { |r| r.total.to_i}
-
-      week = (1.week.ago.to_date..Date.today)
-      month = (1.month.ago.to_date..Date.today)
-      halfyear = (6.months.ago.to_date..Date.today)
-      year = (1.year.ago.to_date..Date.today)
-      accepted_not_paid_events = accepted_not_paid_events.select{ |r| r.parameters['new'] == true }.uniq(&:id)
-      events_count = accepted_not_paid_events.count
-      (1.year.ago.to_date..Date.today).each do |date|
-        events_sum = accepted_not_paid_events.select{ |r| r.created_at.to_date == date }.sum { |r| r.parameters["balance"].to_i}
-        transactions_sum =  @balance_transactions.select{ |r| r.date.to_date == date}.sum { |r| r.total.to_i }
-        
-        team_transactions_sum = @team_income_transactions.select{|r| r.date.to_date == date}.sum{|r| r.total.to_f}
-        @team_balance_income_year += team_transactions_sum.round(2)
-
-        balance_with_transactions = (balance += transactions_sum).round(2)
-        forecast_balance = (balance_with_tasks += (events_sum + transactions_sum)).round(2)
-
-        if month.include?(date)
-          @balance_chart[:month][:balance] << balance_with_transactions
-          @balance_chart[:month][:income_team] << @team_balance_income_year
-          
-
-          if @user_tocat.tocat_server_role.name == 'Manager'
-            @balance_chart[:month][:forecast] << balance_with_transactions
-          else
-            @balance_chart[:month][:forecast] << forecast_balance
-          end
-          @balance_chart[:month][:zero_line] << 0
-          @balance_chart[:month][:timeline] << date
-        end
-        if halfyear.include?(date)
-          @balance_chart[:halfyear][:balance] << balance_with_transactions
-          @balance_chart[:halfyear][:income_team] << @team_balance_income_year
-
-          if @user_tocat.tocat_server_role.name == 'Manager'
-            @balance_chart[:halfyear][:forecast] << balance_with_transactions
-          else
-            @balance_chart[:halfyear][:forecast] << forecast_balance
-          end
-          @balance_chart[:halfyear][:zero_line] << 0
-          @balance_chart[:halfyear][:timeline] << date
-        end
-
-        @balance_chart[:year][:balance] << balance_with_transactions
-        @balance_chart[:year][:income_team] << @team_balance_income_year
-        if @user_tocat.tocat_server_role.name == 'Manager'
-          @balance_chart[:year][:forecast] << balance_with_transactions
-        else
-          @balance_chart[:year][:forecast] << forecast_balance
-        end
-        @balance_chart[:year][:zero_line] << 0
-        @balance_chart[:year][:timeline] << date
-      end
     rescue Exception => e
       Rails.logger.info "\e[31mException in Tocat. #{e.message}, #{e.backtrace.first}\e[0m"
       return render_404
@@ -277,6 +215,23 @@ class TocatController < ApplicationController
     respond_to do |format|
       format.html { render :template => 'tocat/my_tocat' }
     end
+  end
+
+  def tocat_chart_data
+    if params[:user_id].present?
+      user_tocat = TocatUser.find(params[:user_id])
+      target = User.find_by_login(user_tocat.login)
+      return render_403 unless target.present? && check_permissions(target)
+    else
+      user_tocat = User.current.tocat
+    end
+    begin
+      balance_chart = TocatBalanceChart.new(user_tocat).chart_data_for(params[:period])
+    rescue Exception => e
+      Rails.logger.info "\e[31mException in Tocat. #{e.message}, #{e.backtrace.first}\e[0m"
+      return render_404
+    end
+    render json: balance_chart
   end
 
   private
