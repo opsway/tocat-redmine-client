@@ -196,7 +196,7 @@ class TocatController < ApplicationController
       @user_tocat = @user.tocat
     end
     begin
-      @balance_chart = TocatBalanceChart.new(@user_tocat).chart_data_for('this_quarter')
+      @balance_chart = TocatBalanceChart.new(@user_tocat, 'this_quarter').chart_data
       #@user_tocat = TocatUser.find(TocatUser.find_by_name(@user.name).id) #!!!
       @team_tocat = TocatTeam.find(@user_tocat.tocat_team.id)
       #@team_balance_transactions = TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "account = balance" })
@@ -226,7 +226,7 @@ class TocatController < ApplicationController
       user_tocat = User.current.tocat
     end
     begin
-      balance_chart = TocatBalanceChart.new(user_tocat).chart_data_for(params[:period])
+      balance_chart = TocatBalanceChart.new(user_tocat, params[:period]).chart_data
     rescue Exception => e
       Rails.logger.info "\e[31mException in Tocat. #{e.message}, #{e.backtrace.first}\e[0m"
       return render_404

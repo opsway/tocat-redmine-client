@@ -42,11 +42,9 @@
     <script>
       function reloadChartData(chart, source) {
         chart.load({
-          unload: ['Zero', 'Balance', 'Balance Forecast', 'Time'],
+          unload: ['Balance', 'Time'],
           json: {
-            Zero: source.data('chart').zero_line,
             Balance: source.data('chart').balance,
-            'Balance Forecast': source.data('chart').forecast,
             Time: source.data('chart').timeline
           }
         });
@@ -82,8 +80,6 @@
           x: 'Time',
           json: {
             Balance: <%= @balance_chart[:balance] %>,
-            'Balance Forecast': <%= @balance_chart[:forecast] %>,
-            Zero: <%= @balance_chart[:zero_line] %>,
             Time: <%== @balance_chart[:timeline].map { |d| d.strftime('%Y-%m-%d') } %>
           },
           type: 'spline',

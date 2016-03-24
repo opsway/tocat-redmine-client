@@ -2,6 +2,7 @@ module RedmineTocatClient
   module Hooks
     class ViewsProjectHook < Redmine::Hook::ViewListener
       render_on :view_issues_show_description_bottom, :partial => "issues/tocat"
+      render_on :view_issues_sidebar_queries_bottom, :partial => 'issues/chart'
     end
     class ViewsProjectHook < Redmine::Hook::ViewListener
       def helper_issues_show_detail_after_setting(context = { })

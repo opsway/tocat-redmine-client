@@ -1,0 +1,67 @@
+<div>
+  <h3>TOCAT: $<%= @my_tocat_balance %></h3>
+</div>
+
+<hr/>
+<div class='chart_container'>
+  <fieldset>
+    <legend>Personal dynamics</legend>
+    <div id="chart"></div>
+  </fieldset>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css" rel="stylesheet" type="text/css">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.js"></script>
+
+  <script>
+    var chart = c3.generate({
+      bindto: '#chart',
+      size: {
+        height: 300,
+        width: +jQuery('.chart_container').width() - 50
+      },
+      data: {
+        x: 'Time',
+        json: {
+          Balance: <%= @tocat_chart_data[:balance] %>,
+          Time: <%== @tocat_chart_data[:timeline].map { |d| d.strftime('%Y-%m-%d') } %>
+        },
+        type: 'spline',
+        colors: {
+          Zero: 'red'
+        }
+      },
+      point: {
+        show: false
+      },
+      axis: {
+        x: {
+          type: 'timeseries',
+          localtime: false,
+          tick: {
+            format: '%d'
+          }
+        },
+        y: {
+          tick: {
+            format: d3.format("$")
+          }
+        }
+      },
+      tooltip: {
+        format: {
+          title: function (d) {
+            return d;
+          },
+          value: function (value, ratio, id) {
+            if (id != 'Zero') {
+              return '$' + value;
+            }
+          }
+        }
+      }
+    });
+    chart.flush();
+  </script>
+</div>

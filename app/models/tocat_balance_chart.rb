@@ -2,41 +2,35 @@ class TocatBalanceChart
   TRANSACTIONS_LIMIT = 9999999
 
   attr_reader :tocat_user
+  attr_reader :period
 
-  def initialize(tocat_user)
+  def initialize(tocat_user, period_identifier)
     @tocat_user = tocat_user
+    @period = PresetPeriods.period(period_identifier)
   end
 
-  def chart_data_for(period_identifier)
-    chart_data(PresetPeriods.period(period_identifier))
-  end
-
-  def chart_data(period)
-    @balance_chart = { balance: [], forecast: [], zero_line: [], timeline: [] }
-    @accepted_tasks = TocatTicket.get_accepted_tasks(true, tocat_user.id)
+  def chart_data
+    balance_chart = { balance: [], timeline: [] }
     balance_transactions_by_date = user_balance_transactions_sum_by_date(tocat_user, period)
 
-    balance_transactions_ = balance_transactions(tocat_user, period)
-    accepted_not_paid_events = TocatTicket.events_for(@accepted_tasks.collect(&:task_id), 'task.accepted_update')
-    balance_with_tasks = balance =  tocat_user.balance_account_state - balance_transactions_.sum { |r| r.total.to_i}
+    balance = period_start_balance
 
-    accepted_not_paid_events = accepted_not_paid_events.select{ |r| r.parameters['new'] }.uniq(&:id)
     period.each do |date|
-      events_sum = accepted_not_paid_events.select{ |r| r.created_at.to_date == date }.sum { |r| r.parameters['balance'].to_i }
       transactions_sum = balance_transactions_by_date.fetch(date.to_s, 0)
       balance_with_transactions = (balance += transactions_sum).round(2)
-      forecast_balance = (balance_with_tasks += (events_sum + transactions_sum)).round(2)
 
-      @balance_chart[:balance] << balance_with_transactions
-      if tocat_user.tocat_server_role.name == 'Manager'
-        @balance_chart[:forecast] << balance_with_transactions
-      else
-        @balance_chart[:forecast] << forecast_balance
-      end
-      @balance_chart[:zero_line] << 0
-      @balance_chart[:timeline] << date
+      balance_chart[:balance] << balance_with_transactions - period_start_balance
+      balance_chart[:timeline] << date
     end
-    @balance_chart
+    balance_chart
+  end
+
+  def period_start_balance
+    @period_start_balance ||= tocat_user.balance_account_state - balance_transactions(tocat_user, period).sum { |r| r.total.to_i}
+  end
+
+  def current_period_delta
+    @current_period_delta ||= tocat_user.balance_account_state - period_start_balance
   end
 
   private
@@ -71,7 +65,8 @@ class TocatBalanceChart
     DEFAULT_PERIOD = ->(date) { date_quarter_period(date) }
     PRESET_PERIODS = {
       'this_quarter' => ->(date) { date_quarter_period(date) },
-      'previous_quarter' => ->(date) { date_quarter_period(date - 3.months) }
+      'previous_quarter' => ->(date) { date_quarter_period(date - 3.months) },
+      'two_weeks' => ->(date) { Range.new(date - 2.weeks, date) }
     }
 
     class << self
