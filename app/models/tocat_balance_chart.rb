@@ -12,14 +12,12 @@ class TocatBalanceChart
   def chart_data
     balance_chart = { balance: [], timeline: [] }
     balance_transactions_by_date = user_balance_transactions_sum_by_date(tocat_user, period)
-
-    balance = period_start_balance
+    balance = 0
 
     period.each do |date|
-      transactions_sum = balance_transactions_by_date.fetch(date.to_s, 0)
-      balance_with_transactions = (balance += transactions_sum).round(2)
+      balance += balance_transactions_by_date.fetch(date.to_s, 0).round(2)
 
-      balance_chart[:balance] << balance_with_transactions - period_start_balance
+      balance_chart[:balance] << balance
       balance_chart[:timeline] << date
     end
     balance_chart
@@ -46,7 +44,8 @@ class TocatBalanceChart
   def user_balance_transactions(tocat_user, period)
     search = [
       'account = balance',
-      "created_at >= #{period.begin.strftime('%Y-%m-%d')}"
+      "created_at >= #{period.begin.strftime('%Y-%m-%d')}",
+      "created_at <= #{period.end.strftime('%Y-%m-%d')}"
     ].join(' ')
     TocatTransaction.find(:all, params: { user: tocat_user.id, search: search, limit: TRANSACTIONS_LIMIT })
   end
