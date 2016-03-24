@@ -18,7 +18,18 @@
   <% if User.current.tocat_allowed_to?(:show_orders) %>
     <hr />
     <div id="orders_tree">
-      <div class="contextual"><%= link_to l(:button_add), new_order_path if User.current.tocat_allowed_to?(:create_orders) %></div>
+      <div class="contextual">
+        <% if User.current.tocat_allowed_to?(:create_orders) %>
+          <div id="add-order-button">
+            <%= link_to(l(:button_add), '#', onclick: "showOrderSelect(this);return false;") %>
+          </div>
+          <div id="add-order-select" style="display: none">
+            <%= form_tag(attach_order_invoice_path(@invoice), id: 'add-order-form') do %>
+              <%= select_tag('order_id', options_for_select(@available_orders), prompt: 'Select order', class: 'hidden', onchange: "attachOrder(this);") %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
       <p><strong><%=l(:label_order_plural)%></strong></p>
       <%= render :partial => 'orders' if @invoice.orders.present? %>
     </div>
@@ -45,3 +56,14 @@
 <% end %>
 
 <% html_title "TOCAT: Invoice ##{@invoice.id}" %>
+
+<script>
+  function showOrderSelect(elem) {
+    jQuery(elem).hide();
+    jQuery('#add-order-select').show();
+  }
+
+  function attachOrder(select) {
+    jQuery('#add-order-form').submit();
+  }
+</script>

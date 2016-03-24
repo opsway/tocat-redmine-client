@@ -5,7 +5,9 @@ match '/tocat' => 'tocat#my_tocat', as: :my_tocat, via: [:get]
 get '/tocat/tocat_chart_data' => 'tocat#tocat_chart_data', as: :tocat_chart_data
 #match '/tocat/invoices' => 'tocat#invoices', as: :invoices, via: [:get]
 #match '/tocat/invoices/:invoice_id' => 'tocat#show_invoice', as: :show_invoice, via: [:get]
-resources :invoices, path: '/tocat/invoices'
+resources :invoices, path: '/tocat/invoices' do
+  post :attach_order, on: :member, as: :attach_order
+end
 resources :tocat_users, path: '/tocat/users' do
   delete :makeactive, on: :member
 end
@@ -40,6 +42,7 @@ match '/tocat/resolver' => 'tocat#update_resolver', via: [:post, :put]
 match  '/tocat/invoices/:id/paid' => 'invoices#set_paid', as: :invoice_paid, via: [:post, :put]
 delete '/tocat/invoices/:id/paid' => 'invoices#set_unpaid', as: :invoice_paid_rem, via: [:delete]
 delete '/tocat/invoices/:id/orders' => 'invoices#deattach_order', as: :invoice_orders, via: [:delete]
+# post '/tocat/invoices/:id/attach_order' => 'invoices#attach_order', as: :invoice_attach_order
 get '/tocat/payment' => 'tocat#new_payment', as: :payment, via: [:get]
 post '/tocat/payment' => 'tocat#create_payment', as: :create_payment, via: [:post]
 
