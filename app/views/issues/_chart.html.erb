@@ -4,10 +4,8 @@
 
 <hr/>
 <div class='chart_container'>
-  <fieldset>
-    <legend>Personal dynamics</legend>
-    <div id="chart"></div>
-  </fieldset>
+  <legend>Personal dynamics</legend>
+  <div id="chart"></div>
 
   <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css" rel="stylesheet" type="text/css">
 
@@ -18,8 +16,8 @@
     var chart = c3.generate({
       bindto: '#chart',
       size: {
-        height: 300,
-        width: +jQuery('.chart_container').width() - 50
+        height: +jQuery('.chart_container').width(),
+        width: +jQuery('.chart_container').width()
       },
       data: {
         x: 'Time',
