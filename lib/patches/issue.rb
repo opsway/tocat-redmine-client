@@ -29,7 +29,8 @@ module RedmineTocatClient
           else
             users =  TocatUser.find(:all, params: { search: "role != \"Manager\"", limit: 9999999999 })
           end
-          users.select { |u| self.project.members.map(&:user).include?(u.redmine) }
+          project_users = self.project.members.includes(:user).map(&:user).map(&:login)
+          users.select { |u| project_users.include?(u.login) }
             .sort_by(&:name)
         end
 

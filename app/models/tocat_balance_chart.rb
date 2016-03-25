@@ -24,7 +24,11 @@ class TocatBalanceChart
   end
 
   def current_period_delta
-    @current_period_delta ||= balance_transactions(tocat_user, period).sum { |r| r.total.to_i}
+    @current_period_delta ||= balance_period_transactions(tocat_user, period).sum { |r| r.total.to_i}
+  end
+
+  def current_delta
+    @current_delta ||= balance_transactions(tocat_user, period).sum { |r| r.total.to_i}
   end
 
   private
@@ -48,12 +52,19 @@ class TocatBalanceChart
 
   def balance_transactions(tocat_user, period)
     search = [
-      'accountable_type == User',
-      "accountable_id == #{tocat_user.id}",
       "created_at >= #{period.begin.strftime('%Y-%m-%d')}",
       'account = balance'
     ].join(' ')
-    TocatTransaction.find(:all, params: { search: search, limit: TRANSACTIONS_LIMIT })
+    TocatTransaction.find(:all, params: { user: tocat_user.id, search: search, limit: TRANSACTIONS_LIMIT })
+  end
+
+  def balance_period_transactions(tocat_user, period)
+    search = [
+      "created_at >= #{period.begin.strftime('%Y-%m-%d')}",
+      "created_at <= #{period.end.strftime('%Y-%m-%d')}",
+      'account = balance'
+    ].join(' ')
+    TocatTransaction.find(:all, params: { user: tocat_user.id, search: search, limit: TRANSACTIONS_LIMIT })
   end
 
   class PresetPeriods
