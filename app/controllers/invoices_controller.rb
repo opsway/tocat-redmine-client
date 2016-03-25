@@ -7,6 +7,26 @@ class InvoicesController < ApplicationController
   helper :sort
   include SortHelper
   before_filter :check_action
+  before_filter :load_available_orders, only: [:show]
+
+  def attach_order
+    order = TocatOrder.find(params[:order_id].to_i)
+    begin
+      status, errors = order.set_invoice(@invoice.id)
+    rescue ActiveResource::ResourceNotFound
+    end
+    if status
+      respond_to do |format|
+        flash[:notice] = l(:notice_order_successful_attached)
+        format.html { redirect_back_or_default({:action => 'show', id: @invoice})}
+      end
+    else
+      respond_to do |format|
+        flash[:error] = JSON.parse(errors.response.body)['errors'].join(', ')
+        format.html { redirect_back_or_default({:action => 'show', id: @invoice})}
+      end
+    end
+  end
 
   def deattach_order
     order = TocatOrder.find(params[:order_id].to_i)
@@ -180,4 +200,8 @@ class InvoicesController < ApplicationController
     end
   end
 
+  def load_available_orders
+    @available_orders = TocatOrder.available_for_invoice
+                          .map { |o| [o.name, o.id] }
+  end
 end

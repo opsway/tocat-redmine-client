@@ -27,6 +27,11 @@ class TocatOrder < ActiveResource::Base
       response = self.get(:available_parents, { child_id: child_id })
       instantiate_collection(response)
     end
+
+    def available_for_invoice
+      response = self.get(:available_for_invoice, { })
+      instantiate_collection(response)
+    end
   end
 
 
