@@ -23,12 +23,8 @@ class TocatBalanceChart
     balance_chart
   end
 
-  def period_start_balance
-    @period_start_balance ||= tocat_user.balance_account_state - balance_transactions(tocat_user, period).sum { |r| r.total.to_i}
-  end
-
   def current_period_delta
-    @current_period_delta ||= tocat_user.balance_account_state - period_start_balance
+    @current_period_delta ||= balance_transactions(tocat_user, period).sum { |r| r.total.to_i}
   end
 
   private

@@ -1,11 +1,9 @@
-<% if @my_tocat_balance && @tocat_chart_data %>
+<% if @tocat_balance_delta && @tocat_chart_data %>
   <div>
-    <h3>TOCAT: $<%= @my_tocat_balance %></h3>
+    <h3>TOCAT: $<%= @tocat_balance_delta %></h3>
   </div>
 
-  <hr/>
   <div class='chart_container'>
-    <legend>Personal dynamics</legend>
     <div id="chart"></div>
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css" rel="stylesheet" type="text/css">
@@ -13,12 +11,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.js"></script>
 
+    <style>
+      .c3-axis-x .tick {
+        display: none;
+      }
+      .c3-axis-y .tick {
+        display: none;
+      }
+    </style>
     <script>
       var chart = c3.generate({
         bindto: '#chart',
         size: {
           height: +jQuery('.chart_container').width(),
           width: +jQuery('.chart_container').width()
+        },
+        padding: {
+          left: 10
         },
         data: {
           x: 'Time',
@@ -37,15 +46,7 @@
         axis: {
           x: {
             type: 'timeseries',
-            localtime: false,
-            tick: {
-              format: '%d'
-            }
-          },
-          y: {
-            tick: {
-              format: d3.format("$")
-            }
+            localtime: false
           }
         },
         tooltip: {
@@ -59,6 +60,9 @@
               }
             }
           }
+        },
+        legend: {
+          show: false
         }
       });
       chart.flush();
