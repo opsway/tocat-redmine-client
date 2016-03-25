@@ -61,7 +61,8 @@ class TocatBalanceChart
     PRESET_PERIODS = {
       'this_quarter' => ->(date) { date_quarter_period(date) },
       'previous_quarter' => ->(date) { date_quarter_period(date - 3.months) },
-      'two_weeks' => ->(date) { Range.new(date - 2.weeks, date) }
+      'two_weeks' => ->(date) { Range.new(date - 2.weeks, date) },
+      'one_week' => ->(date) { Range.new(date - 1.weeks, date) }
     }
 
     class << self
