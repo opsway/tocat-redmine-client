@@ -18,7 +18,7 @@
   <% if User.current.tocat_allowed_to?(:show_orders) %>
     <hr />
     <div id="orders_tree">
-      <div class="contextual">
+      <div class="contextual" style="font-size: 1.1em">
         <% if User.current.tocat_allowed_to?(:create_orders) %>
           <div id="add-order-button">
             <%= link_to(l(:button_add), '#', onclick: "showOrderSelect(this);return false;") %>
