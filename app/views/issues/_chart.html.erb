@@ -46,7 +46,10 @@
         axis: {
           x: {
             type: 'timeseries',
-            localtime: false
+            localtime: false,
+            tick: {
+              culling: false
+            }
           }
         },
         tooltip: {
