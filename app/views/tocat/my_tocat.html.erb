@@ -1,4 +1,3 @@
-
 <h2><%= avatar @user, :size => "50" %> <%= h @user.name %></h2>
 <hr/>
 <div class="splitcontentleft">
@@ -16,109 +15,15 @@
 </div>
 <div style="clear:both;"></div>
 
-
 <% html_title "TOCAT : My dashboard" %>
-
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-  <script charset="utf-8">jQuery.noConflict()</script>
 
   <hr/>
   <div class='chart_container'>
     <fieldset>
       <legend>Personal dynamics</legend>
-      Period: <%= select_tag('period', options_for_select([['This quarter', 'this_quarter'], ['Previous quarter', 'previous_quarter']]), :onchange => 'redraw_chart(this);false;') %>
-      <div style='display:none;'>
-        <%= content_tag :div, '', id: 'this_quarter', data: { chart: @balance_chart } %>
-        <%= content_tag :div, '', id: 'previous_quarter', data: {} %>
+      <div style="text-align: center;">
+        <img src="<%= zoho_chart_prev_quarter_url(@user) %>">
+        <img src="<%= zoho_chart_this_quarter_url(@user) %>">
       </div>
-      <div id="chart"></div>
     </fieldset>
-
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.min.css" rel="stylesheet" type="text/css">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.10/c3.js"></script>
-
-    <script>
-      function reloadChartData(chart, source) {
-        chart.load({
-          unload: ['Balance', 'Time'],
-          json: {
-            Balance: source.data('chart').balance,
-            Time: source.data('chart').timeline
-          }
-        });
-      }
-
-      function redraw_chart(elem) {
-        var source = jQuery('#' + elem.value);
-
-        if (source.data('chart') == null) {
-          jQuery.noConflict().ajax('<%= tocat_chart_data_path(user_id: params[:user_id]) %>', {
-            asynchronous: true,
-            method: 'get',
-            data: {
-              'period': elem.value
-            },
-            success: function (data) {
-              source.data('chart', data);
-              reloadChartData(chart, source)
-            }
-          });
-        } else {
-          reloadChartData(chart, source)
-        }
-      }
-
-      var chart = c3.generate({
-        bindto: '#chart',
-        size: {
-          height: 300,
-          width: +jQuery('.chart_container').width() - 50
-        },
-        data: {
-          x: 'Time',
-          json: {
-            Balance: <%= @balance_chart[:balance] %>,
-            Time: <%== @balance_chart[:timeline].map { |d| d.strftime('%Y-%m-%d') } %>
-          },
-          type: 'spline',
-          colors: {
-            Zero: 'red'
-          }
-        },
-        point: {
-          show: false
-        },
-        axis: {
-          x: {
-            type: 'timeseries',
-            localtime: false,
-            tick: {
-              format: '%Y-%m-%d'
-            }
-          },
-          y: {
-            tick: {
-              format: d3.format("$")
-            }
-          }
-        },
-        tooltip: {
-          format: {
-            title: function (d) {
-              return d;
-            },
-            value: function (value, ratio, id) {
-              if (id != 'Zero') {
-                return '$' + value;
-              }
-            }
-          }
-        }
-      });
-      chart.flush();
-    </script>
   </div>
-
-

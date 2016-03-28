@@ -196,8 +196,8 @@ class TocatController < ApplicationController
       @user_tocat = @user.tocat
     end
     begin
-      @balance_chart = TocatBalanceChart.new(@user_tocat, 'this_quarter').chart_data
-      #@user_tocat = TocatUser.find(TocatUser.find_by_name(@user.name).id) #!!!
+      # @balance_chart = TocatBalanceChart.new(@user_tocat, 'this_quarter').chart_data
+      # @user_tocat = TocatUser.find(TocatUser.find_by_name(@user.name).id) #!!!
       @team_tocat = TocatTeam.find(@user_tocat.tocat_team.id)
       #@team_balance_transactions = TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "account = balance" })
       # @team_income_transactions =  TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "created_at > #{1.year.ago.strftime('%Y-%m-%d')} account = payment" })
