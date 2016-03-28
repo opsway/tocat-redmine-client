@@ -17,11 +17,9 @@ module RedmineTocatClient
             end
 
             tocat_user = User.current.tocat
-            @tocat_balance_delta = nil
             @tocat_chart_data = nil
             if tocat_user
               balance_chart = TocatBalanceChart.new(tocat_user, 'one_week')
-              @tocat_balance_delta = balance_chart.current_delta
               @tocat_chart_data = balance_chart.chart_data
             end
 
