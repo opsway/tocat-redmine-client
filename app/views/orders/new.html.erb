@@ -18,7 +18,7 @@
                             :class => 'wiki-edit',
                             :no_label => true %>
           </p>
-          <% unless @order.parent_order.present?%>
+          <% if User.current.tocat_allowed_to?(:make_order_internal) && !@order.parent_order.present?%>
             <p>
               <%= f.check_box :internal_order %>
             </p>
@@ -26,7 +26,7 @@
           <% if User.current.tocat_allowed_to?(:update_commission) %>
             <% unless @order.internal_order? || (@parent_order && @parent_order.internal_order?) %>
               <p id="commission-container">
-                <%= f.text_field :commission %>
+                <%= f.text_field :commission, :required => true %>
               </p>
             <% end %>
           <% end %>
@@ -34,7 +34,7 @@
           <% if params[:team].present? %>
             <p>
               <%= f.select :team, options_for_select(@groups.collect {|t| [t.name, t.id]}, :selected => params[:team]),
-                           { :prompt => 'Select Team' }, :disabled => true %>
+                           { :prompt => 'Select Team' }, { disabled: true, 'data-commissions' => @groups.map { |t| [t.id, t.default_commission] }.to_h.to_json } %>
             </p>
             <%= f.hidden_field :team %>
           <% else %>
@@ -43,7 +43,7 @@
                                     [['Select Team', 0]] + @groups.collect {|t| [t.name, t.id]},
                                     disabled: 0,
                                     selected: @order.team.blank? ? 0 : @order.team),
-                                  { :required => true }, {} %>
+                                  { :required => true }, { 'data-commissions' => @groups.map { |t| [t.id, t.default_commission] }.to_h.to_json } %>
             </p>
           <% end %>
           <p><%= f.number_field :invoiced_budget, :class => 'invoiced_budget', :step => 0.01, :required => true %></p>
