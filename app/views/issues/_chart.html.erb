@@ -69,6 +69,13 @@
         }
       });
       chart.flush();
+      chart.load({
+        unload: ['Balance', 'Time'],
+        json: {
+          Balance: <%== @tocat_chart_data[:balance] %>,
+          Time: <%== @tocat_chart_data[:timeline].map { |d| d.strftime('%Y-%m-%d') } %>
+        }
+      });
     </script>
   </div>
 <% end %>
