@@ -290,6 +290,7 @@ class OrdersController < ApplicationController
 
   def find_groups
     @groups = TocatTeam.all.sort { |lhs, rhs| lhs.name.downcase <=> rhs.name.downcase }
+    @groups_commissions = Hash[@groups.map { |t| [t.id, t.default_commission] }]
   rescue ActiveResource::ResourceNotFound
     render_404
   end

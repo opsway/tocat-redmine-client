@@ -34,7 +34,7 @@
           <% if params[:team].present? %>
             <p>
               <%= f.select :team, options_for_select(@groups.collect {|t| [t.name, t.id]}, :selected => params[:team]),
-                           { :prompt => 'Select Team' }, { disabled: true, 'data-commissions' => @groups.map { |t| [t.id, t.default_commission] }.to_h.to_json } %>
+                           { :prompt => 'Select Team' }, { disabled: true, 'data-commissions' => @groups_commissions.to_json } %>
             </p>
             <%= f.hidden_field :team %>
           <% else %>
@@ -43,7 +43,7 @@
                                     [['Select Team', 0]] + @groups.collect {|t| [t.name, t.id]},
                                     disabled: 0,
                                     selected: @order.team.blank? ? 0 : @order.team),
-                                  { :required => true }, { 'data-commissions' => @groups.map { |t| [t.id, t.default_commission] }.to_h.to_json } %>
+                                  { :required => true }, { 'data-commissions' => @groups_commissions.to_json } %>
             </p>
           <% end %>
           <p><%= f.number_field :invoiced_budget, :class => 'invoiced_budget', :step => 0.01, :required => true %></p>
