@@ -169,7 +169,6 @@ class OrdersController < ApplicationController
 
     @orders = TocatOrder.all(params: query_params)
     @order_count = @orders.http_response['X-total'].to_i
-    # page = params['page'].to_i > 0 ? params['page'].to_i : 1
     @order_pages = Paginator.new(self, @order_count, @orders.http_response['X-Per-Page'].to_i, params['page'])
     @teams = TocatTeam.all.sort_by(&:name)
   end
