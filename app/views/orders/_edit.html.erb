@@ -47,7 +47,7 @@
           <% if User.current.tocat_allowed_to?(:update_commission) %>
             <% if @order.new? || !(@order.internal_order? || (@order.parent && @order.parent.internal_order?)) %>
               <p>
-                <%= f.text_field :commission, :required => true %>
+                <%= f.number_field :commission, required: true, in: 1..100, :step => 1 %>
               </p>
             <% end %>
           <% end %>

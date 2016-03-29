@@ -18,7 +18,7 @@
                             :class => 'wiki-edit',
                             :no_label => true %>
           </p>
-          <% if User.current.tocat_allowed_to?(:make_order_internal) && !@order.parent_order.present?%>
+          <% if User.current.tocat_allowed_to?(:set_internal_orders) && !@order.parent_order.present?%>
             <p>
               <%= f.check_box :internal_order %>
             </p>
@@ -26,7 +26,7 @@
           <% if User.current.tocat_allowed_to?(:update_commission) %>
             <% unless @order.internal_order? || (@parent_order && @parent_order.internal_order?) %>
               <p id="commission-container">
-                <%= f.text_field :commission, :required => true %>
+                <%= f.number_field :commission, required: true, in: 1..100, :step => 1 %>
               </p>
             <% end %>
           <% end %>
