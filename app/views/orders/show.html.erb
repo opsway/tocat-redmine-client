@@ -36,7 +36,7 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
       end
 
       if @order.attributes.include? 'internal_order'
-        rows.right l(:field_internal_order), (@order.internal_order ? image_tag('true.png') : image_tag('false.png')), :class => 'completed'
+        rows.right l(:field_internal_order), (@order.internal_order ? 'Yes' : 'No'), :class => 'completed'
       end
 
       if @parent.present?
@@ -47,7 +47,7 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
         end
       end
 
-      rows.right l(:label_suborder),  (@parent.present? ? image_tag('true.png') : image_tag('false.png')), :class => 'sub_order'
+      rows.right l(:label_suborder),  (@parent.present? ? 'Yes' : 'No'), :class => 'sub_order'
 
 
     end %>
