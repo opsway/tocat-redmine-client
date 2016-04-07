@@ -5,6 +5,10 @@ h3= l(:label_team)
     = f.label :name, l(:label_name)
     = f.text_field :name, required: true
     br
+    = f.label :team, l(:label_parent_team)
+    = f.select :parent_id, options_for_select(TocatTeam.all(limit: 999999).map{|t| [t.name, t.id]}, selected: (@team.parent_id || TocatTeam.all.find{|t| t.id == t.parent_id}.id), required: true),
+               include_blank: 'Select parent team', required: true
+    br
     = f.label :manager, l(:label_manager)
     = f.select :manager, options_for_select(@team.team_users.map{|t| [t.name, t.id]},
             selected: @team.team_manager.try(:id), required: true), include_blank: 'Select User', required: true

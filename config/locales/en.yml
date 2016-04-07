@@ -176,6 +176,7 @@ en:
   label_email: 'Email'
   label_rate: 'Daily Rate'
   label_team: 'Team'
+  label_parent_team: 'Parent Team'
   label_admin: 'Admin'
   label_active: 'Active'
   label_make_inactive: 'Make inactive'

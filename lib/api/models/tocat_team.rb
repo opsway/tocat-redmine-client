@@ -11,6 +11,7 @@ class TocatTeam < ActiveResource::Base
     attribute 'links', :integer
     attribute 'manager', :integer
     attribute 'default_commission', :integer
+    attribute 'parent_id', :integer
   end
   validates :name, :default_commission, presence: true
   def to_s
@@ -37,6 +38,10 @@ class TocatTeam < ActiveResource::Base
 
   def team_manager
     team_users.find { |user| user.tocat_server_role.name == 'Manager' }
+  end
+  
+  def parent
+    TocatTeam.find(self.parent_id)
   end
 
   def self.find_by_name(name)
