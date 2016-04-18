@@ -200,3 +200,12 @@ en:
   activate_team: 'Activate Team'
   deactivate_team: 'Deactivate Team'
   label_default_commission: 'Default Commission '
+  #balance transfers
+  view_transfers: 'View Balance Transfers'
+  create_transfer: 'Create Balance Transfers'
+  label_transfers: 'Balance Transfers'
+  label_description: 'Description'
+  label_source: 'Source: '
+  label_target: 'Target: '
+  label_balance_transfer: 'Balance Transfer'
+  label_new_balance_transfer: 'New Balance Transfer'

@@ -1,0 +1,15 @@
+= l(:label_new_balance_transfer)
+.box.users
+  = form_for @balance_transfer, url: balance_transfers_path do |f|
+    = f.label :source, "From: #{User.current.name}"
+    br
+    = f.label :login, l(:label_target)
+    = f.select :target_login, options_for_select(@balance_transfer.available_recepients, required: true), include_blank: 'Select target', required: true
+    br
+    = f.label :total, l(:label_total)
+    = f.text_field :total
+    br
+    = f.label :description, l(:label_description)
+    = f.text_area :description
+    br
+    = f.submit 'Save'

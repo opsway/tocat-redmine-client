@@ -40,7 +40,9 @@ Redmine::Plugin.register :redmine_tocat_client do
     menu.push :status, { :controller => 'status', :action => 'status' },
               :if => Proc.new{ User.current.tocat_allowed_to?(:show_status_page)},
               :caption => :label_status
-
+    menu.push :balance_transfer, { :controller => 'balance_transfers', :action => 'index' },
+              :if => Proc.new{ User.current.tocat_allowed_to?(:view_transfers)},
+              :caption => :label_transfers
   end
   ActiveResource::Base.include_root_in_json = true
 end

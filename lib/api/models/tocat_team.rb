@@ -33,7 +33,7 @@ class TocatTeam < ActiveResource::Base
   end
 
   def team_users
-    TocatUser.find(:all, params:{search:"team=#{name}"})
+    TocatUser.find(:all, params:{search:"team=\"#{name}\""})
   end
 
   def team_manager

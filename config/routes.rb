@@ -52,3 +52,5 @@ delete '/issues/:id/expenses' => 'tocat#remove_expenses', as: :remove_expenses
 
 match '/tocat/request_review' => 'tocat#request_review', :via => :put
 match '/tocat/review_handler' => 'tocat#review_handler', :via => :put
+
+resources :balance_transfers, path: '/tocat/balance_transfers', only: [:index, :show, :create, :new]

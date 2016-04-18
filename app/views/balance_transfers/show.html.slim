@@ -1,0 +1,20 @@
+h2= l(:label_balance_transfer)
+.box
+  p
+    strong = l(:label_source)
+    = @balance_transfer.source.name
+  p
+    strong = l(:label_target)
+    = @balance_transfer.target.name
+  p
+    strong = l :label_total
+    ':  
+    = @balance_transfer.total
+  p
+    strong = l :label_date
+    ':   
+    = @balance_transfer.created
+  p
+    strong = l :label_description
+    ':    
+    = @balance_transfer.description

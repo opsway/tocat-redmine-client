@@ -8,6 +8,7 @@ Rails.configuration.to_prepare do
   require 'api/models/tocat_team'
   require 'api/models/transaction'
   require 'api/models/server_role'
+  require 'api/models/tocat_balance_transfer'
   # patches
   require 'api/patches/active_resource_errors'
   require 'patches/user'
