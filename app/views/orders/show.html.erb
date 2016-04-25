@@ -127,7 +127,6 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
   <% unless @parent.present?%>
   <hr />
   <div id="orders_tree">
-    <div class="contextual"><%= link_to l(:button_add), new_order_path(split: @order.id) if User.current.tocat_allowed_to?(:create_orders) && @order.completed == false %></div>
     <p><strong><%=l(:label_suborder_plural)%></strong></p>
     <%= render :partial => 'orders', locals: {orders: @order.sub_orders } if @order.sub_orders.present? %>
   </div>

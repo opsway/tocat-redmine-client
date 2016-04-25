@@ -18,16 +18,6 @@ class TocatOrder < ActiveResource::Base
       "#{prefix(prefix_options)}#{collection_name}#{query_string(query_options)}"
     end
 
-    def parent_auto_complete(term, child_id)
-      response = self.get(:parent_auto_complete, { term: term, child_id: child_id })
-      instantiate_collection(response)
-    end
-
-    def available_parents(child_id)
-      response = self.get(:available_parents, { child_id: child_id })
-      instantiate_collection(response)
-    end
-
     def available_for_invoice
       response = self.get(:available_for_invoice, { })
       instantiate_collection(response)
@@ -38,7 +28,6 @@ class TocatOrder < ActiveResource::Base
   schema do
     attribute 'id', :integer
     attribute 'parent_order', :string
-    attribute 'parent_id', :integer
     attribute 'name', :string
     attribute 'description', :text
     attribute 'team', :string

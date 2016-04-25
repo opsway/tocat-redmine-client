@@ -7,8 +7,6 @@ class OrdersController < ApplicationController
   helper :sort
   include SortHelper
   before_filter :check_action
-  before_filter :load_available_parents, only: [:show, :edit, :update]
-
 
 
 
@@ -19,8 +17,6 @@ class OrdersController < ApplicationController
     @order.allocatable_budget = params[:allocatable_budget] if params[:allocatable_budget].present?
     @order.invoiced_budget = params[:invoiced_budget] if params[:invoiced_budget].present?
     @order.team = params[:team] if params[:team].present?
-    @order.parent_order = params[:split] if params[:split].present?
-    @parent_order = @order.load_parent_order
     @order.invoiced_budget = @parent_order.free_budget if @parent_order
   end
 
@@ -45,31 +41,6 @@ class OrdersController < ApplicationController
     end
   end
 
-  def create_suborder
-    parent = TocatOrder.find(params[:order][:parent_order])
-    query = params[:order].clone
-    query[:team] = { id: params[:order][:team] }
-    status, error, response = parent.set_suborder(query)
-    if status
-      flash[:notice] = l(:notice_suborder_successful_created)
-      respond_to do |format|
-        format.html { redirect_back_or_default({ :action => 'show', :id => response['id'].to_i }) }
-        format.js do
-          render :update do |page|
-            page.replace_html 'order-form', :partial => 'tocat/orders/edit', :locals => {:order => @order}
-          end
-        end
-      end
-    else
-      flash[:error] = JSON.parse(error.response.body)['errors'].join(', ')
-      query[:split] = params[:order][:parent_order]
-      respond_to do |format|
-        @order = TocatOrder.new(params[:order])
-        format.html { render :template => 'orders/new' }
-      end
-      return
-    end
-  end
 
   def create
     @order = TocatOrder.new(params[:order])
@@ -327,14 +298,4 @@ class OrdersController < ApplicationController
     end
   end
 
-  def load_available_parents
-    potential_parents = TocatOrder.available_parents(@order.id)
-    parent_order = @order.parent
-    @available_parents = []
-    @available_parents << ['Select new parent order', 0] if !@order.parent_id && potential_parents.any?
-    @available_parents << ['You can not change parent order', 0] unless @order.parent_id || potential_parents.any?
-    @available_parents += potential_parents.map { |o| [o.name, o.id] }
-    @available_parents << [parent_order.name, parent_order.id] if parent_order
-    @available_parents.uniq!
-  end
 end

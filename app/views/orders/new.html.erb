@@ -1,8 +1,4 @@
-<% if @order.parent_order.present?
-    url = suborder_path
-  else
-    url = orders_path
-  end %>
+<% url = orders_path %>
 <%= labelled_form_for @order, url: url, :html => {:id => 'order-form', :multipart => true} do |f| %>
     <div class="box">
       <fieldset class="tabular"><legend><%= l(:label_change_properties) %></legend>
