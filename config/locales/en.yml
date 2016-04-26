@@ -209,3 +209,4 @@ en:
   label_target: 'Target: '
   label_balance_transfer: 'Balance Transfer'
   label_new_balance_transfer: 'New Balance Transfer'
+  real_money: 'Real Money'

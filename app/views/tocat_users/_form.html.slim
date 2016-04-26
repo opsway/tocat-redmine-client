@@ -21,4 +21,7 @@ h3= l(:label_user)
     = f.text_field :daily_rate, required: true
     / f.check_box :active
     br
+    = f.label :real_money, l(:real_money)
+    = f.check_box :real_money
+    br
     = f.submit 'Save'
