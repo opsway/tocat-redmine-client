@@ -2,13 +2,16 @@ h2= l(:label_balance_transfer)
 .box
   p
     strong = l(:label_source)
-    = @balance_transfer.source.name
+    |  
+    = @balance_transfer.source.try :name
   p
     strong = l(:label_target)
-    = @balance_transfer.target.name
+    |  
+    = @balance_transfer.target.try :name
   p
     strong = l :label_total
     ':  
+    |  
     = @balance_transfer.total
   p
     strong = l :label_date

@@ -93,6 +93,8 @@ class TocatRole < ActiveRecord::Base
     paths[:balance_transfers][:new] = :create_transfer
     paths[:balance_transfers][:create] = :create_transfer
     paths[:balance_transfers][:show] = :view_transfers
+    paths[:balance_transfers][:emit] = :transfer_emit_money
+    paths[:balance_transfers][:takeout] = :transfer_emit_money
 
     #transactions
     paths[:transactions] = {}
@@ -115,7 +117,7 @@ class TocatRole < ActiveRecord::Base
     data[:dashboard] = [:show_tocat_page, :has_protected_page, :can_see_public_pages, :is_admin, :show_status_page, :mark_alerts_as_checked, :show_activity_feed]
     data[:users] = [:create_user, :update_user, :activate_user, :deactivate_user]
     data[:teams] = [:create_team, :update_team, :activate_team, :deactivate_team]
-    data[:balance_transfers] = [:view_transfers, :create_transfer]
+    data[:balance_transfers] = [:view_transfers, :create_transfer, :transfer_emit_money]
     return data
   end
 

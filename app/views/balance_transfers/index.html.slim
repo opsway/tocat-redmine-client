@@ -1,6 +1,9 @@
 .contextual
   - if User.current.tocat_allowed_to? :create_transfer
     = link_to l(:create_transfer), new_balance_transfer_path, class: 'icon icon-add'
+  - if User.current.tocat_allowed_to? :transfer_emit_money
+    = link_to l(:emit_transfer), emit_balance_transfers_path, class: 'icon icon-add'
+    = link_to l(:takeout_transfer), takeout_balance_transfers_path, class: 'icon icon-add'
 h2= l(:label_transfers)
 
 = form_tag("/tocat/balance_transfers", method: "get") do
@@ -27,17 +30,17 @@ h2= l(:label_transfers)
       tr
         td= l(:label_source)
         td= l(:label_target)
-        td
-          = l(:label_total)
-          ':
-        td
-          = l(:label_date)
-          ':
+        td= l(:label_total)
+        td= l(:label_date)
     tbody
       - @balance_transfers.each do |bt|
         tr
-          td= link_to bt.source, balance_transfer_path(bt.id)
-          td= link_to bt.target, balance_transfer_path(bt.id)
+          td
+            - if bt.source
+              = link_to bt.source, balance_transfer_path(bt.id)
+          td
+            - if bt.target
+              = link_to bt.target, balance_transfer_path(bt.id)
           td= bt.total
           td= bt.created 
 p.pagination= pagination_links_full @transfers_pages, @transfers_count

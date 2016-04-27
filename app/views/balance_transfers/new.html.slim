@@ -1,15 +1,25 @@
 = l(:label_new_balance_transfer)
 .box.users
   = form_for @balance_transfer, url: balance_transfers_path do |f|
-    = f.label :source, "From: #{User.current.name}"
-    br
-    = f.label :login, l(:label_target)
-    = f.select :target_login, options_for_select(@balance_transfer.available_recepients, required: true), include_blank: 'Select target', required: true
+    - case @balance_transfer.btype
+      - when 'base'
+        = f.label :source, "From: #{User.current.name}"
+        br
+        = f.label :login, "#{l(:label_target)}:"
+        = f.select :target_login, options_for_select(@balance_transfer.available_recepients, required: true), include_blank: 'Select', required: true
+      - when 'emit'
+        = f.label :login, "#{l(:label_target)}:"
+        = @tocat_central_office_admin
+      - when 'takeout'
+        = f.label :source, "#{l(:label_source)}:"
+        = @tocat_central_office_admin
+    
     br
     = f.label :total, l(:label_total)
-    = f.text_field :total
+    = f.text_field :total, size: 6, maxlength: 6, style: "width: auto"
     br
-    = f.label :description, l(:label_description)
-    = f.text_area :description
+    = f.label :description, l(:label_description), style: "vertical-align: top"
+    = f.text_area :description, rows: 12, cols: 50
+    = f.hidden_field :btype
     br
     = f.submit 'Save'

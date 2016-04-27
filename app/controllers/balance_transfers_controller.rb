@@ -2,6 +2,7 @@ class BalanceTransfersController < ApplicationController
   unloadable
   layout 'tocat_base'
   before_filter :check_action
+  before_filter :get_admin_name, only: [:emit, :takeout]
 
   def index
     query_params = {}
@@ -33,10 +34,24 @@ class BalanceTransfersController < ApplicationController
   end
   
   def new
-    @balance_transfer = TocatBalanceTransfer.new
+    @balance_transfer = TocatBalanceTransfer.new(btype: 'base')
+  end
+  
+  def emit
+    @balance_transfer = TocatBalanceTransfer.new(btype: 'emit')
+    render :new
+  end
+  
+  def takeout
+    @balance_transfer = TocatBalanceTransfer.new(btype: 'takeout')
+    render :new
   end
   
   private
+  def get_admin_name
+    @central_office = TocatTeam.all.find{|t| t.id == t.parent_id}
+    @tocat_central_office_admin = TocatUser.find(:all, params: {search: 'team="' + @central_office.name + '"'}).find{|u| u.tocat_server_role.name == 'Manager'}
+  end
 
   def check_action
     params.permit! if params.respond_to? :permit!
