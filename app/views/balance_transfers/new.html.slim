@@ -1,4 +1,7 @@
 = l(:label_new_balance_transfer)
+- if @error.present?
+  = @error
+= error_messages_for @balance_transfer
 .box.users
   = form_for @balance_transfer, url: balance_transfers_path do |f|
     - case @balance_transfer.btype
@@ -6,7 +9,7 @@
         = f.label :source, "From: #{User.current.name}"
         br
         = f.label :login, "#{l(:label_target)}:"
-        = f.select :target_login, options_for_select(@balance_transfer.available_recepients, required: true), include_blank: 'Select', required: true
+        = f.select :target_login, options_for_select(@balance_transfer.available_for_new, required: true), include_blank: 'Select', required: true
       - when 'emit'
         = f.label :login, "#{l(:label_target)}:"
         = @tocat_central_office_admin

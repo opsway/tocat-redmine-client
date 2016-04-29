@@ -20,16 +20,22 @@ class BalanceTransfersController < ApplicationController
   
   def show
     @balance_transfer = TocatBalanceTransfer.find(params[:id])
-    p @balance_transfer.attributes
   end
   
   def create
-    @balance_transfer = TocatBalanceTransfer.new(params[:tocat_balance_transfer])
-    if @balance_transfer.save
-      flash[:notice] = l(:notice_successful_create)
-      redirect_to :action => 'index'
-    else
+    begin
+      @balance_transfer = TocatBalanceTransfer.new(params[:tocat_balance_transfer])
+      if @balance_transfer.save
+        flash[:notice] = l(:notice_successful_create)
+        redirect_to :action => 'index'
+      else
+        render :action => 'new'
+      end
+    rescue ActiveResource::ClientError => e
+      flash[:error] = JSON.parse(e.response.body)['errors'].join(', ')
+      @error = JSON.parse(e.response.body)['errors'].join(', ')
       render :action => 'new'
+      logger.info e.message
     end
   end
   

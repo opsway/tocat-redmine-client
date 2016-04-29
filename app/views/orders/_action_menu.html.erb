@@ -15,7 +15,7 @@
         <% unless @order.internal_order %>
             <%= link_to l(:button_internal), order_set_internal_path(@order), :data => {:confirm => l(:confirm_order_internal)}, :method => :put, :class => 'fi-arrows-in green'%>
         <% else %>
-          <% if User.current.tocat_allowed_to?(:remove_internal_orders) %>
+          <% if User.current.tocat_allowed_to?(:remove_internal_orders) && !@order.completed? %>
             <%= link_to l(:button_internal_remove), order_set_internal_path(@order), :data => {:confirm => l(:confirm_order_uninternal)}, :method => :delete, :class => 'fi-arrows-out red' %>
           <% end %>
         <% end %>
