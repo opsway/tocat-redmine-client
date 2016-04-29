@@ -22,7 +22,7 @@
           <% if User.current.tocat_allowed_to?(:update_commission) %>
             <% unless @order.internal_order? || (@parent_order && @parent_order.internal_order?) %>
               <p id="commission-container">
-                <%= f.number_field :commission, required: true, in: 1..100, :step => 1 %>
+                <%= f.number_field :commission, required: true, in: 0..100, :step => 1 %>
               </p>
             <% end %>
           <% end %>
@@ -66,17 +66,3 @@
     <%= submit_tag l(:button_submit) %>
     | <%= link_to l(:button_cancel), {}, :onclick => "jQuery.noConflict()('#update').hide(); return false;" %>
 <% end %>
-
-<script type="text/javascript">
-  var internalOrderCheckbox = jQuery.noConflict()('#order_internal_order');
-  var commissionBlock = jQuery.noConflict()('#commission-container');
-  var commissionInput = jQuery.noConflict()('#order_commission');
-  internalOrderCheckbox.change(function() {
-    if(this.checked) {
-      commissionBlock.hide();
-      commissionInput.val('');
-    } else {
-      commissionBlock.show();
-    }
-  });
-</script>

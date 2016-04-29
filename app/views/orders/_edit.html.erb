@@ -36,11 +36,9 @@
                             :value => des %>
           </p>
           <% if User.current.tocat_allowed_to?(:update_commission) %>
-            <% if @order.new? || !(@order.internal_order? || (@order.parent && @order.parent.internal_order?)) %>
               <p>
-                <%= f.number_field :commission, required: true, in: 1..100, :step => 1 %>
+                <%= f.number_field :commission, required: true, in: 0..100, :step => 1 %>
               </p>
-            <% end %>
           <% end %>
           <p>
             <%= f.select :team, options_for_select([['Select Team', 0]] + @groups.collect {|t| [t.name, t.id]}, selected: team.blank? ? 0 : team, disabled: 0),

@@ -53,9 +53,7 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
     end %>
     <tr>
     <% if User.current.tocat_allowed_to?(:show_commission) %>
-      <% unless @order.internal_order? %>
         <th> <%= l(:field_commission) %> </th> <td> <%= (@order.commission) %>% </td>
-      <% end %>
     <%  end %>
     </tr>
   </table>
