@@ -59,3 +59,7 @@ resources :balance_transfers, path: '/tocat/balance_transfers', only: [:index, :
     get :takeout
   end
 end
+
+resources :transfer_requests, path: '/tocat/transfer_requests' do
+  get :pay, on: :member
+end

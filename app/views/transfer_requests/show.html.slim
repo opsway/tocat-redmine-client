@@ -1,0 +1,27 @@
+h2= l(:label_transfer_request)
+.box
+  p
+    strong = l(:label_source)
+    |  
+    = @transfer_request.source.try :name
+  p
+    strong = l(:label_target)
+    |  
+    = @transfer_request.target.try :name
+  p
+    strong = l :label_total
+    ':  
+    |  
+    = @transfer_request.total
+  p
+    strong = l :label_date
+    ':   
+    = @transfer_request.created_at
+  p
+    strong = l :label_description
+    ':    
+    = @transfer_request.description
+  p
+    strong = l :label_transfer_state
+    ':    
+    = @transfer_request.state

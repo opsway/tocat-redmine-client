@@ -1,0 +1,17 @@
+- if @error.present?
+  = @error
+= error_messages_for @transfer_request
+.box.users
+  = form_for @transfer_request do |f|
+    = f.label :target, "To: #{User.current.name}"
+    br
+    = f.label :login, "#{l(:label_source)}:"
+    = f.select :source_id, options_for_select(@transfer_request.available_for_new, required: true), include_blank: 'Select', required: true
+    br
+    = f.label :total, l(:label_total)
+    = f.text_field :total, size: 6, maxlength: 6, style: "width: auto"
+    br
+    = f.label :description, l(:label_description), style: "vertical-align: top"
+    = f.text_area :description, rows: 12, cols: 50
+    br
+    = f.submit 'Save'

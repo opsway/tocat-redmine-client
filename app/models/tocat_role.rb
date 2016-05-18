@@ -11,6 +11,9 @@ class TocatRole < ActiveRecord::Base
   acts_as_list
 
   def self.check_path(request)
+    p '!'
+    p request
+    p '!'
     paths = {}
 
     paths[:orders] = {}
@@ -95,6 +98,17 @@ class TocatRole < ActiveRecord::Base
     paths[:balance_transfers][:show] = :view_transfers
     paths[:balance_transfers][:emit] = :transfer_emit_money
     paths[:balance_transfers][:takeout] = :transfer_emit_money
+    #transfer requests
+    paths[:transfer_requests] = {}
+    paths[:transfer_requests][:index] = :view_transfers
+    paths[:transfer_requests][:new] = :create_transfer
+    paths[:transfer_requests][:edit] = :create_transfer
+    paths[:transfer_requests][:update] = :create_transfer
+    paths[:transfer_requests][:destroy] = :create_transfer
+    paths[:transfer_requests][:create] = :create_transfer
+    paths[:transfer_requests][:show] = :view_transfers
+    paths[:transfer_requests][:pay] = :create_transfer
+    
 
     #transactions
     paths[:transactions] = {}
