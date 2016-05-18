@@ -45,7 +45,7 @@
                 - if tocat_id == bt.target_id
                   = link_to 'Edit', edit_transfer_request_path(bt)
                   br
-                  = link_to 'Destroy', transfer_request_path(bt), method: :delete
+                  = link_to 'Destroy', transfer_request_path(bt), method: :delete, data: {confirm: l(:confirm_transfer_destroy)}
                 - if tocat_id == bt.source_id
-                  = link_to 'Pay', pay_transfer_request_path(bt)
+                  = link_to 'Pay', pay_transfer_request_path(bt), data: {confirm: l(:confirm_transfer_pay)}
 p.pagination= pagination_links_full @transfers_pages, @transfers_count
