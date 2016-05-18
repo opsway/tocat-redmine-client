@@ -27,10 +27,10 @@ h2= l(:label_transfer_request)
     = @transfer_request.state
 
   p 
-    - if bt.state != 'paid'
-      - if tocat_id == bt.target_id
-        = link_to 'Edit', edit_transfer_request_path(bt)
+    - if @transfer_request.state != 'paid'
+      - if tocat_id == @transfer_request.target_id
+        = link_to 'Edit', edit_transfer_request_path(@transfer_request)
         br
-        = link_to 'Destroy', transfer_request_path(bt), method: :delete, data: {confirm: l(:confirm_transfer_destroy)}
-      - if tocat_id == bt.source_id
-        = link_to 'Pay', pay_transfer_request_path(bt), data: {confirm: l(:confirm_transfer_pay)}
+        = link_to 'Destroy', transfer_request_path(@transfer_request), method: :delete, data: {confirm: l(:confirm_transfer_destroy)}
+      - if tocat_id == @transfer_request.source_id
+        = link_to 'Pay', pay_transfer_request_path(@transfer_request), data: {confirm: l(:confirm_transfer_pay)}
