@@ -226,3 +226,4 @@ en:
   label_edit_transfer_request: 'Edit Transfer Request'
   confirm_transfer_destroy: 'Are you sure you want to delete transfer request?'
   confirm_transfer_pay: 'Are you sure you want to pay transfer request?'
+  label_tocat_apikey: 'Tocat apikey'

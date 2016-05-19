@@ -11,7 +11,7 @@ class StatusController < ApplicationController
       params_[:search] = "checked == false"
     end
     @messages = []
-    response = JSON.parse(RestClient.get("#{RedmineTocatClient.settings[:host]}/status", {:params => params_}))
+    response = JSON.parse(RestClient.get("#{RedmineTocatClient.settings[:host]}/status", TocatUser.headers.merge({:params => params_})))
     response['messages'].each do |r|
       @messages << OpenStruct.new(:id => r['id'], :alert => r['alert'], :checked => r['checked'])
     end
@@ -20,7 +20,7 @@ class StatusController < ApplicationController
 
   def checked
     method = request.delete? ? :delete : :post
-    RestClient.try(method, "#{RedmineTocatClient.settings[:host]}/status/#{params[:id]}/checked", {})
+    RestClient.try(method, "#{RedmineTocatClient.settings[:host]}/status/#{params[:id]}/checked", TocatUser.headers)
     respond_to do |format|
       flash[:notice] = l(:message_checked_updated)
       format.html { redirect_back_or_default({:controller => 'status', :action => 'status', :params => {:checked => params[:checked]} })}

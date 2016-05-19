@@ -4,22 +4,11 @@ class TocatTicket < ActiveResource::Base
   self.collection_name = 'tasks'
   self.element_name = 'task'
   add_response_method :http_response
-
+  include AuthTocat
 
   class << self
     def company
       RedmineTocatClient.settings[:company]
-    end
-    def element_path(id, prefix_options = {}, query_options = nil)
-      prefix_options, query_options = split_options(prefix_options) if query_options.nil?
-      query_options.merge!({:current_user => User.current.name})
-      "#{prefix(prefix_options)}#{element_name}/#{URI.parser.escape id.to_s}#{query_string(query_options)}"
-    end
-
-    def collection_path(prefix_options = {}, query_options = nil)
-      prefix_options, query_options = split_options(prefix_options) if query_options.nil?
-      query_options.merge!({:current_user => User.current.name})
-      "#{prefix(prefix_options)}#{collection_name}#{query_string(query_options)}"
     end
   end
   def internal_id
@@ -212,7 +201,7 @@ class TocatTicket < ActiveResource::Base
   def self.update_resolver(id, resolver) # FIXME Why class method?
     if resolver.present? && resolver.to_i != 0
       begin #          FIXME Use element_path(id) below
-        connection.post("#{self.prefix}task/#{id}/resolver", {user_id: resolver, current_user: User.current.name}.to_json)
+        connection.post("#{self.prefix}task/#{id}/resolver", {user_id: resolver}.to_json)
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
@@ -231,7 +220,7 @@ class TocatTicket < ActiveResource::Base
 
   def self.set_budgets(id, budgets) # FIXME Why class method?
     begin  #          FIXME Use element_path(id) below
-      connection.post("#{self.prefix}task/#{id}/budget", {budget: budgets, current_user: User.current.name}.to_json)
+      connection.post("#{self.prefix}task/#{id}/budget", {budget: budgets}.to_json)
     rescue => error
       Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error

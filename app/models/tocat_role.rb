@@ -11,9 +11,6 @@ class TocatRole < ActiveRecord::Base
   acts_as_list
 
   def self.check_path(request)
-    p '!'
-    p request
-    p '!'
     paths = {}
 
     paths[:orders] = {}

@@ -41,8 +41,6 @@ module RedmineTocatClient
         def available_orders
           if (tocat.attributes.include?('resolver') && tocat.resolver.id.present?) || tocat.orders.present?
             if tocat.attributes.include?('resolver') && tocat.resolver.id.present?
-              p TocatUser.find(tocat.resolver.id)
-              p TocatUser.find(tocat.resolver.id).tocat_team
               team = TocatUser.find(tocat.resolver.id).tocat_team.name
             else
               team = TocatOrder.find(tocat.orders.first.id).tocat_team.name

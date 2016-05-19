@@ -10,7 +10,8 @@ Redmine::Plugin.register :redmine_tocat_client do
 
   settings :default => {
     'host' => 'http://tocat.opsway.com',
-    'company' => 'opsway'
+    'company' => 'opsway',
+    'apikey' => 'apikey'
           },:partial => 'settings/tocat_settings'
 
   menu :top_menu, :tocat, { :controller => 'tocat', :action => 'my_tocat' },

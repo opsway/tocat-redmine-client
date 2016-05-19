@@ -2,6 +2,7 @@ gem 'activeresource'
 gem 'activeresource-response'
 gem 'slim'
 gem 'rest-client'
+gem 'jwt'
 
 group :development do
   gem 'pry'
