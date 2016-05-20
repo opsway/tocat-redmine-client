@@ -61,7 +61,7 @@ class TocatOrder < ActiveResource::Base
   def toggle_campleted
     unless completed
       begin
-        connection.post(element_path.gsub('?', '/complete?'),'',TocatOrder.headers)
+        connection.post(element_path + '/complete','',TocatOrder.headers)
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
@@ -69,7 +69,7 @@ class TocatOrder < ActiveResource::Base
       return true, nil
     else
       begin
-        connection.delete(element_path.gsub('?', '/complete?'),TocatOrder.headers)
+        connection.delete(element_path + '/complete',TocatOrder.headers)
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
@@ -80,7 +80,7 @@ class TocatOrder < ActiveResource::Base
 
   def set_internal
     begin
-      connection.post(element_path.gsub('?', '/internal?'),'', TocatOrder.headers)
+      connection.post(element_path + '/internal','', TocatOrder.headers)
     rescue => error
       Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error
@@ -100,7 +100,7 @@ class TocatOrder < ActiveResource::Base
 
   def remove_internal
     begin
-      connection.delete(element_path.gsub('?', '/internal?'),TocatOrder.headers)
+      connection.delete(element_path + '/internal',TocatOrder.headers)
     rescue => error
       Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error
@@ -108,9 +108,8 @@ class TocatOrder < ActiveResource::Base
     return true, nil
   end
   def budget
-    p element_path.gsub('?', '/budget?')
     begin
-      return JSON.parse(connection.get(element_path.gsub('?', '/budget?')).body,TocatOrder.headers)
+      return JSON.parse(connection.get(element_path + '/budget', TocatOrder.headers).body)
     rescue
       return []
     end
@@ -180,7 +179,7 @@ class TocatOrder < ActiveResource::Base
 
   def delete_invoice
     begin
-      connection.delete(element_path.gsub('?', '/invoice?'),TocatOrder.headers)
+      connection.delete(element_path + '/invoice',TocatOrder.headers)
     rescue => error
       Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error

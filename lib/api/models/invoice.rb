@@ -45,7 +45,7 @@ class TocatInvoice < ActiveResource::Base
   # FIXME Probably paid setters should be in one method?
   def set_paid
     begin
-      connection.post(element_path.gsub('?', '/paid?'),'',TocatInvoice.headers)
+      connection.post(element_path + '/paid','',TocatInvoice.headers)
     rescue => error
       Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error
@@ -55,7 +55,7 @@ class TocatInvoice < ActiveResource::Base
 
   def remove_paid
     begin
-      connection.delete(element_path.gsub('?', '/paid?'),TocatInvoice.headers)
+      connection.delete(element_path + '/paid',TocatInvoice.headers)
     rescue => error
       Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error

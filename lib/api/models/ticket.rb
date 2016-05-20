@@ -77,7 +77,7 @@ class TocatTicket < ActiveResource::Base
   def toggle_review_requested
     unless review_requested
       begin
-        connection.post(element_path.gsub('?', '/review?'),'',TocatTicket.headers)
+        connection.post(element_path + '/review','',TocatTicket.headers)
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
@@ -85,7 +85,7 @@ class TocatTicket < ActiveResource::Base
       return true, nil
     else
       begin
-        connection.delete(TocatTicket.element_path(self.id).gsub('?', '/review?'),TocatTicket.headers)
+        connection.delete(TocatTicket.element_path + '/review',TocatTicket.headers)
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
@@ -104,7 +104,7 @@ class TocatTicket < ActiveResource::Base
   def set_expense_param(val)
     if val
       begin
-        connection.post(element_path.gsub('?', '/expenses?'), '', TocatTicket.headers)
+        connection.post(element_path + '/expenses', '', TocatTicket.headers)
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
@@ -112,7 +112,7 @@ class TocatTicket < ActiveResource::Base
       return true, nil
     else
       begin
-        connection.delete(element_path.gsub('?', '/expenses?'), TocatTicket.headers)
+        connection.delete(element_path + '/expenses', TocatTicket.headers)
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
@@ -123,7 +123,7 @@ class TocatTicket < ActiveResource::Base
   def toggle_paid # FIXME WTF? Rename to toggle_accepted
     unless accepted
       begin
-        connection.post(element_path.gsub('?', '/accept?'), '', TocatTicket.headers)
+        connection.post(element_path + '/accept', '', TocatTicket.headers)
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
@@ -131,7 +131,7 @@ class TocatTicket < ActiveResource::Base
       return true, nil
     else
       begin
-        connection.delete(TocatTicket.element_path(self.id).gsub('?', '/accept?'), TocatTicket.headers)
+        connection.delete(TocatTicket.element_path(self.id) + '/accept', TocatTicket.headers)
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
@@ -213,7 +213,7 @@ class TocatTicket < ActiveResource::Base
       return true, nil
     else
       begin
-        connection.delete(element_path(id).gsub('?', '/resolver?'),TocatTicket.headers)
+        connection.delete(element_path(id) + '/resolver',TocatTicket.headers)
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
