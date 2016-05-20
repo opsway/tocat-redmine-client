@@ -29,7 +29,7 @@ class TocatOrder < ActiveResource::Base
   def activity
     begin
       records = []
-      JSON.parse(connection.get("#{self.class.prefix}/activity?trackable=order&trackable_id=#{self.id}").body).each do |record|
+      JSON.parse(connection.get("#{self.class.prefix}/activity?trackable=order&trackable_id=#{self.id}").body,TocatOrder.headers).each do |record|
         recipient = nil
         unless record["recipient_id"].nil?
           case record["recipient_type"]
@@ -61,7 +61,7 @@ class TocatOrder < ActiveResource::Base
   def toggle_campleted
     unless completed
       begin
-        connection.post(element_path.gsub('?', '/complete?'))
+        connection.post(element_path.gsub('?', '/complete?'),'',TocatOrder.headers)
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
@@ -69,7 +69,7 @@ class TocatOrder < ActiveResource::Base
       return true, nil
     else
       begin
-        connection.delete(element_path.gsub('?', '/complete?'))
+        connection.delete(element_path.gsub('?', '/complete?'),TocatOrder.headers)
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
@@ -80,7 +80,7 @@ class TocatOrder < ActiveResource::Base
 
   def set_internal
     begin
-      connection.post(element_path.gsub('?', '/internal?'))
+      connection.post(element_path.gsub('?', '/internal?'),'', TocatOrder.headers)
     rescue => error
       Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error
@@ -90,7 +90,7 @@ class TocatOrder < ActiveResource::Base
 
   def set_commission(commission)
     begin
-      connection.post(element_path(commission: commission).gsub('?', '/commission?'))
+      connection.post(element_path(commission: commission).gsub('?', '/commission?'),'',TocatOrder.headers)
     rescue => error
       Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error
@@ -100,7 +100,7 @@ class TocatOrder < ActiveResource::Base
 
   def remove_internal
     begin
-      connection.delete(element_path.gsub('?', '/internal?'))
+      connection.delete(element_path.gsub('?', '/internal?'),TocatOrder.headers)
     rescue => error
       Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error
@@ -108,8 +108,9 @@ class TocatOrder < ActiveResource::Base
     return true, nil
   end
   def budget
+    p element_path.gsub('?', '/budget?')
     begin
-      return JSON.parse(connection.get(element_path.gsub('?', '/budget?')).body)
+      return JSON.parse(connection.get(element_path.gsub('?', '/budget?')).body,TocatOrder.headers)
     rescue
       return []
     end
@@ -169,7 +170,7 @@ class TocatOrder < ActiveResource::Base
 
   def set_invoice(id)
     begin
-      connection.post(element_path({invoice_id: id}).gsub('?', '/invoice?'))
+      connection.post(element_path({invoice_id: id}).gsub('?', '/invoice?'),'',TocatOrder.headers)
     rescue => error
       Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error
@@ -179,7 +180,7 @@ class TocatOrder < ActiveResource::Base
 
   def delete_invoice
     begin
-      connection.delete(element_path.gsub('?', '/invoice?'))
+      connection.delete(element_path.gsub('?', '/invoice?'),TocatOrder.headers)
     rescue => error
       Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error
@@ -197,7 +198,7 @@ class TocatOrder < ActiveResource::Base
   def set_suborder(query)
     response = ''
     begin
-      response = connection.post("#{self.class.prefix}/order/#{self.id}/suborder", query.to_json)
+      response = connection.post("#{self.class.prefix}/order/#{self.id}/suborder", query.to_json, TocatOrder.headers)
     rescue => error
       Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error, nil

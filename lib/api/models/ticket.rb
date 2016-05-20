@@ -19,7 +19,7 @@ class TocatTicket < ActiveResource::Base
     return [] unless User.current.tocat_allowed_to?(:show_activity_feed)
     begin
       records = []
-      JSON.parse(connection.get("#{self.class.prefix}/activity?trackable=task&trackable_id=#{id}&limit=9999999").body).each do |record|
+      JSON.parse(connection.get("#{self.class.prefix}/activity?trackable=task&trackable_id=#{id}&limit=9999999").body,TocatTicket.headers).each do |record|
         next if record['key'] == 'task.create'
         data = OpenStruct.new(
             id: "tocat_#{record['id']}",
@@ -64,7 +64,7 @@ class TocatTicket < ActiveResource::Base
       key.nil? ?
           url = "#{self.prefix}/activity?trackable=task&trackable_id=#{ids.join(',')}&limit=9999999" :
           url = "#{self.prefix}/activity?trackable=task&trackable_id=#{ids.join(',')}&key=#{key}&limit=9999999"
-      JSON.parse(connection.get(url).body).each do |record|
+      JSON.parse(connection.get(url,TocatTicket.headers).body).each do |record|
         records << OpenStruct.new(id: record["trackable_id"], key: record["key"], parameters: record['parameters'], created_at: record['created_at'])
       end
       return records
@@ -77,7 +77,7 @@ class TocatTicket < ActiveResource::Base
   def toggle_review_requested
     unless review_requested
       begin
-        connection.post(element_path.gsub('?', '/review?'))
+        connection.post(element_path.gsub('?', '/review?'),'',TocatTicket.headers)
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
@@ -85,7 +85,7 @@ class TocatTicket < ActiveResource::Base
       return true, nil
     else
       begin
-        connection.delete(TocatTicket.element_path(self.id).gsub('?', '/review?'))
+        connection.delete(TocatTicket.element_path(self.id).gsub('?', '/review?'),TocatTicket.headers)
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
@@ -104,7 +104,7 @@ class TocatTicket < ActiveResource::Base
   def set_expense_param(val)
     if val
       begin
-        connection.post(element_path.gsub('?', '/expenses?'))
+        connection.post(element_path.gsub('?', '/expenses?'), '', TocatTicket.headers)
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
@@ -112,7 +112,7 @@ class TocatTicket < ActiveResource::Base
       return true, nil
     else
       begin
-        connection.delete(element_path.gsub('?', '/expenses?'))
+        connection.delete(element_path.gsub('?', '/expenses?'), TocatTicket.headers)
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
@@ -123,7 +123,7 @@ class TocatTicket < ActiveResource::Base
   def toggle_paid # FIXME WTF? Rename to toggle_accepted
     unless accepted
       begin
-        connection.post(element_path.gsub('?', '/accept?'))
+        connection.post(element_path.gsub('?', '/accept?'), '', TocatTicket.headers)
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
@@ -131,7 +131,7 @@ class TocatTicket < ActiveResource::Base
       return true, nil
     else
       begin
-        connection.delete(TocatTicket.element_path(self.id).gsub('?', '/accept?'))
+        connection.delete(TocatTicket.element_path(self.id).gsub('?', '/accept?'), TocatTicket.headers)
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
@@ -175,14 +175,13 @@ class TocatTicket < ActiveResource::Base
 
   def self.find_by_external_id(id) # FIXME Refactor to use real search
     begin 
-      
-    ticket = TocatTicket.find(:all, params: {search: "#{TocatTicket.company}_#{id}"}).first
-    if ticket.present?
-      return TocatTicket.find(ticket.id) # WTF?? FIXME TODO - different serializers
-    end
-    nil
+      ticket = TocatTicket.find(:all, params: {search: "#{TocatTicket.company}_#{id}"}).first
+      if ticket.present?
+        return TocatTicket.find(ticket.id) # WTF?? FIXME TODO - different serializers
+      end
+      nil
     rescue ActiveResource::UnauthorizedAccess
-    nil
+      nil
     end
   end
 
@@ -206,7 +205,7 @@ class TocatTicket < ActiveResource::Base
   def self.update_resolver(id, resolver) # FIXME Why class method?
     if resolver.present? && resolver.to_i != 0
       begin #          FIXME Use element_path(id) below
-        connection.post("#{self.prefix}task/#{id}/resolver", {user_id: resolver}.to_json)
+        connection.post("#{self.prefix}task/#{id}/resolver", {user_id: resolver}.to_json, TocatTicket.headers)
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
@@ -214,7 +213,7 @@ class TocatTicket < ActiveResource::Base
       return true, nil
     else
       begin
-        connection.delete(element_path(id).gsub('?', '/resolver?'))
+        connection.delete(element_path(id).gsub('?', '/resolver?'),TocatTicket.headers)
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
@@ -225,7 +224,7 @@ class TocatTicket < ActiveResource::Base
 
   def self.set_budgets(id, budgets) # FIXME Why class method?
     begin  #          FIXME Use element_path(id) below
-      connection.post("#{self.prefix}task/#{id}/budget", {budget: budgets}.to_json)
+      connection.post("#{self.prefix}task/#{id}/budget", {budget: budgets}.to_json, TocatTicket.headers)
     rescue => error
       Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error
@@ -236,7 +235,7 @@ class TocatTicket < ActiveResource::Base
   def self.get_budgets(id) # FIXME Why class method?
     budgets = []
     begin#          FIXME Use element_path(id) below
-      request = connection.get("#{self.prefix}task/#{id}/budget")
+      request = connection.get("#{self.prefix}task/#{id}/budget", TocatTicket.headers)
       if request.code.to_i == 200
         return true, [] unless JSON.parse(request.body)['budget'].present?
         budgets_ = JSON.parse(request.body)

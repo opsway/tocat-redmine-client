@@ -29,7 +29,7 @@ class TocatUser < ActiveResource::Base
 
   def activity
     begin
-       return JSON.parse(connection.get("#{self.class.prefix}/activity?owner=user&owner_id=#{self.id}").body)
+       return JSON.parse(connection.get("#{self.class.prefix}/activity?owner=user&owner_id=#{self.id}",TocatUser.headers).body)
      rescue
        return []
      end
@@ -37,7 +37,7 @@ class TocatUser < ActiveResource::Base
 
   def add_payment(comment, total)
     begin
-      connection.post("#{self.class.prefix}/user/#{id}/add_payment", { comment: comment, total: total }.to_json)
+      connection.post("#{self.class.prefix}/user/#{id}/add_payment", { comment: comment, total: total }.to_json, TocatUser.headers)
     rescue => error
       Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
       return false, error
