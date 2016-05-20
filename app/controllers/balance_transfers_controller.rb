@@ -1,6 +1,5 @@
-class BalanceTransfersController < ApplicationController
+class BalanceTransfersController < TocatBaseController
   unloadable
-  layout 'tocat_base'
   before_filter :check_action
   before_filter :get_admin_name, only: [:emit, :takeout]
 
@@ -57,10 +56,5 @@ class BalanceTransfersController < ApplicationController
   def get_admin_name
     @central_office = TocatTeam.all.find{|t| t.id == t.parent_id}
     @tocat_central_office_admin = TocatUser.find(:all, params: {search: 'team="' + @central_office.name + '"'}).find{|u| u.tocat_server_role.name == 'Manager'}
-  end
-
-  def check_action
-    params.permit! if params.respond_to? :permit!
-    render_403 unless TocatRole.check_path(Rails.application.routes.recognize_path(request.env['PATH_INFO'], {:method => request.env['REQUEST_METHOD'].to_sym}))
   end
 end

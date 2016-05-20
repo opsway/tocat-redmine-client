@@ -1,6 +1,5 @@
-class TocatController < ApplicationController
+class TocatController < TocatBaseController
   unloadable
-  layout 'tocat_base'
   helper :sort
   include SortHelper
   helper :queries
@@ -235,11 +234,6 @@ class TocatController < ApplicationController
   end
 
   private
-
-  def check_action
-    params.permit! if params.respond_to? :permit!
-    render_403 unless TocatRole.check_path(Rails.application.routes.recognize_path(request.env['PATH_INFO'], {:method => request.env['REQUEST_METHOD'].to_sym}))
-  end
 
   def check_permissions(target)
     return true if User.current.tocat_allowed_to?(:is_admin)

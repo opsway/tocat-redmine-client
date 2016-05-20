@@ -1,9 +1,8 @@
-class OrdersController < ApplicationController
+class OrdersController < TocatBaseController
   unloadable
   before_filter :find_order, :except => [:new, :create, :index, :create_suborder]
   before_filter :find_groups, :except => [:index]
   before_filter :check_for_setup
-  layout 'tocat_base'
   helper :sort
   include SortHelper
   before_filter :check_action
@@ -253,11 +252,6 @@ class OrdersController < ApplicationController
   end
 
   private
-
-  def check_action
-    render_403 unless TocatRole.check_path(Rails.application.routes.recognize_path(request.env['PATH_INFO'], {:method => request.env['REQUEST_METHOD'].to_sym}))
-    p 'finish check_action'
-  end
 
   def find_groups
     @groups = TocatTeam.all.sort { |lhs, rhs| lhs.name.downcase <=> rhs.name.downcase }

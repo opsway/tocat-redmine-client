@@ -1,8 +1,7 @@
-class TransactionsController < ApplicationController
+class TransactionsController < TocatBaseController
   unloadable
   before_filter :find_transaction, :except => [:new, :create, :index]
   before_filter :check_for_setup
-  layout 'tocat_base'
   helper :sort
   include SortHelper
   before_filter :check_action
@@ -44,10 +43,6 @@ class TransactionsController < ApplicationController
     @transaction = TocatTransaction.find(params[:id])
   rescue ActiveResource::ResourceNotFound
     render_404
-  end
-
-  def check_action
-    render_403 unless TocatRole.check_path(Rails.application.routes.recognize_path(request.env['PATH_INFO'], {:method => request.env['REQUEST_METHOD'].to_sym}))
   end
 
   def check_for_setup

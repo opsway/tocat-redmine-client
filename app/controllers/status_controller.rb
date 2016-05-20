@@ -1,6 +1,5 @@
-class StatusController < ApplicationController
+class StatusController < TocatBaseController
   unloadable
-  layout 'tocat_base'
   before_filter :check_action
 
   def status
@@ -25,11 +24,5 @@ class StatusController < ApplicationController
       flash[:notice] = l(:message_checked_updated)
       format.html { redirect_back_or_default({:controller => 'status', :action => 'status', :params => {:checked => params[:checked]} })}
     end
-  end
-
-  private
-
-  def check_action
-    render_403 unless TocatRole.check_path(Rails.application.routes.recognize_path(request.env['PATH_INFO'], {:method => request.env['REQUEST_METHOD'].to_sym}))
   end
 end

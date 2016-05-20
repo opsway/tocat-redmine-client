@@ -1,6 +1,5 @@
-class TocatTeamsController < ApplicationController
+class TocatTeamsController < TocatBaseController
   unloadable
-  layout 'tocat_base'
 
   #before_filter :require_admin
   before_filter :check_action
@@ -72,10 +71,4 @@ class TocatTeamsController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     render_404
   end
-
-  def check_action
-    params.permit! if params.respond_to? :permit!
-    render_403 unless TocatRole.check_path(Rails.application.routes.recognize_path(request.env['PATH_INFO'], {:method => request.env['REQUEST_METHOD'].to_sym}))
-  end
-
 end

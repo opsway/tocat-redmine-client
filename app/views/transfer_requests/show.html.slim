@@ -32,6 +32,6 @@ h2= l(:label_transfer_request)
       - if tocat_id == @transfer_request.target.id
         = link_to 'Edit', edit_transfer_request_path(@transfer_request)
         br
-        = link_to 'Destroy', transfer_request_path(@transfer_request), method: :delete, data: {confirm: l(:confirm_transfer_destroy)}
+        = link_to 'Cancel', transfer_request_path(@transfer_request), method: :delete, data: {confirm: l(:confirm_transfer_destroy)}
       - if tocat_id == @transfer_request.source.id
         = link_to 'Pay', pay_transfer_request_path(@transfer_request), data: {confirm: l(:confirm_transfer_pay)}
