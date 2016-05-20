@@ -174,11 +174,16 @@ class TocatTicket < ActiveResource::Base
   end
 
   def self.find_by_external_id(id) # FIXME Refactor to use real search
+    begin 
+      
     ticket = TocatTicket.find(:all, params: {search: "#{TocatTicket.company}_#{id}"}).first
     if ticket.present?
       return TocatTicket.find(ticket.id) # WTF?? FIXME TODO - different serializers
     end
     nil
+    rescue ActiveResource::UnauthorizedAccess
+    nil
+    end
   end
 
   def get_orders # FIXME Probably not need this anymore

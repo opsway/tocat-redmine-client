@@ -46,7 +46,11 @@ class TocatUser < ActiveResource::Base
   end
 
   def self.find_by_login(login)
+    begin
     return TocatUser.find(:all, params:{search:"login=#{login}"}).first
+    rescue ActiveResource::UnauthorizedAccess
+      nil
+    end
   end
 
   def self.find_by_name(name)

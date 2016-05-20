@@ -7,11 +7,15 @@ module RedmineTocatClient
       end
       module InstanceMethods
         def tocat
-          task = TocatTicket.find_by_external_id("#{id}")
-          unless task
-            task = TocatTicket.create(external_id: "#{TocatTicket.company}_#{id}")
+          begin
+            task = TocatTicket.find_by_external_id("#{id}")
+            unless task
+              task = TocatTicket.create(external_id: "#{TocatTicket.company}_#{id}")
+            end
+            task
+          rescue ActiveResource::UnauthorizedAccess
+            nil
           end
-          task
         end
 
         def review_requested

@@ -1,4 +1,5 @@
 <div class = 'autoscroll'>
+  <% if @issue.tocat %>
   <% records = @issue.budgets %>
   <% ticket = @issue.tocat %>
   <% if records.present? %>
@@ -50,6 +51,7 @@
         <% end %>
       </tbody>
     </table>
+    <% end %>
     <% end %>
 </div>
 

@@ -1,5 +1,6 @@
 <table class='attributes'>
   <% ticket = @issue.tocat %>
+  <% if ticket %>
   <tr>
     <th>
       <%=l(:label_tocat_budget)%>
@@ -116,5 +117,6 @@
         <% end %>
       </td>
     <% end %>
+  <% end %>
   </tr>
 </table>
