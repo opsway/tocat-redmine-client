@@ -11,6 +11,11 @@ class TocatOrder < ActiveResource::Base
       response = self.get(:available_for_invoice, { })
       instantiate_collection(response)
     end
+    
+    def build(attributes = {})
+        attrs = self.format.decode(connection.get("#{new_element_path(attributes)}", headers).body)
+        self.new(attrs)
+    end
   end
 
 
