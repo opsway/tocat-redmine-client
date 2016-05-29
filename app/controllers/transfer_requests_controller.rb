@@ -20,9 +20,6 @@ class TransferRequestsController < TocatBaseController
   def show
   end
   
-  def edit
-  end
-  
   def new
     @transfer_request = TransferRequest.new
   end
@@ -50,23 +47,6 @@ class TransferRequestsController < TocatBaseController
           format.html { redirect_back_or_default({:action => 'show', id: @transfer_request})}
         end
       end
-    rescue => @e
-      respond_to do |format|
-        flash[:error] = JSON.parse(@e.response.body)['errors'].join(', ')
-        format.html { redirect_back_or_default({:action => 'show', id: @transfer_request})}
-      end
-    end
-  end
-  
-  def update
-
-    begin
-    if @transfer_request.update_attributes(params[:transfer_request])
-      flash[:notice] = l(:notice_transfer_request_successful_update)
-      return redirect_back_or_default({:action => 'show', id: @transfer_request})
-    else
-      return render template: 'transfer_requests/edit'
-    end
     rescue => @e
       respond_to do |format|
         flash[:error] = JSON.parse(@e.response.body)['errors'].join(', ')

@@ -13,10 +13,10 @@
             table#filters-table
               tbody
                 tr.filter#source_user
-                  td.field= label_tag(:source, l(:label_source))
+                  td.field= label_tag(:source, l(:label_transfer_source))
                   td.operator= select_tag(:source, options_for_select(@recipients, selected: params[:source]), id: 'source_account', include_blank: true) 
                 tr.filter#target_user
-                  td.field= label_tag(:target, l(:label_target))
+                  td.field= label_tag(:target, l(:label_transfer_target))
                   td.operator= select_tag(:target, options_for_select(@recipients, selected: params[:target]), include_blank: true) 
     = submit_tag(l(:button_apply))
     = link_to l(:button_clear), { :set_filter => 1 }, :class => 'icon icon-reload'  
@@ -25,12 +25,11 @@
   table.list
     thead
       tr
-        td= l(:label_source)
-        td= l(:label_target)
+        td= l(:label_transfer_source)
+        td= l(:label_transfer_target)
         td= l(:label_total)
         td= l(:label_date)
         td= l(:label_pay_status)
-        td= l(:actions)
     tbody
       - if @balance_transfers.present?
         - @balance_transfers.each do |bt|
@@ -40,12 +39,4 @@
             td = bt.total
             td = bt.created_at
             td = bt.state
-            td 
-              - if bt.state != 'paid'
-                - if tocat_id == bt.target_id
-                  = link_to 'Edit', edit_transfer_request_path(bt)
-                  br
-                  = link_to 'Destroy', transfer_request_path(bt), method: :delete, data: {confirm: l(:confirm_transfer_destroy)}
-                - if tocat_id == bt.source_id
-                  = link_to 'Pay', pay_transfer_request_path(bt), data: {confirm: l(:confirm_transfer_pay)}
 p.pagination= pagination_links_full @transfers_pages, @transfers_count

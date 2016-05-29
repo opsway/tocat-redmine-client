@@ -1,11 +1,11 @@
 h2= l(:label_transfer_request)
 .box
   p
-    strong = l(:label_source)
+    strong = l(:label_transfer_source)
     |  
     = @transfer_request.source.try :name
   p
-    strong = l(:label_target)
+    strong = l(:label_transfer_target)
     |  
     = @transfer_request.target.try :name
   p
@@ -30,8 +30,6 @@ h2= l(:label_transfer_request)
     - tocat_id = User.current.try(:tocat).try(:id)
     - if @transfer_request.state != 'paid'
       - if tocat_id == @transfer_request.target.id
-        = link_to 'Edit', edit_transfer_request_path(@transfer_request)
-        br
-        = link_to 'Cancel', transfer_request_path(@transfer_request), method: :delete, data: {confirm: l(:confirm_transfer_destroy)}
+        = link_to 'Cancel', transfer_request_path(@transfer_request), method: :delete, class: 'icon icon-del btn button', data: {confirm: l(:confirm_transfer_destroy)}
       - if tocat_id == @transfer_request.source.id
-        = link_to 'Pay', pay_transfer_request_path(@transfer_request), data: {confirm: l(:confirm_transfer_pay)}
+        = link_to 'Pay', pay_transfer_request_path(@transfer_request), class: 'icon icon-time-add btn button', data: {confirm: l(:confirm_transfer_pay)}

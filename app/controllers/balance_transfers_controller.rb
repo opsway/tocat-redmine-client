@@ -1,7 +1,6 @@
 class BalanceTransfersController < TocatBaseController
   unloadable
   before_filter :check_action
-  before_filter :get_admin_name, only: [:emit, :takeout]
 
   def index
     query_params = {}
@@ -40,16 +39,6 @@ class BalanceTransfersController < TocatBaseController
   
   def new
     @balance_transfer = TocatBalanceTransfer.new(btype: 'base')
-  end
-  
-  def emit
-    @balance_transfer = TocatBalanceTransfer.new(btype: 'emit')
-    render :new
-  end
-  
-  def takeout
-    @balance_transfer = TocatBalanceTransfer.new(btype: 'takeout')
-    render :new
   end
   
   private
