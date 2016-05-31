@@ -7,7 +7,7 @@ class TransferRequest < ActiveResource::Base
   include AuthTocat
 
   def pay
-    self.post('pay', {:current_user => User.current.name})
+    connection.post("/#{self.class.element_name}/#{id}/pay",'', TocatUser.headers)
   end
   
   def available_recepients
