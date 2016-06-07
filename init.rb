@@ -47,6 +47,10 @@ Redmine::Plugin.register :redmine_tocat_client do
     menu.push :transfer_request, { :controller => 'transfer_requests', :action => 'index' },
               :if => Proc.new{ User.current.tocat_allowed_to?(:view_transfers)},
               :caption => :label_transfer_requests
+    menu.push :payment_request, { :controller => 'payment_requests', :action => 'index'},
+              :if => Proc.new { User.current.tocat_allowed_to?(:view_payment_requests) },
+              :caption => :label_payment_request
+
   end
   ActiveResource::Base.include_root_in_json = true
 end

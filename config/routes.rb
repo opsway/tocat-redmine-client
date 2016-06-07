@@ -43,8 +43,6 @@ match  '/tocat/invoices/:id/paid' => 'invoices#set_paid', as: :invoice_paid, via
 delete '/tocat/invoices/:id/paid' => 'invoices#set_unpaid', as: :invoice_paid_rem, via: [:delete]
 delete '/tocat/invoices/:id/orders' => 'invoices#deattach_order', as: :invoice_orders, via: [:delete]
 # post '/tocat/invoices/:id/attach_order' => 'invoices#attach_order', as: :invoice_attach_order
-get '/tocat/payment' => 'tocat#new_payment', as: :payment, via: [:get]
-post '/tocat/payment' => 'tocat#create_payment', as: :create_payment, via: [:post]
 
 match '/issues/:id/accepted' => 'tocat#toggle_accepted', as: :issue_accepted, via: [:post, :put]
 post '/issues/:id/expenses' => 'tocat#set_expenses', as: :set_expenses
@@ -54,6 +52,17 @@ match '/tocat/request_review' => 'tocat#request_review', :via => :put
 match '/tocat/review_handler' => 'tocat#review_handler', :via => :put
 
 resources :balance_transfers, path: '/tocat/balance_transfers', only: [:index, :show, :create, :new]
+resources :payment_requests, path: 'tocat/payment_requests', only: [:index, :show, :create, :edit, :new, :update] do
+  member do
+    get 'approve'
+    get 'cancel'
+    get 'reject'
+    get 'complete'
+    get 'dispatch', to: 'payment_requests#dispatch_my'
+    post 'dispatch', to: 'payment_requests#dispatch_post'
+  end
+    get 'special', on: :collection
+end
 
 resources :transfer_requests, path: '/tocat/transfer_requests', only: [:index, :show, :create, :new, :destroy] do
   get :pay, on: :member

@@ -1,0 +1,4 @@
+= l(:dispatch_payment_request)
+= form_tag dispatch_payment_request_path(@payment_request), method: 'post' do
+  = select_tag :email, options_for_select(@payment_request.available_for_dispatch)
+  = submit_tag

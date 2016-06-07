@@ -85,7 +85,7 @@ class TocatTicket < ActiveResource::Base
       return true, nil
     else
       begin
-        connection.delete(TocatTicket.element_path + '/review',TocatTicket.headers)
+        connection.delete(TocatTicket.element_path + '/review', TocatTicket.headers)
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error

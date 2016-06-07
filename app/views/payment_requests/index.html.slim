@@ -1,0 +1,48 @@
+.contextual
+  - if User.current.tocat_allowed_to? :create_payment_request
+    = link_to l(:create_payment_request), new_payment_request_path, class: 'icon icon-add'
+
+= form_tag("/tocat/payment_requests", method: "get") do
+  = hidden_field_tag 'set_filter', '1' 
+  fieldset id="filters" class="collapsible"
+    legend onclick="toggleFieldset(this);" = l(:label_filter_plural) 
+    table style="width:100%"
+      tbody
+        tr
+          td
+            table#filters-table
+              tbody
+                tr.filter#source_user
+                  td.field= label_tag(:source, l(:label_payment_source))
+                  td.operator= select_tag(:source, options_for_select(PaymentRequest.available_source, params[:source]), id: 'source_account', include_blank: true) 
+                tr.filter#status
+                  td.field= label_tag(:status, l(:label_payment_status))
+                  td.operator= select_tag(:status, options_for_select(PaymentRequest::STATUSES, selected: params[:status]), include_blank: true) 
+    = submit_tag(l(:button_apply))
+    = link_to l(:button_clear), { :set_filter => 1 }, :class => 'icon icon-reload'  
+- tocat_id = User.current.try(:tocat).try :id
+.autoscroll
+  table.list
+    thead
+      tr
+        td= l(:label_id)
+        td= l(:label_payment_source)
+        td= l(:label_payment_target)
+        td= l(:label_total)
+        td= l(:label_date)
+        td= l(:label_pay_status)
+    tbody
+      - if @payment_requests.present?
+        - @payment_requests.each do |pr|
+          tr
+            td = pr.id
+            td = link_to pr.source.name, payment_request_path(pr.id)
+            td 
+              - if pr.salary_account
+                = link_to pr.salary_account.name, payment_request_path(pr.id)
+            td 
+              = pr.total
+              = pr.currency
+            td = pr.created_at
+            td = pr.status
+p.pagination= pagination_links_full @payment_pages, @payment_count

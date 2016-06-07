@@ -1,5 +1,7 @@
 <h2><%= avatar @user, :size => "50" %> <%= h @user.name %></h2>
 <hr/>
+<%= link_to l(:add_salary_payment), special_payment_requests_path(user_id: params[:user_id]) if User.current.tocat_allowed_to?(:salary_check_in) && params[:user_id].present? %>
+<hr/>
 <div class="splitcontentleft">
     <label><%=	l(:label_balance)  %></label><strong> $<%= @user_tocat.balance_account_state.round(2)%></strong><br/>
     <%= render 'transactions', :transactions => @balance_transactions %>

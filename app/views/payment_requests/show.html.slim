@@ -1,0 +1,70 @@
+- def tocat_allow?(role) User.current.tocat_allowed_to? role end
+h2= l(:label_payment_request)
+.box
+  p
+    strong = l(:label_payment_source)
+    |  
+    = @payment_request.source.try :name
+  - if @payment_request.salary_account
+    p
+      strong = l(:label_payment_target)
+      |:  
+      = @payment_request.salary_account.name
+
+  - if @payment_request.target
+    p
+      strong = l(:label_payment_dispatch_target)
+      |:  
+      = @payment_request.target.name
+  p
+    strong = l :label_total
+    ':  
+    |  
+    = @payment_request.total
+    = @payment_request.currency
+  p
+    strong = l :label_date
+    ':   
+    = @payment_request.created_at
+  p
+    strong = l :label_description
+    ':    
+    = @payment_request.description
+  p
+    strong = l :label_payment_state
+    ':    
+    = @payment_request.status
+
+  p 
+    - tocat_id = User.current.try(:tocat).try(:id)
+    - case @payment_request.status
+    - when 'new'
+      - if tocat_allow? :approve_payment_request
+        = link_to l(:approve_payment_request), approve_payment_request_path(@payment_request)
+      br
+      -if tocat_allow? :cancel_payment_request
+        = link_to l(:cancel_payment_request), cancel_payment_request_path(@payment_request)
+      br
+      -if tocat_allow? :edit_payment_request
+        = link_to l(:edit_payment_request), edit_payment_request_path(@payment_request)
+    - when 'approved'
+      - if tocat_allow? :dispatch_payment_request
+        = link_to l(:dispatch_payment_request), dispatch_payment_request_path(@payment_request)
+      br
+      - if tocat_allow? :reject_payment_request
+        = link_to l(:reject_payment_request), reject_payment_request_path(@payment_request)
+    - when 'dispatched'
+      - if tocat_allow? :complete_payment_request
+        = link_to l(:complete_payment_request), complete_payment_request_path(@payment_request)
+      br
+      - if tocat_allow? :reject_payment_request
+        = link_to l(:reject_payment_request), reject_payment_request_path(@payment_request)
+  h3 History
+  p
+    ul
+      - @payment_request.history.each do |rec|
+        li
+          = rec.name  
+          |  
+          = rec.msg
+          = "(#{rec.date})"

@@ -51,10 +51,6 @@ class TocatRole < ActiveRecord::Base
     paths[:tocat][:delete_budget] = :modify_budgets
     paths[:tocat][:my_tocat] = :show_tocat_page
     paths[:tocat][:tocat_chart_data] = :show_tocat_page
-    paths[:tocat][:new_payment] = :create_transactions
-    paths[:tocat][:create_payment] = :create_transactions
-    paths[:tocat][:new_bonus] = :create_transactions
-    paths[:tocat][:pay_bonus] = :create_transactions
     paths[:tocat][:request_review] = :can_request_review
     paths[:tocat][:review_handler] = :can_review_task
     paths[:tocat][:set_expenses] = :set_expenses
@@ -103,14 +99,26 @@ class TocatRole < ActiveRecord::Base
     paths[:transfer_requests][:create] = :create_transfer
     paths[:transfer_requests][:show] = :view_transfers
     paths[:transfer_requests][:pay] = :create_transfer
-    
+    #payment requests
+    paths[:payment_requests] = {}
+    paths[:payment_requests][:index]   = :view_payment_requests
+    paths[:payment_requests][:special] = :salary_check_in
+    paths[:payment_requests][:show]    = :view_payment_requests
+    paths[:payment_requests][:new]     = :create_payment_request
+    paths[:payment_requests][:special] = :create_payment_request
+    paths[:payment_requests][:edit]    = :edit_payment_request 
+    paths[:payment_requests][:update]  = :edit_payment_request
+    paths[:payment_requests][:create]  = :create_payment_request
+    paths[:payment_requests][:approve] = :approve_payment_request
+    paths[:payment_requests][:complete]= :complete_payment_request
+    paths[:payment_requests][:reject]  = :reject_payment_request
+    paths[:payment_requests][:cancel]  = :cancel_payment_request
+    paths[:payment_requests][:dispatch_my]= :dispatch_payment_request
+    paths[:payment_requests][:dispatch_post]= :dispatch_payment_request
 
     #transactions
     paths[:transactions] = {}
     paths[:transactions][:index] = :show_transactions
-    #paths[:transactions][:create] = :create_transactions
-    paths[:transactions][:new] = :create_transactions
-    paths[:transactions][:edit] = :create_transactions
     return false unless paths[request[:controller].to_sym].present?
     return false unless paths[request[:controller].to_sym][request[:action].to_sym].present?
     return false unless User.current.tocat_allowed_to?(paths[request[:controller].to_sym][request[:action].to_sym])
@@ -122,11 +130,12 @@ class TocatRole < ActiveRecord::Base
     data[:orders] = [:create_orders, :show_orders, :edit_orders, :destroy_orders, :complete_orders, :set_internal_orders, :remove_internal_orders, :show_commission, :update_commission]
     data[:invoices] = [:create_invoices, :show_invoices, :destroy_invoices, :paid_invoices]
     data[:issues] = [:modify_accepted, :modify_resolver, :modify_budgets, :show_budgets, :show_issues, :show_aggregated_info, :can_request_review, :can_review_task, :set_expenses, :remove_expenses]
-    data[:transactions] = [:show_transactions, :create_transactions]
+    data[:transactions] = [:show_transactions]
     data[:dashboard] = [:show_tocat_page, :has_protected_page, :can_see_public_pages, :is_admin, :show_status_page, :mark_alerts_as_checked, :show_activity_feed]
     data[:users] = [:create_user, :update_user, :activate_user, :deactivate_user]
     data[:teams] = [:create_team, :update_team, :activate_team, :deactivate_team]
     data[:balance_transfers] = [:view_transfers, :create_transfer]
+    data[:payment_requests] = [:create_payment_request, :edit_payment_request, :cancel_payment_request, :approve_payment_request, :reject_payment_request, :complete_payment_request, :dispatch_payment_request, :view_payment_requests, :salary_check_in]
     return data
   end
 

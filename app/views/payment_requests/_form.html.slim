@@ -1,0 +1,19 @@
+- if @error.present?
+  = @error
+= error_messages_for @payment_request
+.box.users
+  = form_for @payment_request do |f|
+    = f.label :target, "#{l(:label_payment_source)}: #{User.current.name}"
+    = f.hidden_field :special
+    = f.hidden_field :salary_account_id
+    br
+    = f.label :currency, l(:label_currency)
+    = f.select :currency, options_for_select(%w(USD EUR UAH RUR KZT), selected: @payment_request.currency)
+    br
+    = f.label :total, l(:label_total)
+    = f.text_field :total, size: 6, maxlength: 6, style: "width: auto"
+    br
+    = f.label :description, l(:label_description), style: "vertical-align: top"
+    = f.text_area :description, rows: 12, cols: 50
+    br
+    = f.submit 'Save'
