@@ -1,4 +1,7 @@
-= l(:add_salary_payment)
+- if params[:bonus].present?
+  = l(:salary_check_in)
+- else
+  = l(:add_salary_payment)
 - if @error.present?
   = @error
 = error_messages_for @payment_request
@@ -8,6 +11,7 @@
     br
     = f.label :source, "To: #{TocatUser.find(params[:user_id]).name}"
     = f.hidden_field :special
+    = f.hidden_field :bonus
     = f.hidden_field :salary_account_id
     br
     = f.hidden_field :currency

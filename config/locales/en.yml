@@ -250,7 +250,7 @@ en:
   payment_request_reject_success: 'Payment Request was rejected'
   payment_request_complete_success: 'Payment Request was completed'
   payment_request_dispatch_success: 'Payment Request was dispatched'
-  add_salary_payment: 'Pay in cache/bank'
+  add_salary_payment: 'Pay in Cache/Bank'
   salary_check_in: 'Salary Check-in'
   label_payment_dispatch_target: 'Dispatched to'
   label_new_payment_request: 'New Payment Request'

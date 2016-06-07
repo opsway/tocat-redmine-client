@@ -11,6 +11,7 @@ class PaymentRequest < ActiveResource::Base
     attribute 'special', :boolean
     attribute 'salary_account_id', :integer
     attribute 'currency', :text
+    attribute 'bonus', :boolean
   end
   STATUSES = %w(new approved dispatched completed canceled rejected)
   def self.min_status(user = User.current)
