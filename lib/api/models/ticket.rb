@@ -12,7 +12,7 @@ class TocatTicket < ActiveResource::Base
     end
   end
   def internal_id
-    self.external_id.gsub("#{TocatTicket.company}_",'')
+    self.external_id.gsub(/\D/,'') #TODO - refactor this
   end
 
   def activity
@@ -175,7 +175,7 @@ class TocatTicket < ActiveResource::Base
 
   def self.find_by_external_id(id) # FIXME Refactor to use real search
     begin 
-      ticket = TocatTicket.find(:all, params: {search: "#{TocatTicket.company}_#{id}"}).first
+      ticket = TocatTicket.find(:all, params: {search: id}).first
       if ticket.present?
         return TocatTicket.find(ticket.id) # WTF?? FIXME TODO - different serializers
       end

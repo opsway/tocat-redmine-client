@@ -6,11 +6,15 @@ module RedmineTocatClient
         base.send(:include, InstanceMethods)
       end
       module InstanceMethods
+        include Rails.application.routes.url_helpers
+        def default_url_options(options = {})
+          options.merge({host: Setting.host_name})
+        end
         def tocat
           begin
-            task = TocatTicket.find_by_external_id("#{id}")
+            task = TocatTicket.find_by_external_id(issue_url(self.id, host: Setting.host_name))
             unless task
-              task = TocatTicket.create(external_id: "#{TocatTicket.company}_#{id}")
+              task = TocatTicket.create(external_id: issue_url(self.id, host: Setting.host_name))
             end
             task
           rescue ActiveResource::UnauthorizedAccess

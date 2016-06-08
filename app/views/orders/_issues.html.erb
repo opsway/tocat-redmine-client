@@ -14,10 +14,10 @@
     <% issues.each do |issue| %>
     <tr id='<%= issue.id %>' class = '<%= cycle('odd', 'even')%> issue' style='text-align: left;'>
       <td class = 'id'>
-        <%= link_to issue.id, issue_path(issue.id) %>
+        <%= link_to issue.id, issue.id %>
       </td>
       <td class = 'name'>
-        <%= link_to issue.subject, issue_path(issue.id) %>
+        <%= link_to issue.subject, issue.id %>
       </td>
       <td class = 'project'>
         <%= link_to issue.project.name, project_path(issue.project.id) if issue.project.present? %>
