@@ -1,3 +1,4 @@
+h2 = l(:label_new_payment_request)
 - if params[:bonus].present?
   = l(:salary_check_in)
 - else
@@ -14,7 +15,10 @@
     = f.hidden_field :bonus
     = f.hidden_field :salary_account_id
     br
+    = f.label :currency, l(:label_currency)
     = f.hidden_field :currency
+    = @payment_request.currency
+    
     br
     = f.label :total, l(:label_total)
     = f.text_field :total, size: 6, maxlength: 6, style: "width: auto"

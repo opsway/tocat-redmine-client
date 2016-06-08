@@ -1,9 +1,7 @@
 <div class = 'autoscroll'>
   <table class = 'list issues' style="text-align: left;">
     <thead><tr>
-      <td>#</td>
       <td><%= l(:label_subject) %></td>
-      <td><%= l(:label_project) %></td>
       <td><%= l(:label_budget) %></td>
       <td><%= l(:label_tocat_expenses) %></td>
       <td><%= l(:label_accepted) %></td>
@@ -13,14 +11,8 @@
   <tbody>
     <% issues.each do |issue| %>
     <tr id='<%= issue.id %>' class = '<%= cycle('odd', 'even')%> issue' style='text-align: left;'>
-      <td class = 'id'>
-        <%= link_to issue.id, issue.id %>
-      </td>
       <td class = 'name'>
         <%= link_to issue.subject, issue.id %>
-      </td>
-      <td class = 'project'>
-        <%= link_to issue.project.name, project_path(issue.project.id) if issue.project.present? %>
       </td>
       <td class = 'budget'>
         <%= issue.budget %>

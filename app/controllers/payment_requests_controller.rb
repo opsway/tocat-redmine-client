@@ -24,6 +24,10 @@ class PaymentRequestsController < TocatBaseController
   def special
     @payment_request = PaymentRequest.new(currency: 'USD', special: true, salary_account_id: TocatUser.find(params[:user_id]).accounts.balance.id)
     @payment_request.bonus = true if params[:bonus].present?
+    unless @payment_request.bonus?
+      @payment_request.total = TocatUser.find(params[:user_id]).balance_account_state
+      @payment_request.description = 'Paid in Cache/Bank'
+    end
   end
   
   def new

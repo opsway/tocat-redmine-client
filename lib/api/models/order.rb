@@ -134,7 +134,7 @@ class TocatOrder < ActiveResource::Base
                                  project: issue.try(:project),
                                  budget: budgets[task.id],
                                  resolver: resolver,
-                                 subject: issue.try(:subject),
+                                 subject: issue.try(:subject)||task.external_id,
                                  expenses: task.expenses,
                                  accepted: task.accepted,
                                  paid: task.paid
