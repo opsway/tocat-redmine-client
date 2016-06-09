@@ -3,7 +3,7 @@
   = @error
 = error_messages_for @payment_request
 .box.users
-  = form_for @payment_request do |f|
+  = form_for @payment_request, url: external_payments_path do |f|
     = f.label :target, "#{l(:label_payment_source)}: #{User.current.name}"
     br
     = f.label :source, "To: #{TocatUser.find(params[:user_id]).name}"
