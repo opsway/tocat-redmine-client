@@ -1,8 +1,8 @@
 .contextual
   - if User.current.tocat_allowed_to? :create_payment_request
-    = link_to l(:label_new_payment_request), new_payment_request_path, class: 'icon icon-add'
+    = link_to l(:label_new_payment_request), new_external_payment_path, class: 'icon icon-add'
 
-= form_tag("/tocat/payment_requests", method: "get") do
+= form_tag(external_payments_path, method: "get") do
   = hidden_field_tag 'set_filter', '1' 
   fieldset id="filters" class="collapsible"
     legend onclick="toggleFieldset(this);" = l(:label_filter_plural) 
@@ -36,10 +36,10 @@
         - @payment_requests.each do |pr|
           tr
             td = pr.id
-            td = link_to pr.source.name, payment_request_path(pr.id)
+            td = link_to pr.source.name, external_payment_path(pr.id)
             td 
               - if pr.salary_account
-                = link_to pr.salary_account.name, payment_request_path(pr.id)
+                = link_to pr.salary_account.name, external_payment_path(pr.id)
             td 
               = pr.total
               = pr.currency

@@ -1,7 +1,8 @@
-class PaymentRequestsController < TocatBaseController
+# -*- coding: utf-8 -*-
+class ExternalPaymentsController < TocatBaseController
   unloadable
   before_filter :check_action
-  before_filter :find_request, except: [:index,:create,:new,:special]
+  before_filter :find_request, except: [:index,:create,:new,:salary_checkin, :pay_in_cash]
   around_filter :process_errors_and_render, only: [:approve, :cancel, :reject, :complete]
   def index
     query_params = {}
@@ -17,17 +18,18 @@ class PaymentRequestsController < TocatBaseController
     define_method m do
       @payment_request.send m
       flash[:notice] = l("payment_request_#{m}_success".to_sym)
-      return redirect_to payment_request_path(@payment_request)
+      return redirect_to external_payment_path(@payment_request)
     end
   end
   
-  def special
+  def pay_in_cash
     @payment_request = PaymentRequest.new(currency: 'USD', special: true, salary_account_id: TocatUser.find(params[:user_id]).accounts.balance.id)
-    @payment_request.bonus = true if params[:bonus].present?
-    unless @payment_request.bonus?
-      @payment_request.total = TocatUser.find(params[:user_id]).balance_account_state.abs
-      @payment_request.description = 'Paid in Cache/Bank'
-    end
+    @payment_request.total = TocatUser.find(params[:user_id]).balance_account_state.abs
+    @payment_request.description = 'выплатить зарплату'
+  end
+  
+  def salary_checkin
+    @payment_request = PaymentRequest.new(currency: 'USD', special: true, salary_account_id: TocatUser.find(params[:user_id]).accounts.balance.id, bonus: true)
   end
   
   def new
@@ -92,7 +94,7 @@ class PaymentRequestsController < TocatBaseController
     rescue ActiveResource::ClientError => e
       flash[:error] = JSON.parse(e.response.body)['errors'].join(', ')
       @error = JSON.parse(e.response.body)['errors'].join(', ')
-      return redirect_to payment_request_path(@payment_request)
+      return redirect_to external_payment_path(@payment_request)
       logger.info e.message
     end
   end

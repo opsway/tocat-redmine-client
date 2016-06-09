@@ -1,4 +1,4 @@
-class TransferRequestsController < TocatBaseController
+class InternalInvoicesController < TocatBaseController
   unloadable
   before_filter :check_action
   before_filter :find_request, only: [:edit, :update, :show, :destroy, :pay]

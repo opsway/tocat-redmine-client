@@ -2,7 +2,7 @@
   = @error
 = error_messages_for @transfer_request
 .box.users
-  = form_for @transfer_request do |f|
+  = form_for @transfer_request, url: @transfer_request.persisted? ? internal_invoice_path(f) : internal_invoices_path  do |f|
     = f.label :login, "#{l(:label_transfer_source)}:"
     = f.select :source_id, options_for_select(@transfer_request.available_for_new, required: true), include_blank: 'Select', required: true
     br

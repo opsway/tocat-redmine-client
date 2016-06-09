@@ -84,37 +84,37 @@ class TocatRole < ActiveRecord::Base
     paths[:tocat_teams][:makeactive] = :activate_team
     
     #balance transfers
-    paths[:balance_transfers] = {}
-    paths[:balance_transfers][:index] = :view_transfers
-    paths[:balance_transfers][:new] = :create_transfer
-    paths[:balance_transfers][:create] = :create_transfer
-    paths[:balance_transfers][:show] = :view_transfers
+    paths[:internal_payments] = {}
+    paths[:internal_payments][:index] = :view_transfers
+    paths[:internal_payments][:new] = :create_transfer
+    paths[:internal_payments][:create] = :create_transfer
+    paths[:internal_payments][:show] = :view_transfers
     #transfer requests
-    paths[:transfer_requests] = {}
-    paths[:transfer_requests][:index] = :view_transfers
-    paths[:transfer_requests][:new] = :create_transfer
-    paths[:transfer_requests][:edit] = :create_transfer
-    paths[:transfer_requests][:update] = :create_transfer
-    paths[:transfer_requests][:destroy] = :create_transfer
-    paths[:transfer_requests][:create] = :create_transfer
-    paths[:transfer_requests][:show] = :view_transfers
-    paths[:transfer_requests][:pay] = :create_transfer
+    paths[:internal_invoices] = {}
+    paths[:internal_invoices][:index] = :view_transfers
+    paths[:internal_invoices][:new] = :create_transfer
+    paths[:internal_invoices][:edit] = :create_transfer
+    paths[:internal_invoices][:update] = :create_transfer
+    paths[:internal_invoices][:destroy] = :create_transfer
+    paths[:internal_invoices][:create] = :create_transfer
+    paths[:internal_invoices][:show] = :view_transfers
+    paths[:internal_invoices][:pay] = :create_transfer
     #payment requests
-    paths[:payment_requests] = {}
-    paths[:payment_requests][:index]   = :view_payment_requests
-    paths[:payment_requests][:special] = :salary_check_in
-    paths[:payment_requests][:show]    = :view_payment_requests
-    paths[:payment_requests][:new]     = :create_payment_request
-    paths[:payment_requests][:special] = :create_payment_request
-    paths[:payment_requests][:edit]    = :edit_payment_request 
-    paths[:payment_requests][:update]  = :edit_payment_request
-    paths[:payment_requests][:create]  = :create_payment_request
-    paths[:payment_requests][:approve] = :approve_payment_request
-    paths[:payment_requests][:complete]= :complete_payment_request
-    paths[:payment_requests][:reject]  = :reject_payment_request
-    paths[:payment_requests][:cancel]  = :cancel_payment_request
-    paths[:payment_requests][:dispatch_my]= :dispatch_payment_request
-    paths[:payment_requests][:dispatch_post]= :dispatch_payment_request
+    paths[:external_payments] = {}
+    paths[:external_payments][:index]   = :view_payment_requests
+    paths[:external_payments][:show]    = :view_payment_requests
+    paths[:external_payments][:new]     = :create_payment_request
+    paths[:external_payments][:pay_in_cash] = :pay_in_cash_bank
+    paths[:external_payments][:salary_checkin] = :salary_check_in
+    paths[:external_payments][:edit]    = :edit_payment_request 
+    paths[:external_payments][:update]  = :edit_payment_request
+    paths[:external_payments][:create]  = :create_payment_request
+    paths[:external_payments][:approve] = :approve_payment_request
+    paths[:external_payments][:complete]= :complete_payment_request
+    paths[:external_payments][:reject]  = :reject_payment_request
+    paths[:external_payments][:cancel]  = :cancel_payment_request
+    paths[:external_payments][:dispatch_my]= :dispatch_payment_request
+    paths[:external_payments][:dispatch_post]= :dispatch_payment_request
 
     #transactions
     paths[:transactions] = {}
@@ -134,8 +134,8 @@ class TocatRole < ActiveRecord::Base
     data[:dashboard] = [:show_tocat_page, :has_protected_page, :can_see_public_pages, :is_admin, :show_status_page, :mark_alerts_as_checked, :show_activity_feed]
     data[:users] = [:create_user, :update_user, :activate_user, :deactivate_user]
     data[:teams] = [:create_team, :update_team, :activate_team, :deactivate_team]
-    data[:balance_transfers] = [:view_transfers, :create_transfer]
-    data[:payment_requests] = [:create_payment_request, :edit_payment_request, :cancel_payment_request, :approve_payment_request, :reject_payment_request, :complete_payment_request, :dispatch_payment_request, :view_payment_requests, :salary_check_in]
+    data[:internal_payments] = [:view_transfers, :create_transfer]
+    data[:external_payments] = [:create_payment_request, :edit_payment_request, :cancel_payment_request, :approve_payment_request, :reject_payment_request, :complete_payment_request, :dispatch_payment_request, :view_payment_requests, :salary_check_in, :pay_in_cash_bank]
     return data
   end
 

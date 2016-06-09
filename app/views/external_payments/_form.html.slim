@@ -2,7 +2,7 @@
   = @error
 = error_messages_for @payment_request
 .box.users
-  = form_for @payment_request do |f|
+  = form_for @payment_request, url: @payment_request.persisted? ? external_payment_path(@payment_request) : external_payments_path do |f|
     = f.label :target, "#{l(:label_payment_source)}: #{User.current.name}"
     = f.hidden_field :special
     = f.hidden_field :salary_account_id

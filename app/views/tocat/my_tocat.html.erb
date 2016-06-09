@@ -1,6 +1,6 @@
 <h2><%= avatar @user, :size => "50" %> <%= h @user.name %>
-<%= link_to l(:add_salary_payment), special_payment_requests_path(user_id: params[:user_id]), class: "tocat-button" if User.current.tocat_allowed_to?(:salary_check_in) && params[:user_id].present? %>
-<%= link_to l(:salary_check_in), special_payment_requests_path(user_id: params[:user_id], bonus: true), class: "tocat-button" if User.current.tocat_allowed_to?(:salary_check_in) && params[:user_id].present? %>
+<%= link_to l(:add_salary_payment), pay_in_cash_external_payments_path(user_id: params[:user_id]), class: "tocat-button" if User.current.tocat_allowed_to?(:pay_in_cash_bank) && params[:user_id].present? %>
+<%= link_to l(:salary_check_in), salary_checkin_external_payments_path(user_id: params[:user_id]), class: "tocat-button" if User.current.tocat_allowed_to?(:salary_check_in) && params[:user_id].present? %>
 </h2>
 <hr/>
 <div class="splitcontentleft">

@@ -3,7 +3,7 @@
   = @error
 = error_messages_for @balance_transfer
 .box.users
-  = form_for @balance_transfer, url: balance_transfers_path do |f|
+  = form_for @balance_transfer, url: internal_payments_path do |f|
     = f.label :source, "From: #{User.current.name}"
     br
     = f.label :login, "#{l(:label_target)}:"

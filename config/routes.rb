@@ -51,8 +51,8 @@ delete '/issues/:id/expenses' => 'tocat#remove_expenses', as: :remove_expenses
 match '/tocat/request_review' => 'tocat#request_review', :via => :put
 match '/tocat/review_handler' => 'tocat#review_handler', :via => :put
 
-resources :balance_transfers, path: '/tocat/balance_transfers', only: [:index, :show, :create, :new]
-resources :payment_requests, path: 'tocat/payment_requests', only: [:index, :show, :create, :edit, :new, :update] do
+resources :internal_payments, path: '/tocat/internal_payments', only: [:index, :show, :create, :new]
+resources :external_payments, path: 'tocat/external_payments', only: [:index, :show, :create, :edit, :new, :update] do
   member do
     get 'approve'
     get 'cancel'
@@ -61,9 +61,10 @@ resources :payment_requests, path: 'tocat/payment_requests', only: [:index, :sho
     get 'dispatch', to: 'payment_requests#dispatch_my'
     post 'dispatch', to: 'payment_requests#dispatch_post'
   end
-    get 'special', on: :collection
+    get 'pay_in_cash', on: :collection
+    get 'salary_checkin', on: :collection
 end
 
-resources :transfer_requests, path: '/tocat/transfer_requests', only: [:index, :show, :create, :new, :destroy] do
+resources :internal_invoices, path: '/tocat/internal_invoices', only: [:index, :show, :create, :new, :destroy] do
   get :pay, on: :member
 end

@@ -1,4 +1,4 @@
-class BalanceTransfersController < TocatBaseController
+class InternalPaymentsController < TocatBaseController
   unloadable
   before_filter :check_action
 

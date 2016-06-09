@@ -1,8 +1,4 @@
-h2 = l(:label_new_payment_request)
-- if params[:bonus].present?
-  = l(:salary_check_in)
-- else
-  = l(:add_salary_payment)
+= l(:add_salary_payment)
 - if @error.present?
   = @error
 = error_messages_for @payment_request

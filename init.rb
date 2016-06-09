@@ -41,13 +41,13 @@ Redmine::Plugin.register :redmine_tocat_client do
     menu.push :status, { :controller => 'status', :action => 'status' },
               :if => Proc.new{ User.current.tocat_allowed_to?(:show_status_page)},
               :caption => :label_status
-    menu.push :balance_transfer, { :controller => 'balance_transfers', :action => 'index' },
+    menu.push :balance_transfer, { :controller => 'internal_payments', :action => 'index' },
               :if => Proc.new{ User.current.tocat_allowed_to?(:view_transfers)},
               :caption => :label_transfers
-    menu.push :transfer_request, { :controller => 'transfer_requests', :action => 'index' },
+    menu.push :transfer_request, { :controller => 'internal_invoices', :action => 'index' },
               :if => Proc.new{ User.current.tocat_allowed_to?(:view_transfers)},
               :caption => :label_transfer_requests
-    menu.push :payment_request, { :controller => 'payment_requests', :action => 'index'},
+    menu.push :payment_request, { :controller => 'external_payments', :action => 'index'},
               :if => Proc.new { User.current.tocat_allowed_to?(:view_payment_requests) },
               :caption => :label_payment_request
 
