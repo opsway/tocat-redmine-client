@@ -15,7 +15,7 @@ class TocatInvoice < ActiveResource::Base
   def activity
     begin
       records = []
-      JSON.parse(connection.get("#{self.class.prefix}activity?trackable=invoice&trackable_id=#{self.id}").body,TocatInvoice.headers).each do |record|
+      JSON.parse(connection.get("#{self.class.prefix}activity?trackable=invoice&trackable_id=#{self.id}",TocatInvoice.headers).body).each do |record|
         recipient = nil
         unless record["recipient_id"].nil?
           case record["recipient_type"]

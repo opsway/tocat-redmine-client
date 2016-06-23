@@ -34,7 +34,7 @@ class TocatOrder < ActiveResource::Base
   def activity
     begin
       records = []
-      JSON.parse(connection.get("#{self.class.prefix}/activity?trackable=order&trackable_id=#{self.id}").body,TocatOrder.headers).each do |record|
+      JSON.parse(connection.get("#{self.class.prefix}/activity?trackable=order&trackable_id=#{self.id}",TocatOrder.headers).body).each do |record|
         recipient = nil
         unless record["recipient_id"].nil?
           case record["recipient_type"]
@@ -54,7 +54,8 @@ class TocatOrder < ActiveResource::Base
         end
         records << OpenStruct.new(key: record["key"], recipient: recipient, parameters: record['parameters'], created_at: record['created_at'], owner: owner)      end
        return records
-     rescue
+     rescue => error
+       Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
        return []
      end
   end

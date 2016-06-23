@@ -19,7 +19,7 @@ class TocatTicket < ActiveResource::Base
     return [] unless User.current.tocat_allowed_to?(:show_activity_feed)
     begin
       records = []
-      JSON.parse(connection.get("#{self.class.prefix}/activity?trackable=task&trackable_id=#{id}&limit=9999999").body,TocatTicket.headers).each do |record|
+      JSON.parse(connection.get("#{self.class.prefix}/activity?trackable=task&trackable_id=#{id}&limit=9999999",TocatTicket.headers).body).each do |record|
         next if record['key'] == 'task.create'
         data = OpenStruct.new(
             id: "tocat_#{record['id']}",
