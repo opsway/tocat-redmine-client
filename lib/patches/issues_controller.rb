@@ -11,8 +11,8 @@ module RedmineTocatClient
                 temp = @issue.tocat.activity
               rescue
               ensure
-                @journals += @issue.tocat.activity if @issue.tocat
-                @journals.sort_by!(&:created_on)
+                @journals += @issue.tocat.activity if @issue.tocat && @journals
+                @journals.sort_by!(&:created_on) if @journals
               end
             end
 
