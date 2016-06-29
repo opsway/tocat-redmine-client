@@ -89,6 +89,16 @@ class TocatRole < ActiveRecord::Base
     paths[:internal_payments][:new] = :create_transfer
     paths[:internal_payments][:create] = :create_transfer
     paths[:internal_payments][:show] = :view_transfers
+    #transfer requests
+    paths[:internal_invoices] = {}
+    paths[:internal_invoices][:index] = :view_transfers
+    paths[:internal_invoices][:new] = :create_transfer
+    paths[:internal_invoices][:edit] = :create_transfer
+    paths[:internal_invoices][:update] = :create_transfer
+    paths[:internal_invoices][:destroy] = :create_transfer
+    paths[:internal_invoices][:create] = :create_transfer
+    paths[:internal_invoices][:show] = :view_transfers
+    paths[:internal_invoices][:pay] = :create_transfer
     #payment requests
     paths[:external_payments] = {}
     paths[:external_payments][:index]   = :view_payment_requests
