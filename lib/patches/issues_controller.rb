@@ -7,6 +7,7 @@ module RedmineTocatClient
           def render(options = nil, extra_options = {}, &block)
             # here you define related products
             if action_name == 'show' && @issue.present?
+              @ticket = @issue.tocat
               begin
                 temp = @issue.tocat.activity
               rescue

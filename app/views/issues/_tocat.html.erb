@@ -43,7 +43,7 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
   <div id="tocat">
     <p><strong><%=l(:label_tocat_data)%></strong></p>
     <table class='attributes'>
-      <% ticket = @issue.tocat %>
+      <% ticket = @ticket %>
       <% if ticket %>
       <tr>
         <th>
