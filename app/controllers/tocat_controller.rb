@@ -6,6 +6,29 @@ class TocatController < TocatBaseController
   include QueriesHelper
   before_filter :check_for_setup
   before_filter :check_action, except: [:request_review, :review_handler]
+  def create_payment
+    user = TocatUser.find(params[:user_id].to_i)
+    status, messages = user.add_payment(params[:comment], params[:total])
+    if status
+      flash[:notice] = l(:notice_transaction_successful_created)
+      respond_to do |format|
+        format.html { redirect_back_or_default({ :controller => 'transactions', :action => 'index'}) }
+      end
+    else
+      respond_to do |format|
+        flash[:error] = JSON.parse(messages.response.body)['errors'].join(', ')
+        format.html { render :action => 'new_payment' }
+      end
+    end
+  end
+
+  def new_payment
+    @users = TocatUser.find(:all, params: { limit: 99999 }).sort_by!(&:name)
+    @users_data = {}
+    @users.collect { |t| @users_data[t.id] = t.income_account_state }
+    @users_data = @users_data.to_json
+  end
+
 
   def request_review
     toggle_review_requested
