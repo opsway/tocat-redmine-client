@@ -1,3 +1,4 @@
+require 'csv'
 class OrdersController < TocatBaseController
   unloadable
   before_filter :find_order, :except => [:new, :create, :index, :create_suborder]
@@ -7,6 +8,17 @@ class OrdersController < TocatBaseController
   include SortHelper
   before_filter :check_action
 
+  
+  def csv
+    file = Rails.root.join('tmp', "order-#{@order.id}.csv")
+    CSV.open(file, "wb", :col_sep => ',', :force_quotes => true, :skip_blanks => false) do |csv|
+      @order.tasks.each do |task|
+        t = TocatTicket.find task.id
+        csv << [t.external_id, t.redmine.try(:subject), t.redmine.try(:project).try(:name), t.budget, t.resolver.try(:name)]
+      end
+    end
+    send_file file
+  end
 
 
   def new

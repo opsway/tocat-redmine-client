@@ -21,6 +21,11 @@
         <% end %>
     <% end %>
   <% end %>
+
+  <a href=<%= order_export_path(@order)%>>
+  <i class='fi-page-export-csv medium'> </i>
+  Export
+  </a>
   
   <%= delete_link(@order)  %>
 </div>

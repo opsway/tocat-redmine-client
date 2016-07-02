@@ -18,6 +18,7 @@ class TocatRole < ActiveRecord::Base
     paths[:orders][:new] = :create_orders
     paths[:orders][:create_suborder] = :create_orders
     paths[:orders][:show] = :show_orders
+    paths[:orders][:csv] = :show_orders
     paths[:orders][:index] = :show_orders
     paths[:orders][:invoices] = :create_invoices
     paths[:orders][:set_invoice] = :create_invoices
