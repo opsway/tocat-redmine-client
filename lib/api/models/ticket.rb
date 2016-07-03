@@ -175,7 +175,7 @@ class TocatTicket < ActiveResource::Base
 
   def self.find_by_external_id(id) # FIXME Refactor to use real search
     begin 
-      ticket = TocatTicket.find(:all, params: {search: id}).first
+      ticket = TocatTicket.find(:all, params: {search: "external_id=#{id}"}).first
       if ticket.present?
         return TocatTicket.find(ticket.id) # WTF?? FIXME TODO - different serializers
       end
