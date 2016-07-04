@@ -255,3 +255,4 @@ en:
   label_payment_dispatch_target: 'Dispatched to'
   label_new_payment_request: 'New External Payment'
   pay_in_cash_bank: 'Pay in Cash/Bank'
+  label_tocat_zoholink: 'Zoho link for chart'

@@ -194,22 +194,24 @@ class TocatController < TocatBaseController
       @user = User.current
       @user_tocat = @user.tocat
     end
-    begin
-      # @balance_chart = TocatBalanceChart.new(@user_tocat, 'this_quarter').chart_data
-      # @user_tocat = TocatUser.find(TocatUser.find_by_name(@user.name).id) #!!!
-      @team_tocat = TocatTeam.find(@user_tocat.tocat_team.id)
-      #@team_balance_transactions = TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "account = balance" })
-      # @team_income_transactions =  TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "created_at > #{1.year.ago.strftime('%Y-%m-%d')} account = payment" })
-      @income_transactions =  TocatTransaction.find(:all, params:{user: @user_tocat.id, limit:9999999, search: "created_at > #{3.months.ago.strftime('%Y-%m-%d')} account = payment" })
+    unless @user_tocat.real_money? || @user_tocat.tocat_server_role == 'Manager'
+      begin
+        # @balance_chart = TocatBalanceChart.new(@user_tocat, 'this_quarter').chart_data
+        # @user_tocat = TocatUser.find(TocatUser.find_by_name(@user.name).id) #!!!
+        @team_tocat = TocatTeam.find(@user_tocat.tocat_team.id)
+        #@team_balance_transactions = TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "account = balance" })
+        # @team_income_transactions =  TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "created_at > #{1.year.ago.strftime('%Y-%m-%d')} account = payment" })
+        @income_transactions =  TocatTransaction.find(:all, params:{user: @user_tocat.id, limit:9999999, search: "created_at > #{3.months.ago.strftime('%Y-%m-%d')} account = payment" })
 
-      # @team_balance_income_year = @team_tocat.income_account_state - @team_income_transactions.sum{|t| t.total.to_f}
+        # @team_balance_income_year = @team_tocat.income_account_state - @team_income_transactions.sum{|t| t.total.to_f}
 
-      @balance_transactions = TocatTransaction.find(:all, params:{user: @user_tocat.id, limit:9999999, search: "account = balance" })
-      @accepted_tasks = TocatTicket.get_accepted_tasks(true, @user_tocat.id)
-      @not_accepted_tasks = TocatTicket.get_accepted_tasks(false, @user_tocat.id)
-    rescue Exception => e
-      Rails.logger.info "\e[31mException in Tocat. #{e.message}, #{e.backtrace.first}\e[0m"
-      return render_404
+        @balance_transactions = TocatTransaction.find(:all, params:{user: @user_tocat.id, limit:9999999, search: "account = balance" })
+        @accepted_tasks = TocatTicket.get_accepted_tasks(true, @user_tocat.id)
+        @not_accepted_tasks = TocatTicket.get_accepted_tasks(false, @user_tocat.id)
+      rescue Exception => e
+        Rails.logger.info "\e[31mException in Tocat. #{e.message}, #{e.backtrace.first}\e[0m"
+        return render_404
+      end
     end
     respond_to do |format|
       format.html { render :template => 'tocat/my_tocat' }

@@ -11,7 +11,8 @@ Redmine::Plugin.register :redmine_tocat_client do
   settings :default => {
     'host' => 'http://tocat.opsway.com',
     'company' => 'opsway',
-    'apikey' => 'apikey'
+    'apikey' => 'apikey',
+    'zoholink' => 'https://reports.zoho.com'
           },:partial => 'settings/tocat_settings'
 
   menu :top_menu, :tocat, { :controller => 'tocat', :action => 'my_tocat' },
