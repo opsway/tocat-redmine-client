@@ -213,7 +213,7 @@ class TocatTicket < ActiveResource::Base
       return true, nil
     else
       begin
-        connection.delete(element_path + '/resolver',TocatTicket.headers)
+        connection.delete(element_path(id) + '/resolver',TocatTicket.headers)
       rescue => error
         Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
         return false, error
