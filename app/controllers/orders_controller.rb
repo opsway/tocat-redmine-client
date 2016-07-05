@@ -14,7 +14,7 @@ class OrdersController < TocatBaseController
     CSV.open(file, "wb", :col_sep => ',', :force_quotes => true, :skip_blanks => false) do |csv|
       @order.tasks.each do |task|
         t = TocatTicket.find task.id
-        csv << [t.external_id, t.redmine.try(:subject), t.redmine.try(:project).try(:name), t.budget, t.resolver.try(:name)]
+        csv << [t.external_id, t.redmine.try(:subject), t.redmine.try(:project).try(:name), t.budget, (t.resolver.try(:name) rescue '')]
       end
     end
     send_file file
