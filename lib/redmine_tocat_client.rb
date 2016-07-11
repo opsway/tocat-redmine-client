@@ -12,6 +12,7 @@ Rails.configuration.to_prepare do
   require 'api/models/tocat_balance_transfer'
   require 'api/models/tocat_transfer_request'
   require 'api/models/payment_request'
+  require 'api/models/tocat_role'
   # patches
   require 'api/patches/active_resource_errors'
   require 'patches/user'

@@ -7,10 +7,8 @@ class TocatBalanceTransfer < ActiveResource::Base
   include AuthTocat
   
   def available_recepients
-    all_users = TocatUser.find(:all, params: {limit: 10000}).select{|u| u.real_money }
-    all_users_login = all_users.map(&:login)
-    users = User.joins(:tocat_role).includes(:tocat_role).where(login: all_users_login).select{|u| u.tocat_allowed_to? :view_transfers }.map(&:login)
-    all_users.select{|u| u.login.in?(users) }.map{|u| [u.name,u.login]}
+    all_users = TocatUser.find(:all, params: {limit: 10000, search: "real_money=1", tocat_role: 'view_transfers'}).select{|u| u.real_money }.map{|u| [u.name,u.login]}
+    all_users
   end
   def available_for_new
     an = available_recepients

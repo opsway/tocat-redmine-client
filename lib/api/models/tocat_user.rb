@@ -26,6 +26,15 @@ class TocatUser < ActiveResource::Base
   def to_s
     self.name
   end
+  def set_role(role_id)
+    begin
+      connection.post("#{self.class.prefix}/user/#{id}/set_role", { role: role_id}.to_json, TocatUser.headers)
+      true
+     rescue => e
+       Rails.logger.error(e.message, e.backtrace)
+       false
+     end
+  end
 
   def activity
     begin
@@ -46,9 +55,9 @@ class TocatUser < ActiveResource::Base
   end
 
 
-  def self.find_by_login(login)
+  def self.find_by_mail(mail)
     begin
-    return TocatUser.find(:all, params:{search:"login=#{login}"}).first
+    return TocatUser.find(:all, params:{search:"email=#{mail}"}).first
     rescue ActiveResource::UnauthorizedAccess
       nil
     end

@@ -1,6 +1,6 @@
 <div id="tocat">
   <div class="box">
-    <%= select_tag 'role', options_for_select(TocatRole.all.collect{ |r| [ r.name, r.id ] }, (@user.tocat_user_role.present? ? @user.tocat_user_role.tocat_role.id : nil)),include_blank: true %>
+    <%= select_tag 'role', options_for_select(TocatRole.all.collect{ |r| [ r.name, r.id ] }, (@user.tocat.present? ? @user.tocat.tocat_role_id : nil)),include_blank: true %>
   </div>
   <input required="" type="submit" name="submit" id="submit" value="Save" onClick='sendData();return false;'>
 </div>

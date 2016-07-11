@@ -8,10 +8,7 @@ class TocatRolesController < ApplicationController
 
   def set_role
     user = User.find(params[:user_id])
-    role = TocatRole.find(params[:role])
-    user.tocat_user_role.destroy if user.tocat_user_role.present?
-    record = TocatUserRole.new(user: user, tocat_role:role, creator_id: User.current.id)
-    if record.save
+    if user.tocat.set_role(params[:role])
       render json: {}, status: 200
     else
       render json: {}, status: 406
@@ -24,11 +21,7 @@ class TocatRolesController < ApplicationController
   end
 
   def new
-    array = []
-    TocatRole.permissions.each do |r|
-      array << r.second.collect {|p| p.to_sym unless p.blank? }.compact.uniq
-    end
-    @role = TocatRole.new(params[:tocat_role] || {:permissions => array.flatten})
+    @role = TocatRole.build
     @roles = TocatRole.all
   end
 

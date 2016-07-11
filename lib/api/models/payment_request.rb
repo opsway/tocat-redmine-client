@@ -32,10 +32,10 @@ class PaymentRequest < ActiveResource::Base
   end
   
   def self.available_source
-    User.joins(:tocat_role).includes(:tocat_role).where("tocat_roles.permissions like '%:create_payment_request%'").map{|u| [u.name, u.mail]}
+    TocatUser.find(:all, params: {limit: 10000, tocat_role: 'create_payment_request'}).map{|u| [u.name, u.email]}
   end
   
   def available_for_dispatch
-    User.joins(:tocat_role).includes(:tocat_role).where("tocat_roles.permissions like '%:complete_payment_request%'").map{|u| [u.name, u.mail]}
+    TocatUser.find(:all, params: {tocat_role: 'complete_payment_request'}).map{|u| [u.name, u.email]}
   end
 end

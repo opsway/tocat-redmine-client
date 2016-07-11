@@ -15,11 +15,15 @@ module RedmineTocatClient
       end
       module InstanceMethods
         def tocat
-          TocatUser.find_by_login(login)
+          TocatUser.find_by_mail(self.mail)
+        end
+        def permissions
+          @permissions ||= JSON.parse(RestClient.get("#{RedmineTocatClient.settings[:host]}/acl", TocatUser.headers)).map(&:to_sym) rescue [] #TODO REFACTOR THIS
+          @permissions
         end
         def tocat_allowed_to?(action)
-          return false unless self.tocat_role.present?
-          self.tocat_role.has_permission?(action)
+          return false if permissions.blank?
+          permissions.include? action
         end
       end
     end

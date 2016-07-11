@@ -10,7 +10,7 @@
     <fieldset><legend><%= l_or_humanize(permission.first, :prefix => 'permission_') %></legend>
       <% permission.second.each do |r| %>
         <label class="floating">
-        <%= check_box_tag 'tocat_role[permissions][]', r, (@role.permissions.include? r) %>
+        <%= check_box_tag 'tocat_role[permissions][]', r, (@role.permissions.include?(r.to_s)) %>
         <%= l(r, :prefix => 'permission_') %>
         </label>
       <% end %>

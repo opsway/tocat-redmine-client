@@ -1,14 +1,13 @@
-class TocatRole < ActiveRecord::Base
+class TocatRole < ActiveResource::Base
   unloadable
-  serialize :permissions
+  include AuthTocat
+  self.site = RedmineTocatClient.settings[:host]
+  self.collection_name = 'tocat_roles'
+  self.element_name = 'tocat_role'
+  add_response_method :http_response
+  #serialize :permissions
   validates_presence_of :name
-  validates_uniqueness_of :name
   validates_length_of :name, :maximum => 30
-
-  has_many :tocat_user_roles, class_name: "TocatUserRole"
-  has_many :users, through: :tocat_user_roles, class_name: "User"
-
-  acts_as_list
 
   def self.check_path(request)
     paths = {}

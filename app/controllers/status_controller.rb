@@ -18,8 +18,11 @@ class StatusController < TocatBaseController
   end
 
   def checked
-    method = request.delete? ? :delete : :post
-    RestClient.try(method, "#{RedmineTocatClient.settings[:host]}/status/#{params[:id]}/checked", TocatUser.headers)
+    if request.delete?
+      RestClient.delete "#{RedmineTocatClient.settings[:host]}/status/#{params[:id]}/checked", TocatUser.headers
+    else
+      RestClient.post "#{RedmineTocatClient.settings[:host]}/status/#{params[:id]}/checked", '', TocatUser.headers
+    end
     respond_to do |format|
       flash[:notice] = l(:message_checked_updated)
       format.html { redirect_back_or_default({:controller => 'status', :action => 'status', :params => {:checked => params[:checked]} })}
