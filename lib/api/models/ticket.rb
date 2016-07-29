@@ -12,7 +12,9 @@ class TocatTicket < ActiveResource::Base
     end
   end
   def internal_id
-    self.external_id.gsub(/\D/,'') #TODO - refactor this
+    return nil unless internal_id.match(/\/issues\//)
+    return nil unless internal_id.match RedmineTocatClient.settings[:company]
+    self.external_id.gsub(/\D/,'')
   end
 
   def activity
@@ -195,7 +197,7 @@ class TocatTicket < ActiveResource::Base
 
   def redmine
     begin
-      return Issue.find(internal_id)
+      return Issue.find(internal_id) if internal_id
     rescue ActiveRecord::RecordNotFound
       return nil
     end

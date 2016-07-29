@@ -18,6 +18,9 @@
                 tr.filter#target_user
                   td.field= label_tag(:target, l(:label_transfer_target))
                   td.operator= select_tag(:target, options_for_select(@recipients, selected: params[:target]), include_blank: true) 
+                tr.filter#invoice_status
+                  td.field= label_tag(:status, l(:label_status))
+                  td.operator= select_tag(:state, options_for_select(['new','paid'], selected: params[:state]||'new'), include_blank: true) 
     = submit_tag(l(:button_apply))
     = link_to l(:button_clear), { :set_filter => 1 }, :class => 'icon icon-reload'  
 - tocat_id = User.current.try(:tocat).try :id

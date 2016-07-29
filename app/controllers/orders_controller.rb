@@ -12,9 +12,9 @@ class OrdersController < TocatBaseController
   def csv
     file = Rails.root.join('tmp', "order-#{@order.id}.csv")
     CSV.open(file, "wb", :col_sep => ',', :force_quotes => true, :skip_blanks => false) do |csv|
+      csv << ['Url', 'Subject', 'Project', 'Budget', 'Resolver']
       @order.tasks.each do |task|
         t = TocatTicket.find task.id
-        csv << ['Url', 'Subject', 'Project', 'Budget', 'Resolver']
         csv << [t.external_id, t.redmine.try(:subject), t.redmine.try(:project).try(:name), t.budget, (t.resolver.try(:name) rescue '')]
       end
     end

@@ -4,12 +4,14 @@ class InternalInvoicesController < TocatBaseController
   before_filter :find_request, only: [:edit, :update, :show, :destroy, :pay]
 
   def index
+    params[:state] ||= 'new'
     query_params = {}
     query_params[:limit] = params[:per_page] if params[:per_page].present?
     query_params[:page] = params[:page] if params[:page].present?
     query_params[:search] = params[:search] if params[:search].present?
     query_params[:source] = params[:source] if params[:source].present?
     query_params[:target] = params[:target] if params[:target].present?
+    query_params[:state] = params[:state] if params[:state].present?
 
     @recipients = TransferRequest.new.available_recepients
     @balance_transfers = TransferRequest.all(params: query_params)
