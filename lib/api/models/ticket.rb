@@ -12,8 +12,8 @@ class TocatTicket < ActiveResource::Base
     end
   end
   def internal_id
-    return nil unless internal_id.match(/\/issues\//)
-    return nil unless internal_id.match RedmineTocatClient.settings[:company]
+    return nil unless external_id.match(/\/issues\//)
+    return nil unless external_id.match RedmineTocatClient.settings[:company]
     self.external_id.gsub(/\D/,'')
   end
 
