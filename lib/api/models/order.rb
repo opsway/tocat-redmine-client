@@ -127,7 +127,7 @@ class TocatOrder < ActiveResource::Base
     budget['budget'].each { |r| budgets[r['task_id']] = r['budget']  }
     tasks.each do |task|
       #task.external_id = task.external_id.gsub("#{TocatTicket.company}_",'')
-      issue = Issue.where(id: task.external_id.gsub(/\D/,'')).first #TODO - better regexp
+      issue = Issue.where(id: task.external_id.gsub(/\D/,'')).first if task.external_id.match(/\/issues\//) && task.external_id.match(RedmineTocatClient.settings[:company])
       #next unless issue # don't take issue if it not present
       resolver = task.resolver if task.resolver.try(:id)
       if task.present?
