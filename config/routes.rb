@@ -47,6 +47,9 @@ delete '/tocat/invoices/:id/orders' => 'invoices#deattach_order', as: :invoice_o
 get '/tocat/payment' => 'tocat#new_payment', as: :payment, via: [:get]
 post '/tocat/payment' => 'tocat#create_payment', as: :create_payment, via: [:post]
 
+post '/tocat/salary' => 'tocat#create_salary_checkin', as: :new_salary, via: [:post]
+get  '/tocat/salary' => 'tocat#new_salary_checkin', as: :create_salary, via: [:post]
+
 
 match '/issues/:id/accepted' => 'tocat#toggle_accepted', as: :issue_accepted, via: [:post, :put]
 post '/issues/:id/expenses' => 'tocat#set_expenses', as: :set_expenses

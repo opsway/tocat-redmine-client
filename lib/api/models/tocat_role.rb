@@ -57,6 +57,8 @@ class TocatRole < ActiveResource::Base
     paths[:tocat][:review_handler] = :can_review_task
     paths[:tocat][:set_expenses] = :set_expenses
     paths[:tocat][:remove_expenses] = :remove_expenses
+    paths[:tocat][:create_salary_checkin] = :salary_check_in
+    paths[:tocat][:new_salary_checkin] = :salary_check_in
 
     paths[:tickets] = {}
     paths[:tickets][:index] = :show_issues
@@ -132,12 +134,12 @@ class TocatRole < ActiveResource::Base
     data[:orders] = [:create_orders, :show_orders, :edit_orders, :destroy_orders, :complete_orders, :set_internal_orders, :remove_internal_orders, :show_commission, :update_commission]
     data[:invoices] = [:create_invoices, :show_invoices, :destroy_invoices, :paid_invoices]
     data[:issues] = [:modify_accepted, :modify_resolver, :modify_budgets, :show_budgets, :show_issues, :show_aggregated_info, :can_request_review, :can_review_task, :set_expenses, :remove_expenses]
-    data[:transactions] = [:show_transactions, :create_transactions]
+    data[:transactions] = [:show_transactions, :create_transactions, :salary_check_in]
     data[:dashboard] = [:show_tocat_page, :has_protected_page, :can_see_public_pages, :is_admin, :show_status_page, :mark_alerts_as_checked, :show_activity_feed]
     data[:users] = [:create_user, :update_user, :activate_user, :deactivate_user]
     data[:teams] = [:create_team, :update_team, :activate_team, :deactivate_team]
     data[:internal_payments] = [:view_transfers, :create_transfer]
-    data[:external_payments] = [:create_payment_request, :edit_payment_request, :cancel_payment_request, :approve_payment_request, :reject_payment_request, :complete_payment_request, :dispatch_payment_request, :view_payment_requests, :salary_check_in, :pay_in_cash_bank]
+    data[:external_payments] = [:create_payment_request, :edit_payment_request, :cancel_payment_request, :approve_payment_request, :reject_payment_request, :complete_payment_request, :dispatch_payment_request, :view_payment_requests]
     return data
   end
 

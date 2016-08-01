@@ -54,6 +54,16 @@ class TocatUser < ActiveResource::Base
     return true, nil
   end
 
+  def add_salary(comment, total)
+    begin
+      connection.post("#{self.class.prefix}/user/#{id}/salary_checkin", { comment: comment, total: total }.to_json, TocatUser.headers)
+    rescue => error
+      Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
+      return false, error
+    end
+    return true, nil
+  end
+
 
   def self.find_by_mail(mail)
     begin

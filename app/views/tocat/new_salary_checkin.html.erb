@@ -1,0 +1,19 @@
+<%= form_tag create_salary_path, :method => :post do %>
+<div class="box">
+  <fieldset class="tabular">
+    <legend><%= l(:label_new_transaction) %></legend>
+    <div id="all_attributes">
+      <p>
+        <%= label_tag :comment%>
+        <%= text_field_tag :comment, 'Salary check in', :size => 80,
+                         :maxlength => 255, :required => true %>
+      </p>
+      <p><%= label_tag :user %> <%= hidden_field_tag 'user_id', params[:user_id] %> <%= TocatUser.find(params[:user_id]).name %></p>
+      <p><%= label_tag :total %><%= number_field_tag :total, '',:class => 'total', :min => 0, :required => true, :style => 'width:80px' %></p>
+    </div>
+  </fieldset>
+</div>
+<%= submit_tag l(:button_submit) %>
+| <%= link_to l(:button_cancel), {},
+                :onclick => "jQuery.noConflict()('#update').hide(); return false;" %>
+<% end %>

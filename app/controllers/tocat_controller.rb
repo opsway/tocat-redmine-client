@@ -21,6 +21,26 @@ class TocatController < TocatBaseController
       end
     end
   end
+  
+  def create_salary_checkin
+    user = TocatUser.find(params[:user_id].to_i)
+    status, messages = user.add_salary(params[:comment], params[:total])
+    if status
+      flash[:notice] = l(:notice_transaction_successful_created)
+      respond_to do |format|
+        format.html { redirect_back_or_default({ :controller => 'tocat', :action => 'my_tocat', user_id: params[:user_id]}) }
+      end
+    else
+      respond_to do |format|
+        flash[:error] = JSON.parse(messages.response.body)['errors'].join(', ')
+        format.html { render :action => 'new_salary_checkin' }
+      end
+    end
+  end
+  
+  def new_salary_checkin
+  end
+
 
   def new_payment
     @users = TocatUser.find(:all, params: { limit: 99999 }).sort_by(&:name)
