@@ -1,4 +1,8 @@
-<h2><%= avatar @user, :size => "50" %> <%= h @user.name %>
+
+
+<h2>
+<% if @user.is_a? User %> <%= avatar @user, :size => "50" %> <% end %>
+<%= h @user.name %>
 <%= link_to l(:salary_check_in), new_salary_path(user_id: params[:user_id]), class: "tocat-button" if User.current.tocat_allowed_to?(:salary_check_in) && params[:user_id].present? %>
 </h2>
 <hr/>
@@ -26,15 +30,15 @@
     <fieldset>
       <legend>Personal dynamics</legend>
       <div style="text-align: center; width: 100%">
-        <img src="<%= zoho_chart_prev_quarter_url(@user) %>" style="width: 45%">
-        <img src="<%= zoho_chart_this_quarter_url(@user) %>" style="width: 45%">
+        <img src="<%= zoho_chart_prev_quarter_url(@user_tocat) %>" style="width: 45%">
+        <img src="<%= zoho_chart_this_quarter_url(@user_tocat) %>" style="width: 45%">
       </div>
     </fieldset>
   </div>
 
 <% else %>
 <% if @user_tocat.real_money? %>
-<img src='<%=RedmineTocatClient.settings[:zoholink]%>%27<%=@user.login%>%27'> </img>
+<img src='<%=RedmineTocatClient.settings[:zoholink]%>%27<%=@user_tocat.login%>%27'> </img>
 <% else %>
 Please visit <a href='http://reports.zoho.com'> ZohoReports </a> for information  <a href='http://reports.zoho.com'> http://reports.zoho.com </a>
 <% end %>

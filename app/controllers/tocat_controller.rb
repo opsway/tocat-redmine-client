@@ -204,9 +204,8 @@ class TocatController < TocatBaseController
   def my_tocat
     if params[:user_id].present? 
       @user_tocat = TocatUser.find(params[:user_id])
-      target = User.find_by_login(@user_tocat.login) 
-      if target.present? && check_permissions(target)
-        @user = target
+      if check_permissions(@user_tocat)
+        @user = @user_tocat.redmine || @user_tocat
       else
         return render_403
       end
@@ -259,7 +258,7 @@ class TocatController < TocatBaseController
 
   def check_permissions(target)
     return true if User.current.tocat_allowed_to?(:is_admin)
-    return true if User.current.tocat_allowed_to?(:can_see_public_pages) && !(target.tocat_allowed_to?(:has_protected_page))
+    return true if User.current.tocat_allowed_to?(:can_see_public_pages) && !(target.permissions.include?('has_protected_page'))
     false
   end
 
