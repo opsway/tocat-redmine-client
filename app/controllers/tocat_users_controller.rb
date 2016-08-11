@@ -1,3 +1,4 @@
+require 'csv'
 class TocatUsersController < TocatBaseController
   unloadable
 
@@ -18,6 +19,18 @@ class TocatUsersController < TocatBaseController
 
   def new
     @user = TocatUser.new
+  end
+
+  def csv
+    @users = TocatUser.all(params: {limit: 10000})
+    file = Rails.root.join('tmp', "users-#{Time.now}.csv")
+    CSV.open(file, "wb", :col_sep => ',', :force_quotes => true, :skip_blanks => false) do |csv|
+      csv << @users.first.attributes.keys
+      @users.each do |user|
+        csv << user.attributes.values.map(&:to_json)
+      end
+    end
+    send_file file
   end
 
   def create

@@ -9,6 +9,7 @@ resources :invoices, path: '/tocat/invoices' do
   post :attach_order, on: :member, as: :attach_order
 end
 resources :tocat_users, path: '/tocat/users' do
+  get :csv, on: :collection
   delete :makeactive, on: :member
 end
 

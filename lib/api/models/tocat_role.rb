@@ -76,6 +76,7 @@ class TocatRole < ActiveResource::Base
     paths[:tocat_users][:update] = :update_user
     paths[:tocat_users][:destroy] = :deactivate_user
     paths[:tocat_users][:makeactive] = :activate_user
+    paths[:tocat_users][:csv] = :create_user
 
     #teams
     paths[:tocat_teams] = {}
