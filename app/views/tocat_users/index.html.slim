@@ -1,7 +1,7 @@
 .contextual
   - if User.current.tocat_allowed_to? :create_user
     = link_to csv_tocat_users_path, class: 'icon' do
-      i.fi-page-csv
+      i.fi-page-export-csv.medium
       = l(:label_user_csv)
   - if User.current.tocat_allowed_to? :create_user
     = link_to l(:label_user_new), new_tocat_user_path, class: 'icon icon-add'

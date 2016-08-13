@@ -19,6 +19,16 @@ class TocatTeam < ActiveResource::Base
     self.name
   end
 
+  def couch(couchs, team = self)
+    p "team - #{team.id} - #{team.name}"
+    couch = couchs.find{|u| u.tocat_team.id == team.id}
+    return couch if team.parent_id == team.id
+    unless couch 
+      couch = couch(couchs, team.parent) unless team.id == team.parent_id
+    end
+    couch
+  end
+
   def team_users
     TocatUser.find(:all, params:{search:"team=\"#{name}\""})
   end
