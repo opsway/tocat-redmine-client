@@ -183,7 +183,7 @@ en:
   label_make_active: 'Make active'
   label_edit: 'Edit'
   label_user_new: 'New User'
-  label_user_csv: 'CSV'
+  label_user_csv: 'Export'
   error_can_not_remove_user: "Can't make user inactive"
   label_edit_user: 'Edit User'
   label_loginname: 'Login'
