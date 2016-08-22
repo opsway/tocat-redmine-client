@@ -182,7 +182,8 @@ class TocatTicket < ActiveResource::Base
         return TocatTicket.find(ticket.id) # WTF?? FIXME TODO - different serializers
       end
       nil
-    rescue ActiveResource::UnauthorizedAccess
+    rescue => e #ActiveResource::UnauthorizedAccess
+      Rails.logger.info "tocat failed - #{e.message}"
       nil
     end
   end

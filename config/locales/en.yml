@@ -253,6 +253,7 @@ en:
   payment_request_dispatch_success: 'External Payment was dispatched'
   add_salary_payment: 'Pay in Cash/Bank'
   salary_check_in: 'Salary Check-in'
+  correct_balance: 'Balance correction'
   label_payment_dispatch_target: 'Dispatched to'
   label_new_payment_request: 'New External Payment'
   pay_in_cash_bank: 'Pay in Cash/Bank'

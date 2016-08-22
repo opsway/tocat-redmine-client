@@ -40,6 +40,24 @@ class TocatController < TocatBaseController
   
   def new_salary_checkin
   end
+  
+  def new_correction
+  end
+  def create_correction
+    user = TocatUser.find(params[:user_id].to_i)
+    status, messages = user.add_correction(params[:comment], params[:total])
+    if status
+      flash[:notice] = l(:notice_transaction_successful_created)
+      respond_to do |format|
+        format.html { redirect_back_or_default({ :controller => 'tocat', :action => 'my_tocat', user_id: params[:user_id]}) }
+      end
+    else
+      respond_to do |format|
+        flash[:error] = JSON.parse(messages.response.body)['errors'].join(', ')
+        format.html { render :action => 'new_correction' }
+      end
+    end
+  end
 
 
   def new_payment

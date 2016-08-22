@@ -17,7 +17,8 @@ module RedmineTocatClient
               task = TocatTicket.create(external_id: issue_url(self.id, host: Setting.host_name))
             end
             task
-          rescue ActiveResource::UnauthorizedAccess
+          rescue => e #ActiveResource::UnauthorizedAccess
+            Rails.logger.info "Tocat issue failed - #{e.message}"
             nil
           end
         end
@@ -33,9 +34,9 @@ module RedmineTocatClient
         def available_resolvers
           if tocat.orders.present?
             team = TocatOrder.find(tocat.orders.first.id).team.name
-            users = TocatUser.find(:all, params: { search: "team = #{team} && role != \"Manager\"", limit: 9999999999 })
+            users = TocatUser.find(:all, params: { search: "team = #{team}", limit: 9999999999 })
           else
-            users =  TocatUser.find(:all, params: { search: "role != \"Manager\"", limit: 9999999999 })
+            users =  TocatUser.find(:all, params: { search: "", limit: 9999999999 })
           end
           #project_users = self.project.members.includes(:user).map(&:user).map(&:login)
           #users.select { |u| project_users.include?(u.login) }
@@ -51,7 +52,7 @@ module RedmineTocatClient
             if tocat.attributes.include?('resolver') && tocat.resolver.id.present?
               team = TocatUser.find(tocat.resolver.id).tocat_team.name
             else
-              team = TocatOrder.find(tocat.orders.first.id).tocat_team.name
+              team = TocatOrder.find(tocat.orders.first.id).get_team.name
             end
             orders = TocatOrder.find(:all, params: { search: "team=#{team} completed=0 free_budget>0", limit: 9999999999})
           else
