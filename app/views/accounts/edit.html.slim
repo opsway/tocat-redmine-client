@@ -1,0 +1,5 @@
+h1 Edit Account
+= render 'accounts/form'
+
+= render 'accounts/access'
+- if User.current.tocat_allowed_to? :edit_account

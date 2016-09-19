@@ -122,6 +122,18 @@ class TocatRole < ActiveResource::Base
     paths[:external_payments][:cancel]  = :cancel_payment_request
     paths[:external_payments][:dispatch_my]= :dispatch_payment_request
     paths[:external_payments][:dispatch_post]= :dispatch_payment_request
+    
+    #accounts
+    paths[:accounts] = {}
+    paths[:accounts][:new]     = :create_account
+    paths[:accounts][:index]   = :view_all_accounts
+    paths[:accounts][:show]    = :view_all_accounts
+    paths[:accounts][:new]     = :create_account
+    paths[:accounts][:edit]    = :edit_account
+    paths[:accounts][:update]  = :edit_account
+    paths[:accounts][:create]  = :create_account
+    paths[:accounts][:add_user]  = :edit_account
+    paths[:accounts][:remove_user]  = :edit_account
 
     #transactions
     paths[:transactions] = {}
@@ -143,6 +155,7 @@ class TocatRole < ActiveResource::Base
     data[:teams] = [:create_team, :update_team, :activate_team, :deactivate_team]
     data[:internal_payments] = [:view_transfers, :create_transfer]
     data[:external_payments] = [:create_payment_request, :edit_payment_request, :cancel_payment_request, :approve_payment_request, :reject_payment_request, :complete_payment_request, :dispatch_payment_request, :view_payment_requests]
+    data[:accounts] = [:create_account, :edit_account, :view_linked_accounts, :view_all_accounts]
     return data
   end
 

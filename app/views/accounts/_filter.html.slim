@@ -1,0 +1,12 @@
+table style="width:100%"
+  tbody
+    tr
+      td
+        table#filters-table
+          tbody
+            tr.filter#comment
+              td.field= label_tag(:search, l(:label_search)) 
+              td.operator= text_field_tag(:search, params[:search]) 
+            tr.filter#account_type
+              td.field= label_tag(:account_type, l(:label_account_type)) 
+              td.operator= select_tag(:account_type, options_for_select([[l(:label_balance_type), 'balance'], [l(:label_payment_type), 'payroll'], [l(:label_money_type), 'money']], selected: params[:account_type]), include_blank: true)

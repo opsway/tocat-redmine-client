@@ -16,7 +16,7 @@ class TocatUser < ActiveResource::Base
     attribute 'team', :integer
     attribute 'role', :integer
     attribute 'email', :string
-    attribute 'real_money', :integer
+    attribute 'coach', :integer
     decimal 'daily_rate'
     attribute :tocat_server_role, :integer
     attribute :tocat_team, :integer

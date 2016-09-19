@@ -11,7 +11,7 @@ class TransferRequest < ActiveResource::Base
   end
   
   def available_recepients
-    all_users = TocatUser.find(:all, params: {limit: 10000, tocat_role: 'view_transfers', search: "real_money=1"}).select{|u| u.real_money }
+    all_users = TocatUser.find(:all, params: {limit: 10000, tocat_role: 'view_transfers', search: "couch=1"}).select{|u| u.couch }
     all_users.map{|u| [u.name,u.id]}
   end
   def available_for_new

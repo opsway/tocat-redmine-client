@@ -118,7 +118,7 @@ en:
   label_transaction_plural: "Transactions"
   label_account_type: "Account Type"
   label_owner: "Owner"
-  label_payment_type: "Payment"
+  label_payment_type: "Payroll"
   label_balance_type: "Balance"
   button_new_transaction: "Add payment"
   field_comment: "Comment"
@@ -258,3 +258,16 @@ en:
   label_new_payment_request: 'New External Payment'
   pay_in_cash_bank: 'Pay in Cash/Bank'
   label_tocat_zoholink: 'Zoho link for chart'
+  create_account: 'Create Account'
+  edit_account: 'Edit Account'
+  view_linked_accounts: 'View linked account'
+  view_all_accounts: 'View all accounts' 
+  label_accounts: 'Accounts'
+  label_account: 'Account'
+  notice_access_added: 'Access to account added'
+  notice_access_removed: 'Access to account removed'
+  label_user: 'User'
+  label_access: 'Access'
+  label_account_new: 'New Account'
+  label_money_type: 'Money'
+  label_add_access: 'Add access'

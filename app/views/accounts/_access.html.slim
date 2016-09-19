@@ -1,0 +1,21 @@
+.autoscroll
+  table.list
+    thead
+      tr
+        td colspan=2 Access List
+      tr
+        td= l(:label_user)
+        td
+    tbody
+      - @account.access.each do |u|
+        tr
+          td= u.name
+          td
+            - if User.current.tocat_allowed_to? :edit_account
+              = link_to "Remove access", remove_user_account_path(user_id: u.id), method: :post
+.autoscroll
+  - if @account.persisted?
+    = form_for @account, url: add_user_account_path(@account),method: :post do |f|
+      = f.label :user_id, l(:label_add_access)
+      = select_tag :user_id, options_for_select(TocatUser.find(:all, limit: 99999).map{|u| [u.name, u.id]})
+      = f.submit l(:label_add_access)

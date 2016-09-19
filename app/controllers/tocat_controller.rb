@@ -231,7 +231,7 @@ class TocatController < TocatBaseController
       @user = User.current
       @user_tocat = @user.tocat
     end
-    unless @user_tocat.real_money? || @user_tocat.tocat_server_role == 'Manager'
+    unless @user_tocat.coach? || @user_tocat.tocat_server_role == 'Manager'
       begin
         # @balance_chart = TocatBalanceChart.new(@user_tocat, 'this_quarter').chart_data
         # @user_tocat = TocatUser.find(TocatUser.find_by_name(@user.name).id) #!!!

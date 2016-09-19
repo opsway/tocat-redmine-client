@@ -7,7 +7,7 @@ class TocatBalanceTransfer < ActiveResource::Base
   include AuthTocat
   
   def available_recepients
-    all_users = TocatUser.find(:all, params: {limit: 10000, search: "real_money=1", tocat_role: 'view_transfers'}).select{|u| u.real_money }.map{|u| [u.name,u.login]}
+    all_users = TocatUser.find(:all, params: {limit: 10000, search: "coach=1", tocat_role: 'view_transfers'}).select{|u| u.coach }.map{|u| [u.name,u.login]}
     all_users
   end
   def available_for_new

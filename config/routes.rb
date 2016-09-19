@@ -8,6 +8,12 @@ get '/tocat/tocat_chart_data' => 'tocat#tocat_chart_data', as: :tocat_chart_data
 resources :invoices, path: '/tocat/invoices' do
   post :attach_order, on: :member, as: :attach_order
 end
+
+resources :accounts, path: '/tocat/accounts', except: :destroy do
+  post :add_user, on: :member
+  post :remove_user, on: :member
+end
+
 resources :tocat_users, path: '/tocat/users' do
   get :csv, on: :collection
   delete :makeactive, on: :member

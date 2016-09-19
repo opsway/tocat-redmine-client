@@ -1,0 +1,20 @@
+.autoscroll
+  table.list
+    thead
+      tr
+        td= l(:label_name)
+        td= l(:label_user)
+        td= l(:label_access)
+        td= l(:label_account_type)
+        td= l(:label_balance_type)
+    tbody
+      tr
+        td= @account.name
+        td= @account.parent.try(:name)
+        td= @account.access.map(&:name).join(', ')
+        td= @account.type
+        td= @account.balance
+
+= render 'accounts/access'
+- if User.current.tocat_allowed_to? :edit_account
+  = link_to 'Edit account', edit_account_path(@account)

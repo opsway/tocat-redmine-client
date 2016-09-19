@@ -2,6 +2,7 @@ Rails.configuration.to_prepare do
   # all internal files MUST be described here
   # classes
   require 'api/models/auth'
+  require 'api/models/account'
   require 'api/models/ticket'
   require 'api/models/order'
   require 'api/models/invoice'

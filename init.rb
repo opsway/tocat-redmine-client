@@ -37,6 +37,9 @@ Redmine::Plugin.register :redmine_tocat_client do
               :caption => :label_transaction_plural
     menu.push :users, { :controller => 'tocat_users', :action => 'index' },
               :caption => 'Users'
+    menu.push :accounts, { :controller => 'accounts', :action => 'index' },
+              :if => Proc.new{ User.current.tocat_allowed_to?(:view_all_accounts)},
+              :caption => :label_accounts
     menu.push :teams, { :controller => 'tocat_teams', :action => 'index' },
               :caption => 'Teams'
     menu.push :status, { :controller => 'status', :action => 'status' },

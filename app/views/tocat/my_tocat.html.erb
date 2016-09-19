@@ -8,7 +8,7 @@
 </h2>
 <hr/>
 
-<% unless @user_tocat.real_money? || @user_tocat.tocat_server_role.name == 'Manager' %>
+<% unless @user_tocat.coach? || @user_tocat.tocat_server_role.name == 'Manager' %>
 <div class="splitcontentleft">
     <label><%=	l(:label_balance)  %></label><strong> $<%= @user_tocat.balance_account_state.round(2)%></strong><br/>
     <%= render 'transactions', :transactions => @balance_transactions %>
@@ -38,7 +38,7 @@
   </div>
 
 <% else %>
-<% if @user_tocat.real_money? %>
+<% if @user_tocat.coach? %>
 <img src='<%=RedmineTocatClient.settings[:zoholink]%>%27<%=@user_tocat.login%>%27'> </img>
 <% else %>
 Please visit <a href='http://reports.zoho.com'> ZohoReports </a> for information  <a href='http://reports.zoho.com'> http://reports.zoho.com </a>

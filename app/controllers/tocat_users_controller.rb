@@ -23,19 +23,19 @@ class TocatUsersController < TocatBaseController
 
   def csv
     @users = TocatUser.all(params: {limit: 10000})
-    couchs = @users.select{|u| u.active? && u.real_money }
+    coachs = @users.select{|u| u.active? && u.coach}
     teams = TocatTeam.all(params: {limit: 10000})
     hash_teams = {}
     teams.map do |t|
-      couch = t.couch(couchs).try :name
+      couch = t.couch(coachs).try :name
       hash_teams[t.id] = couch
     end
 
     file = Rails.root.join('tmp', "users-#{Time.now}.csv")
     CSV.open(file, "wb", :col_sep => ',', :force_quotes => true, :skip_blanks => false) do |csv|
-      csv << %w(id name login tocat_team  tocat_server_role active daily_rate real_money email couch)
+      csv << %w(id name login tocat_team  tocat_server_role active daily_rate coach email coach)
       @users.each do |user|
-        csv << [ user.id, user.name, user.login, user.tocat_team.try(:name), user.tocat_server_role.try(:name), user.active, user.daily_rate, user.real_money, user.email, hash_teams[user.tocat_team.try(:id)] ]
+        csv << [ user.id, user.name, user.login, user.tocat_team.try(:name), user.tocat_server_role.try(:name), user.active, user.daily_rate, user.coach, user.email, hash_teams[user.tocat_team.try(:id)] ]
       end
     end
     send_file file
