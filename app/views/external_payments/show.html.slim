@@ -39,26 +39,12 @@ h2= l(:label_payment_request)
     - tocat_id = User.current.try(:tocat).try(:id)
     - case @payment_request.status
     - when 'new'
-      - if tocat_allow? :approve_payment_request
-        = link_to l(:approve_payment_request), approve_external_payment_path(@payment_request)
+      - if tocat_allow? :complete_payment_request
+        = link_to l(:complete_payment_request), complete_external_payment_path(@payment_request)
       br
       -if tocat_allow? :cancel_payment_request
         = link_to l(:cancel_payment_request), cancel_external_payment_path(@payment_request)
       br
-      -if tocat_allow? :edit_payment_request
-        = link_to l(:edit_payment_request), edit_external_payment_path(@payment_request)
-    - when 'approved'
-      - if tocat_allow? :dispatch_payment_request
-        = link_to l(:dispatch_payment_request), dispatch_external_payment_path(@payment_request)
-      br
-      - if tocat_allow? :reject_payment_request
-        = link_to l(:reject_payment_request), reject_external_payment_path(@payment_request)
-    - when 'dispatched'
-      - if tocat_allow? :complete_payment_request
-        = link_to l(:complete_payment_request), complete_external_payment_path(@payment_request)
-      br
-      - if tocat_allow? :reject_payment_request
-        = link_to l(:reject_payment_request), reject_external_payment_path(@payment_request)
   h3 History
   p
     ul

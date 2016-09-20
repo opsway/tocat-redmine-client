@@ -14,22 +14,12 @@ class ExternalPaymentsController < TocatBaseController
     @payment_count = @payment_requests.http_response['X-total'].to_i
     @payment_pages = Paginator.new self, @payment_count, @payment_requests.http_response['X-Per-Page'].to_i, params['page']
   end
-  %w(approve cancel reject complete).each do |m|
+  %w(cancel complete).each do |m|
     define_method m do
       @payment_request.send m
       flash[:notice] = l("payment_request_#{m}_success".to_sym)
       return redirect_to external_payment_path(@payment_request)
     end
-  end
-  
-  def pay_in_cash
-    @payment_request = PaymentRequest.new(currency: 'USD', special: true, salary_account_id: TocatUser.find(params[:user_id]).accounts.balance.id)
-    @payment_request.total = TocatUser.find(params[:user_id]).balance_account_state.abs
-    @payment_request.description = 'выплатить зарплату'
-  end
-  
-  def salary_checkin
-    @payment_request = PaymentRequest.new(currency: 'USD', special: true, salary_account_id: TocatUser.find(params[:user_id]).accounts.balance.id, bonus: true)
   end
   
   def new
@@ -72,18 +62,6 @@ class ExternalPaymentsController < TocatBaseController
     end
   end
 
-  def dispatch_my
-  end
-  def dispatch_post
-    begin
-      @payment_request.dispatch params[:email]
-      return redirect_to :action => 'show'
-    rescue ActiveResource::ClientError => e
-      flash[:error] = JSON.parse(e.response.body)['errors'].join(', ')
-      @error = JSON.parse(e.response.body)['errors'].join(', ')
-      render :action => 'show'
-    end
-  end
   private
   def find_request
     @payment_request = PaymentRequest.find params[:id]

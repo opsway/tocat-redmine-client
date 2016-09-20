@@ -72,12 +72,8 @@ match '/tocat/review_handler' => 'tocat#review_handler', :via => :put
 resources :internal_payments, path: '/tocat/internal_payments', only: [:index, :show, :create, :new]
 resources :external_payments, path: 'tocat/external_payments', only: [:index, :show, :create, :edit, :new, :update] do
   member do
-    get 'approve'
     get 'cancel'
-    get 'reject'
     get 'complete'
-    get 'dispatch', to: 'payment_requests#dispatch_my'
-    post 'dispatch', to: 'payment_requests#dispatch_post'
   end
     get 'pay_in_cash', on: :collection
     get 'salary_checkin', on: :collection
@@ -85,4 +81,5 @@ end
 
 resources :internal_invoices, path: '/tocat/internal_invoices', only: [:index, :show, :create, :new, :destroy] do
   get :pay, on: :member
+  get :withdraw, on: :collection, as: :withdraw_tocat
 end

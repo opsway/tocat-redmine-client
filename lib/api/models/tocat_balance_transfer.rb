@@ -18,6 +18,8 @@ class TocatBalanceTransfer < ActiveResource::Base
 
   schema do
     attribute 'target_login', :string
+    attribute 'target_id', :integer
+    attribute 'source_id', :integer
     attribute 'description', :text
     attribute 'total', :decimal
     attribute 'btype', :string

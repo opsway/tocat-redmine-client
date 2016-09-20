@@ -2,6 +2,10 @@ class InternalInvoicesController < TocatBaseController
   unloadable
   before_filter :check_action
   before_filter :find_request, only: [:edit, :update, :show, :destroy, :pay]
+  def withdraw
+    TransferRequest.withdraw params[:id]
+    return redirect_back
+  end
 
   def index
     params[:state] ||= 'new'
@@ -28,7 +32,7 @@ class InternalInvoicesController < TocatBaseController
   
   def pay
     begin
-      @transfer_request.pay
+      @transfer_request.pay params[:transfer_request][:source_account_id]
       return redirect_back_or_default({:action => 'show', id: @transfer_request})
     rescue => e
       flash[:error] = JSON.parse(e.response.body)['errors'].join(', ')

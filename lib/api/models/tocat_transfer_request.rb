@@ -6,23 +6,30 @@ class TransferRequest < ActiveResource::Base
   add_response_method :http_response
   include AuthTocat
 
-  def pay
-    connection.post("/#{self.class.element_name}/#{id}/pay",'', TocatUser.headers)
+  def pay(source_account_id)
+    connection.post("/#{self.class.element_name}/#{id}/pay",{source_account_id: source_account_id}.to_json, TocatUser.headers)
+  end
+  
+  def withdraw(account_id)
+    connection.post("/#{self.class.element_name}/withdraw",{account_id: account_id}.to_json, TocatUser.headers)
   end
   
   def available_recepients
-    all_users = TocatUser.find(:all, params: {limit: 10000, tocat_role: 'view_transfers', search: "couch=1"}).select{|u| u.couch }
+    all_users = Account.find(:all, params: {limit: 10000, tocat_role: 'view_transfers', search: "account_type == money"})
     all_users.map{|u| [u.name,u.id]}
   end
   def available_for_new
-    an = available_recepients
-    tocat_id = User.current.try(:tocat).try(:id)
-    an.delete_if{|u| u[1] == tocat_id}
+    #an = available_recepients
+    #tocat_id = User.current.try(:tocat).try(:id)
+    #an.delete_if{|u| u[1] == tocat_id}
+    available_recepients
   end
   
   schema do
     attribute 'source_id', :decimal
     attribute 'description', :text
     attribute 'total', :decimal
+    attribute 'source_account_id', :decimal
+    attribute 'target_account_id', :decimal
   end
 end

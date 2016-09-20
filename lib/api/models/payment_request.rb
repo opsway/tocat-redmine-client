@@ -10,32 +10,21 @@ class PaymentRequest < ActiveResource::Base
     attribute 'total', :decimal
     attribute 'special', :boolean
     attribute 'salary_account_id', :integer
-    attribute 'currency', :text
     attribute 'bonus', :boolean
+    attribute 'source_account_id', :decimal
   end
-  STATUSES = %w(new approved dispatched completed canceled rejected)
+  STATUSES = %w(new completed canceled)
   def self.min_status(user = User.current)
-    return 'new' if user.tocat_allowed_to? :create_payment_request
-    return 'approved' if user.tocat_allowed_to? :dispatch_payment_request
-    return 'dispatched' if user.tocat_allowed_to? :complete_payment_request
     'new'
   end
 
-  %w(approve cancel reject complete).each do |m|
+  %w(cancel complete).each do |m|
     define_method m do
       connection.post("/#{self.class.element_name}/#{id}/#{m}",'', PaymentRequest.headers)
     end
   end
 
-  def dispatch(user_email)
-    connection.post("/#{self.class.element_name}/#{id}/dispatch",{email: user_email}.to_json, PaymentRequest.headers)
-  end
-  
   def self.available_source
     TocatUser.find(:all, params: {limit: 10000, tocat_role: 'create_payment_request'}).map{|u| [u.name, u.email]}
-  end
-  
-  def available_for_dispatch
-    TocatUser.find(:all, params: {tocat_role: 'complete_payment_request'}).map{|u| [u.name, u.email]}
   end
 end

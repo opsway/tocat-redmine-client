@@ -14,7 +14,7 @@
           </tr>
           <tr class="filter" id="account_type">
             <td class='field'><%= label_tag(:account_type, l(:label_account_type)) %></td>
-            <td class='operator'><%= select_tag(:account_type, options_for_select([[l(:label_balance_type), 'balance'], [l(:label_payment_type), 'payment']], selected: params[:account_type]), include_blank: true) %></td>
+            <td class='operator'><%= select_tag(:account_type, options_for_select([[l(:label_balance_type), 'balance'], [l(:label_payment_type), 'payroll'], [l(:label_money_type), 'money']], selected: params[:account_type]), include_blank: true) %></td>
           </tr>
         </tbody>
       </table>

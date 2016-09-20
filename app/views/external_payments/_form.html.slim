@@ -4,12 +4,13 @@
 .box.users
   = form_for @payment_request, url: @payment_request.persisted? ? external_payment_path(@payment_request) : external_payments_path do |f|
     = f.label :target, "#{l(:label_payment_source)}: #{User.current.name}"
-    = f.hidden_field :special
-    = f.hidden_field :salary_account_id
-    = f.hidden_field :bonus
     br
-    = f.label :currency, l(:label_currency)
-    = f.select :currency, options_for_select(%w(USD EUR UAH RUR KZT), selected: @payment_request.currency)
+    - targets = Account.linked
+    - if targets.length > 1
+      = f.select :source_account_id, options_for_select(targets.map{|a| [a['name'],a['id']]}, @payment_request.try(:source).try(:id) || params[:account_id]), required: true
+    - else
+      = f.label targets.first.try :[], 'name'
+      = f.hidden_field :source_account_id, value: targets.first.try(:[],'id')
     br
     = f.label :total, l(:label_total)
     = f.text_field :total, size: 6, maxlength: 6, style: "width: auto"

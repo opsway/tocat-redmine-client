@@ -4,9 +4,15 @@
 .box.users
   = form_for @transfer_request, url: @transfer_request.persisted? ? internal_invoice_path(f) : internal_invoices_path  do |f|
     = f.label :login, "#{l(:label_transfer_source)}:"
-    = f.select :source_id, options_for_select(@transfer_request.available_for_new, required: true), include_blank: 'Select', required: true
+    = f.select :source_account_id, options_for_select(@transfer_request.available_for_new, required: true), include_blank: 'Select', required: true
     br
     = f.label :target, "#{l(:label_transfer_target)}: #{User.current.name}"
+    - targets = Account.linked
+    - if targets.length > 1
+      = f.select :target_account_id, options_for_select(targets.map{|a| [a['name'],a['id']]} , required: true), required: true
+    - else
+      = f.hidden_field :target_account_id, value: targets.first.try(:[],'id')
+
     br
     = f.label :total, l(:label_total)
     = f.text_field :total, size: 6, maxlength: 6, style: "width: auto"
