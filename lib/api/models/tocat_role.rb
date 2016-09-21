@@ -106,6 +106,7 @@ class TocatRole < ActiveResource::Base
     paths[:internal_invoices][:create] = :create_transfer
     paths[:internal_invoices][:show] = :view_transfers
     paths[:internal_invoices][:pay] = :create_transfer
+    paths[:internal_invoices][:withdraw] = :create_transfer
     #payment requests
     paths[:external_payments] = {}
     paths[:external_payments][:index]   = :view_payment_requests
