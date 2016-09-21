@@ -4,14 +4,14 @@
 = error_messages_for @balance_transfer
 .box.users
   = form_for @balance_transfer, url: internal_payments_path do |f|
-    = f.label :source, "From: #{User.current.name}"
     br
     - targets = Account.linked
     - if targets.length > 1
+      = f.label :source_id, "#{l(:label_from)}:"
       = f.select :source_id, options_for_select(targets.map{|a| [a['name'],a['id']]},params[:source_account_id]), required: true
     - else
       = f.label targets.first.try :[], 'name'
-      = f.hidden_field :source_account_id, value: targets.first.try(:[],'id')
+      = f.hidden_field :source_id, value: targets.first.try(:[],'id')
     br
     = f.label :login, "#{l(:label_target)}:"
     = f.select :target_id, options_for_select(Account.find(:all, params: {search: "account_type == money", limit: 99999}).map{|a| [a.name,a.id]}, required: true), include_blank: 'Select', required: true

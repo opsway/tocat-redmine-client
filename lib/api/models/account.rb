@@ -15,8 +15,14 @@ class Account < ActiveResource::Base
   end
   validates :name, presence: true
   
-  def add_access(user_id)
-    connection.post("/#{self.class.element_name}/#{id}/add_access",{user_id: user_id}.to_json, TocatUser.headers)
+  def add_access(user_id,default)
+    begin
+      connection.post("/#{self.class.element_name}/#{id}/add_access",{user_id: user_id, default: default}.to_json, TocatUser.headers)
+      return true, nil
+    rescue => error
+      Rails.logger.info "Exception in Tocat. #{error.message}"
+      return false, error
+    end
   end
   
   def delete_access(user_id)

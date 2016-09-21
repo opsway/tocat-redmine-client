@@ -23,7 +23,11 @@ class AccountsController < TocatBaseController
   end
 
   def add_user
-    @account.add_access params[:user_id]
+    status, error = @account.add_access params[:user_id], params[:default]
+    unless status
+      flash[:error] = JSON.parse(error.response.body)['errors'].join(', ')
+      return redirect_to :back
+    end
     return redirect_to :back, notice: l(:notice_access_added)
   end
   

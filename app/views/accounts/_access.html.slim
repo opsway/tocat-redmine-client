@@ -9,7 +9,7 @@
     tbody
       - @account.access.each do |u|
         tr
-          td= u.name
+          td= "#{u.name}#{'(default)' if u.default}"
           td
             - if User.current.tocat_allowed_to? :edit_account
               = link_to "Remove access", remove_user_account_path(user_id: u.id), method: :post
@@ -18,4 +18,6 @@
     = form_for @account, url: add_user_account_path(@account),method: :post do |f|
       = f.label :user_id, l(:label_add_access)
       = select_tag :user_id, options_for_select(TocatUser.find(:all, limit: 99999).map{|u| [u.name, u.id]})
+      = f.label :default, l(:label_default_account)
+      = check_box_tag :default
       = f.submit l(:label_add_access)

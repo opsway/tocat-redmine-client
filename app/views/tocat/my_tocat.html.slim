@@ -15,13 +15,12 @@ hr/
         th= l :field_total
         th= l :actions
     tbody
-      - user = TocatUser.find(User.current.tocat.id)
-      - user.all_accounts.each do |a|
+      - @user_tocat.all_accounts.each do |a|
         tr
           td= a.name
           td= a.account_type
           td
-            - if @user.tocat.coach && User.current.tocat.id == @user.tocat.id && a.account_type == 'money'
+            - if @user_tocat.coach && User.current.tocat.id == @user_tocat.id && a.account_type == 'money'
               a#zoho data-src="https://reports.zoho.com/ZDBDataSheetView.cc?OBJID=1030771000000199155&STANDALONE=true&WIDTH=800&HEIGHT=600&INTERVAL=-1&REMTOOLBAR=true&INCLUDETITLE=false&INCLUDEDESC=false&ZOHO_CRITERIA=%22FTOCAT%20-%20Money%20account%20transactions%22.%22User%20login%22%3D%27ansam" onClick='check_zoho()' Check in ZohoReports 
               #dialog.hidden
             - else
@@ -30,7 +29,7 @@ hr/
             - if a.account_type == 'payroll' && (a.balance.to_f > 0 || user.coach)
               = link_to l(:label_withdraw), withdraw_tocat_internal_invoices_path(id: a.id)
             - if a.account_type == 'money' 
-              - if user.coach || a.balance > 0
+              - if @user_tocat.coach || a.balance.to_f > 0
                 = link_to l(:label_pay), new_external_payment_path(account_id: a.id)
                 br
                 = link_to l(:label_transfer), new_internal_payment_path(source_account_id: a.id)

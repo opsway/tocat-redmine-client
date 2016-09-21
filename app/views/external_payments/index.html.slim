@@ -25,7 +25,6 @@
   table.list
     thead
       tr
-        td= l(:label_id)
         td= l(:label_payment_source)
         td= l(:label_payment_target)
         td= l(:label_total)
@@ -35,7 +34,6 @@
       - if @payment_requests.present?
         - @payment_requests.each do |pr|
           tr
-            td = pr.id
             td = link_to pr.source.name, external_payment_path(pr.id)
             td 
               - if pr.salary_account
