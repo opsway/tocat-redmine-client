@@ -26,7 +26,7 @@ hr/
             - else
               = a.balance
           td
-            - if a.account_type == 'payroll' && (a.balance.to_f > 0 || user.coach)
+            - if a.account_type == 'payroll' && (a.balance.to_f > 0 || @user_tocat.coach)
               = link_to l(:label_withdraw), withdraw_tocat_internal_invoices_path(id: a.id)
             - if a.account_type == 'money' 
               - if @user_tocat.coach || a.balance.to_f > 0
