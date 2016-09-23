@@ -9,7 +9,7 @@
       = f.label :source_id, "#{l(:label_from)}:"
       = f.select :source_id, options_for_select(targets.map{|a| [a['name'],a['id']]},params[:source_account_id]), required: true
     - else
-      = f.label targets.first.try(:[], 'name').to_s.titleize
+      = f.label :source_id, targets.first.try(:[], 'name').titleize
       = f.hidden_field :source_id, value: targets.first.try(:[],'id')
     br
     = f.label :login, "#{l(:label_target)}:"
