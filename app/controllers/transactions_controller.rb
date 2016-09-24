@@ -19,11 +19,7 @@ class TransactionsController < TocatBaseController
     query_params[:page] = params[:page] if params[:page].present?
     query_params[:search] = params[:search] if params[:search].present?
     if params[:owner].present?
-      if params[:owner].split('_').first == 'group'
-        query_params[:team] = params[:owner].split('_').second.to_i
-      elsif params[:owner].split('_').first == 'user'
-        query_params[:user] = params[:owner].split('_').second.to_i
-      end
+      query_params[:user] = params[:owner].to_i
     end
     query_params[:search] = "#{query_params[:search]} account == #{params[:account_type]}" if params[:account_type].present?
     query_params[:sort] = params[:sort] if params[:sort].present?
@@ -31,10 +27,7 @@ class TransactionsController < TocatBaseController
     @transactions = TocatTransaction.all(params: query_params)
     @transactions_count = @transactions.http_response['X-total'].to_i
     @transactions_pages = Paginator.new self, @transactions_count, @transactions.http_response['X-Per-Page'].to_i, params['page']
-    @owners = {
-      Group: TocatTeam.all.sort_by(&:name).collect { |r| [r.name, "group_#{r.id}"] },
-      User: TocatUser.all.sort_by(&:name).collect { |r| [r.name, "user_#{r.id}"] }
-    }
+    @owners = TocatUser.all.sort_by(&:name).collect { |r| [r.name, r.id] } 
   end
 
   private

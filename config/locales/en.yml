@@ -117,7 +117,7 @@ en:
   message_invoice_paid_failed: "Paid status can't be changed! Invoice has linked completed orders."
   label_transaction_plural: "Transactions"
   label_account_type: "Account Type"
-  label_owner: "Owner"
+  label_owner: "Name"
   label_payment_type: "Payroll"
   label_balance_type: "Balance"
   button_new_transaction: "Add payment"

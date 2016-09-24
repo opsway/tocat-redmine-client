@@ -10,7 +10,7 @@
           </tr>
           <tr class="filter" id="owner">
             <td class='field'><%= label_tag(:owner, l(:label_owner)) %></td>
-            <td class='operator'><%= select_tag(:owner, grouped_options_for_select(@owners, selected: params[:owner]), include_blank: true) %></td>
+            <td class='operator'><%= select_tag(:owner, options_for_select(@owners, selected: params[:owner]), include_blank: true) %></td>
           </tr>
           <tr class="filter" id="account_type">
             <td class='field'><%= label_tag(:account_type, l(:label_account_type)) %></td>
