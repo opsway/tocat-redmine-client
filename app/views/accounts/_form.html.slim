@@ -5,10 +5,6 @@ h3= l(:label_account)
     = f.label :name, l(:label_name)
     = f.text_field :name, required: true
     br
-    = f.label :owner, l(:label_owner)
-    = f.select :accountable_id, options_for_select(TocatUser.all(limit: 999999).map{|t| [t.name, t.id]}, selected: @account.parent.try(:id), required: true),
-               include_blank: 'Select owner', required: true
-    br
     = f.label :account_type, l(:label_account_type)
     = f.select :account_type, options_for_select([[l(:label_balance_type), 'balance'], [l(:label_payment_type), 'payroll'], [l(:label_money_type), 'money']], @account.account_type), required: true
     br

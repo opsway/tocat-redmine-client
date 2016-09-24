@@ -17,7 +17,7 @@
   - if @account.persisted?
     = form_for @account, url: add_user_account_path(@account),method: :post do |f|
       = f.label :user_id, l(:label_add_access)
-      = select_tag :user_id, options_for_select(TocatUser.find(:all, limit: 99999).map{|u| [u.name, u.id]})
+      = select_tag :user_id, options_for_select(TocatUser.find(:all, limit: 99999).map{|u| [u.name, u.id]}), {include_blank: 'Select user', required: true}
       = f.label :default, l(:label_default_account)
       = check_box_tag :default
       = f.submit l(:label_add_access)

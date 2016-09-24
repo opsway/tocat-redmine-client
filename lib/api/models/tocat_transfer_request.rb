@@ -7,11 +7,21 @@ class TransferRequest < ActiveResource::Base
   include AuthTocat
 
   def pay(source_account_id)
-    connection.post("/#{self.class.element_name}/#{id}/pay",{source_account_id: source_account_id}.to_json, TocatUser.headers)
+    begin
+      connection.post("/#{self.class.element_name}/#{id}/pay",{source_account_id: source_account_id}.to_json, TocatUser.headers)
+      return true, nil
+    rescue => e
+      return false, e.message
+    end
   end
   
-  def withdraw(account_id)
-    connection.post("/#{self.class.element_name}/withdraw",{account_id: account_id}.to_json, TocatUser.headers)
+  def self.withdraw(account_id)
+    begin
+      connection.post("/#{collection_name}/withdraw",{account_id: account_id}.to_json, TocatUser.headers)
+      return true, nil
+    rescue => e
+      return false, e.message
+    end
   end
   
   def available_recepients
