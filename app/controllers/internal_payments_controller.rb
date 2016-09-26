@@ -10,7 +10,7 @@ class InternalPaymentsController < TocatBaseController
     query_params[:source] = params[:source] if params[:source].present?
     query_params[:target] = params[:target] if params[:target].present?
 
-    @recipients = Account.find(:all, params: {search: "account_type == money", limit: 99999}).map{|a| [a.name,a.id]}
+    @recipients = Account.for_select
     @balance_transfers = TocatBalanceTransfer.all(params: query_params)
     @transfers_count = @balance_transfers.http_response['X-total'].to_i
     @transfers_pages = Paginator.new self, @transfers_count, @balance_transfers.http_response['X-Per-Page'].to_i, params['page']

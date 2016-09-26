@@ -37,6 +37,10 @@ class Account < ActiveResource::Base
   def self.linked
     JSON.parse connection.get("/#{collection_name}/linked", TocatUser.headers).body
   end
+  
+  def self.for_select
+    JSON.parse(connection.get("/#{collection_name}/all", TocatUser.headers).body).map{|a| [a['name'],a['id']]}
+  end
 
   def self.find_by_name(name)
     Account.find(:all, params:{search:"#{name}"}).first

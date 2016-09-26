@@ -6,7 +6,7 @@ class TicketsController < TocatBaseController
   def index
     query_params = {}
     query = {}
-    query_params[:limit] = 9999999
+    query_params[:limit] = 100 #TODO
     query_params[:search] = params[:search] if params[:search].present?
     query_params[:search] = "#{query_params[:search]} paid == #{params[:paid]}" if params[:paid].present?
     query_params[:search] = "#{query_params[:search]} accepted == #{params[:accepted]}" if params[:accepted].present?
@@ -78,7 +78,7 @@ class TicketsController < TocatBaseController
       @issues = []
       tasks = TocatTicket.all(params: query_params)
       tasks = tasks.each_with_object({}){ |c,h| h[c.internal_id.to_i] = { id:c.id, accepted: c.accepted, paid:c.paid, budget:c.budget, resolver:c.get_resolver, review_requested: c.review_requested } }
-      query_params[:limit] = 999999999
+      query_params[:limit] = 100
       issues.each do |issue|
         task = tasks[issue.id]
         task = {} unless task.present?

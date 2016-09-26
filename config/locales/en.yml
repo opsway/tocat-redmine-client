@@ -281,3 +281,6 @@ en:
   label_pay_transaction: 'Take commission'
   notice_success_withdraw: "Internal invoice to %{coachName} was created"
   withdraw_failed: "Withdraw failed by the reason: %{error}"
+  view_all_payment_requests: 'View all'
+  view_all_transfers: 'View all'
+  view_all_invoices: 'View all'

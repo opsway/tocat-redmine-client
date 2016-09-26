@@ -25,8 +25,7 @@ class TransferRequest < ActiveResource::Base
   end
   
   def available_recepients
-    all_users = Account.find(:all, params: {limit: 10000, tocat_role: 'view_transfers', search: "account_type == money"})
-    all_users.map{|u| [u.name,u.id]}
+    Account.for_select
   end
   def available_for_new
     #an = available_recepients
