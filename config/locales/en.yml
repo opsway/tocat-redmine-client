@@ -230,10 +230,10 @@ en:
   label_transfer_target: 'Requested To'
   #payment_requests - external payments
   create_payment_request: 'Create External Payment'
-  complete_payment_request: 'Complete External Payment'
+  complete_payment_request: 'Set as Processed'
   edit_payment_request: 'Edit External Payment'
   dispatch_payment_request: 'Dispatch External Payment'
-  cancel_payment_request: 'Cancel External Payment'
+  cancel_payment_request: 'Cancel'
   view_payment_requests: 'View External Payments'
   approve_payment_request: 'Approve External Payment'
   reject_payment_request: 'Reject External Payment'
@@ -279,3 +279,5 @@ en:
   coach: 'Coach'
   label_default_account: 'Default account'
   label_pay_transaction: 'Take commission'
+  notice_success_withdraw: "Internal invoice to %{coachName} was created"
+  withdraw_failed: "Withdraw failed by the reason: %{error}"

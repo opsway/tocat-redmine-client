@@ -3,11 +3,11 @@ class InternalInvoicesController < TocatBaseController
   before_filter :check_action
   before_filter :find_request, only: [:edit, :update, :show, :destroy, :pay]
   def withdraw
-    status, error = TransferRequest.withdraw params[:id]
-    if status
-      flash[:notice] = 'You sucessfully withdraw'
+    coachName, error = TransferRequest.withdraw params[:id]
+    if coachName.present?
+      flash[:notice] = t(:notice_success_withdraw, coachName: coachName)
     else 
-      flash[:notice] = 'Withdraw failed: ' + error
+      flash[:notice] = t(:withdraw_failed, error: error)
     end
     return redirect_back_or_default(action: 'my_tocat', controller: 'tocat')
   end
