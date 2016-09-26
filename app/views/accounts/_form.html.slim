@@ -8,4 +8,7 @@ h3= l(:label_account)
     = f.label :account_type, l(:label_account_type)
     = f.select :account_type, options_for_select([[l(:label_balance_type), 'balance'], [l(:label_payment_type), 'payroll'], [l(:label_money_type), 'money']], @account.account_type), required: true
     br
+    = f.label :pay_comission, l(:label_pay_transaction)
+    = f.check_box :pay_comission
+    br
     = f.submit 'Save'

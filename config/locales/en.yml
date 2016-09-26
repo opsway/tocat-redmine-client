@@ -278,3 +278,4 @@ en:
   label_from: "From"
   coach: 'Coach'
   label_default_account: 'Default account'
+  label_pay_transaction: 'Take commission'

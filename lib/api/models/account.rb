@@ -12,6 +12,7 @@ class Account < ActiveResource::Base
     attribute 'account_type', :string
     attribute 'type', :string
     attribute 'accountable_id', :string
+    attribute 'pay_comission', :boolean
   end
   validates :name, presence: true
   
