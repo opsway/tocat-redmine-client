@@ -25,6 +25,6 @@ class PaymentRequest < ActiveResource::Base
   end
 
   def self.available_source
-    TocatUser.find(:all, params: {limit: 10000, tocat_role: 'create_payment_request'}).map{|u| [u.name, u.email]}
+    TocatUser.find(:all, params: {limit: 10000}).map{|u| [u.name, u.email]}
   end
 end

@@ -27,7 +27,7 @@ class TransactionsController < TocatBaseController
     @transactions = TocatTransaction.all(params: query_params)
     @transactions_count = @transactions.http_response['X-total'].to_i
     @transactions_pages = Paginator.new self, @transactions_count, @transactions.http_response['X-Per-Page'].to_i, params['page']
-    @owners = TocatUser.all.sort_by(&:name).collect { |r| [r.name, r.id] } 
+    @owners = Account.for_select
   end
 
   private

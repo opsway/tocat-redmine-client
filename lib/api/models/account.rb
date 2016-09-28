@@ -37,6 +37,9 @@ class Account < ActiveResource::Base
   def self.linked
     JSON.parse connection.get("/#{collection_name}/linked", TocatUser.headers).body
   end
+  def self.linked_ids
+    linked.map{|a| a['id']}
+  end
   
   def self.for_select
     JSON.parse(connection.get("/#{collection_name}/all", TocatUser.headers).body).map{|a| [a['name'],a['id']]}

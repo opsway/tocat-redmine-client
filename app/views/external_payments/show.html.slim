@@ -5,17 +5,7 @@ h2= l(:label_payment_request)
     strong = l(:label_payment_source)
     |  
     = @payment_request.source.try :name
-  - if @payment_request.salary_account
-    p
-      strong = l(:label_payment_target)
-      |:  
-      = @payment_request.salary_account.name
 
-  - if @payment_request.target
-    p
-      strong = l(:label_payment_dispatch_target)
-      |:  
-      = @payment_request.target.name
   p
     strong = l :label_total
     ':  
@@ -39,10 +29,10 @@ h2= l(:label_payment_request)
     - tocat_id = User.current.try(:tocat).try(:id)
     - case @payment_request.status
     - when 'new'
-      - if tocat_allow? :complete_payment_request
+      - if tocat_allow?(:complete_payment_request) && Account.linked_ids.include?(@payment_request.source_account.id)
         = link_to l(:complete_payment_request), complete_external_payment_path(@payment_request)
       br
-      -if tocat_allow? :cancel_payment_request
+      -if tocat_allow?(:cancel_payment_request) && Account.linked_ids.include?(@payment_request.source_account.id)
         = link_to l(:cancel_payment_request), cancel_external_payment_path(@payment_request)
       br
   h3 History

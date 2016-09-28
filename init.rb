@@ -53,7 +53,7 @@ Redmine::Plugin.register :redmine_tocat_client do
               :caption => :label_transfer_requests
     menu.push :payment_request, { :controller => 'external_payments', :action => 'index'},
               :if => Proc.new { User.current.tocat_allowed_to?(:view_payment_requests) },
-              :caption => :label_payment_request
+              :caption => :label_payment_requests
 
   end
   ActiveResource::Base.include_root_in_json = true
