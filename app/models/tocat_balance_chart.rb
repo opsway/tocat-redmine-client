@@ -55,7 +55,7 @@ class TocatBalanceChart
       "created_at >= #{period.begin.strftime('%Y-%m-%d')}",
       'account = balance'
     ].join(' ')
-    TocatTransaction.find(:all, params: { user: tocat_user.id, search: search, limit: TRANSACTIONS_LIMIT })
+    TocatTransaction.find(:all, params: { user: tocat_user.accounts.balance.id, search: search, limit: TRANSACTIONS_LIMIT })
   end
 
   def balance_period_transactions(tocat_user, period)
