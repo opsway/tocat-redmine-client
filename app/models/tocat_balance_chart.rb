@@ -47,7 +47,7 @@ class TocatBalanceChart
       "created_at >= #{period.begin.strftime('%Y-%m-%d')}",
       "created_at <= #{period.end.strftime('%Y-%m-%d')}"
     ].join(' ')
-    TocatTransaction.find(:all, params: { user: tocat_user.accounts.balance.id, search: search, limit: TRANSACTIONS_LIMIT })
+    TocatTransaction.find(:all, params: { user: tocat_user.all_accounts.find{|a| a.account_type == 'balance'}.id, search: search, limit: TRANSACTIONS_LIMIT })
   end
 
   def balance_transactions(tocat_user, period)
@@ -55,7 +55,7 @@ class TocatBalanceChart
       "created_at >= #{period.begin.strftime('%Y-%m-%d')}",
       'account = balance'
     ].join(' ')
-    TocatTransaction.find(:all, params: { user: tocat_user.accounts.balance.id, search: search, limit: TRANSACTIONS_LIMIT })
+    TocatTransaction.find(:all, params: { user: tocat_user.all_accounts.find{|a| a.account_type == 'balance'}.id, search: search, limit: TRANSACTIONS_LIMIT })
   end
 
   def balance_period_transactions(tocat_user, period)
@@ -64,7 +64,7 @@ class TocatBalanceChart
       "created_at <= #{period.end.strftime('%Y-%m-%d')}",
       'account = balance'
     ].join(' ')
-    TocatTransaction.find(:all, params: { user: tocat_user.accounts.balance.id, search: search, limit: TRANSACTIONS_LIMIT })
+    TocatTransaction.find(:all, params: { user: tocat_user.all_accounts.find{|a| a.account_type == 'balance'}.id, search: search, limit: TRANSACTIONS_LIMIT })
   end
 
   class PresetPeriods
