@@ -6,7 +6,7 @@
     = f.label :login, "#{l(:label_transfer_source)}:"
     = f.select :source_account_id, options_for_select(@transfer_request.available_for_new, required: true), include_blank: 'Select', required: true
     br
-    - targets = Account.linked
+    - targets = Account.linked_money
     - if targets.length > 1
       = f.label :target, "#{l(:label_transfer_target)}:"
       = f.select :target_account_id, options_for_select(targets.map{|a| [a['name'],a['id']]} , required: true), required: true

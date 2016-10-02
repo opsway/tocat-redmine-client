@@ -11,7 +11,7 @@ class TransferRequest < ActiveResource::Base
       connection.post("/#{self.class.element_name}/#{id}/pay",{source_account_id: source_account_id}.to_json, TocatUser.headers)
       return true, nil
     rescue => e
-      return false, e.message
+      return false, e
     end
   end
   

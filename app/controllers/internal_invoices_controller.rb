@@ -36,13 +36,11 @@ class InternalInvoicesController < TocatBaseController
   end
   
   def pay
-    begin
-      @transfer_request.pay params[:transfer_request][:source_account_id]
-      return redirect_back_or_default({:action => 'show', id: @transfer_request})
-    rescue => e
-      flash[:error] = JSON.parse(e.response.body)['errors'].join(', ')
-      return redirect_back_or_default({:action => 'show', id: @transfer_request.id})
+    result, error = @transfer_request.pay params[:transfer_request][:source_account_id]
+    if error
+      flash[:error] = JSON.parse(error.response.body)['errors'].join(', ')
     end
+    return redirect_back_or_default({:action => 'show', id: @transfer_request.id})
   end
   
   def destroy

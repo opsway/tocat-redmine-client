@@ -38,12 +38,12 @@ class ExternalPaymentsController < TocatBaseController
         flash[:notice] = l(:notice_successful_create)
         redirect_to :action => 'index'
       else
-        redirect_to :back
+        render :new
       end
     rescue ActiveResource::ClientError => e
       flash[:error] = JSON.parse(e.response.body)['errors'].join(', ')
       @error = JSON.parse(e.response.body)['errors'].join(', ')
-      redirect_to :back
+      render :new
       logger.info e.message
     end
   end

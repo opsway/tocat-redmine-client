@@ -4,14 +4,14 @@
 .box.users
   = form_for @payment_request, url: @payment_request.persisted? ? external_payment_path(@payment_request) : external_payments_path do |f|
     /= f.label :target, "#{l(:label_payment_source)}: #{User.current.name}"
-    br
-    - targets = Account.linked
+    - targets = Account.linked_money
     - if targets.length > 1
+      = f.label :target, l(:label_from)
       = f.select :source_account_id, options_for_select(targets.map{|a| [a['name'],a['id']]}, @payment_request.try(:source).try(:id) || params[:account_id]), required: true
+      br
     - else
       /= f.label targets.first.try :[], 'name'
       = f.hidden_field :source_account_id, value: targets.first.try(:[],'id')
-    br
     = f.label :total, l(:label_total)
     = f.text_field :total, size: 6, maxlength: 6, style: "width: auto"
     br

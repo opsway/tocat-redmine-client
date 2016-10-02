@@ -4,7 +4,7 @@
 = error_messages_for @balance_transfer
 .box.users
   = form_for @balance_transfer, url: internal_payments_path do |f|
-    - targets = Account.linked
+    - targets = Account.linked_money
     - if targets.length > 1
       = f.label :source_id, "#{l(:label_from)}:"
       = f.select :source_id, options_for_select(targets.map{|a| [a['name'],a['id']]},params[:source_account_id]), required: true

@@ -257,6 +257,7 @@ en:
   correct_balance: 'Balance correction'
   label_payment_dispatch_target: 'Dispatched to'
   label_new_payment_request: 'New'
+  label_new_external_payment: 'New External Payment'
   pay_in_cash_bank: 'Pay in Cash/Bank'
   label_tocat_zoholink: 'Zoho link for chart'
   create_account: 'Create Account'
@@ -274,7 +275,7 @@ en:
   label_add_access: 'Add access'
   label_account_name: 'Account Name'
   label_withdraw: 'Withdraw'
-  label_pay: 'Pay'
+  label_pay: 'Pay out'
   label_transfer: 'Transfer'
   label_from: "From"
   coach: 'Coach'
