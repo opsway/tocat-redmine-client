@@ -34,7 +34,7 @@ h2= l(:label_transfer_request)
         = link_to 'Cancel', internal_invoice_path(@transfer_request), method: :delete, class: 'icon icon-del btn button', data: {confirm: l(:confirm_transfer_destroy)}
       - if @transfer_request.source.try(:id).try(:in?, ids)
         = form_for @transfer_request, url: pay_internal_invoice_path(@transfer_request), method: :get do |f|
-          - targets = Account.linked
+          - targets = Account.linked_money
           - if targets.length > 1
             = f.select :source_account_id, options_for_select(targets.map{|a| [a['name'],a['id']]}, @transfer_request.source.id), required: true
           - else
