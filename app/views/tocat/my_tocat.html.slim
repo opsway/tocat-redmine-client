@@ -33,3 +33,39 @@ hr/
                 = link_to l(:label_pay), new_external_payment_path(account_id: a.id)
                 br
                 = link_to l(:label_transfer), new_internal_payment_path(source_account_id: a.id)
+
+- if !(@user_tocat.coach? || @user_tocat.tocat_server_role.name == 'Manager')
+  .splitcontentleft
+    = render 'transactions', :transactions => @balance_transactions
+    br/
+    = render 'transactions', :transactions => @income_transactions
+  .splitcontentright
+    br/
+    label
+      = l(:label_not_accepted_issues)
+      strong
+        '$
+        = @not_accepted_tasks.sum(&:budget).round(1)
+    = render 'issues', :issues => @not_accepted_tasks, :accepted => 0
+    label
+      = l(:label_accepted_issues)
+      strong
+        '$
+        = @accepted_tasks.sum(&:budget).round(1)
+    = render 'issues', :issues => @accepted_tasks, :accepted => 1, :balance => @accepted_tasks.sum(&:budget).round(1)
+  div style="clear:both;"
+  hr/
+  .chart_container
+    fieldset
+      legend Personal dynamics
+      div style="text-align: center; width: 100%"
+        img src="#{zoho_chart_prev_quarter_url(@user_tocat)}" style="width: 45%"
+        img src="#{zoho_chart_this_quarter_url(@user_tocat)}" style="width: 45%"
+- else
+  - if @user_tocat.coach?
+    img src="#{RedmineTocatClient.settings[:zoholink]}%27#{@user_tocat.login}%27"
+  - else
+    ' Please visit
+    a href="http://reports.zoho.com" ZohoReports
+    ' for information
+    a href="http://reports.zoho.com" http://reports.zoho.com
