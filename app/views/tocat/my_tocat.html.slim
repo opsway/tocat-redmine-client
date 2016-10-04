@@ -7,6 +7,7 @@ h2
   = link_to l(:correct_balance), new_correction_path(user_id: params[:user_id]), class: "tocat-button" if User.current.tocat_allowed_to?(:correct_balance) && params[:user_id].present?
 hr/
 .content
+  h1 = l(:label_accounts)
   table.table.list 
     thead
       tr

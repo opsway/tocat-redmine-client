@@ -51,8 +51,8 @@ match  '/tocat/invoices/:id/paid' => 'invoices#set_paid', as: :invoice_paid, via
 delete '/tocat/invoices/:id/paid' => 'invoices#set_unpaid', as: :invoice_paid_rem, via: [:delete]
 delete '/tocat/invoices/:id/orders' => 'invoices#deattach_order', as: :invoice_orders, via: [:delete]
 # post '/tocat/invoices/:id/attach_order' => 'invoices#attach_order', as: :invoice_attach_order
-#get '/tocat/payment' => 'tocat#new_payment', as: :payment, via: [:get]
-#post '/tocat/payment' => 'tocat#create_payment', as: :create_payment, via: [:post]
+get '/tocat/payment' => 'tocat#new_payment', as: :payment, via: [:get]
+post '/tocat/payment' => 'tocat#create_payment', as: :create_payment, via: [:post]
 
 post '/tocat/salary' => 'tocat#create_salary_checkin', as: :create_salary, via: [:post]
 get  '/tocat/salary' => 'tocat#new_salary_checkin', as: :new_salary, via: [:get]

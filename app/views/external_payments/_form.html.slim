@@ -7,7 +7,7 @@
     - targets = Account.linked_money
     - if targets.length > 1
       = f.label :target, l(:label_from)
-      = f.select :source_account_id, options_for_select(targets.map{|a| [a['name'],a['id']]}, @payment_request.try(:source).try(:id) || params[:account_id]), required: true
+      = f.select :source_account_id, options_for_select(targets.map{|a| [a['name'],a['id']]}, (@payment_request.source.id rescue nil) || params[:account_id]), required: true
       br
     - else
       /= f.label targets.first.try :[], 'name'

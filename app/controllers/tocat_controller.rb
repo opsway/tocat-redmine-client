@@ -215,7 +215,7 @@ class TocatController < TocatBaseController
         @team_tocat = TocatTeam.find(@user_tocat.tocat_team.id)
         #@team_balance_transactions = TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "account = balance" })
         # @team_income_transactions =  TocatTransaction.find(:all, params:{team: @team_tocat.id, limit:9999999, search: "created_at > #{1.year.ago.strftime('%Y-%m-%d')} account = payment" })
-        @income_transactions =  TocatTransaction.find(:all, params:{user: @user_tocat.id, limit:9999999, search: "created_at > #{3.months.ago.strftime('%Y-%m-%d')} account = payment" })
+        @income_transactions =  TocatTransaction.find(:all, params:{user: @user_tocat.id, limit:9999999, search: "created_at > #{3.months.ago.strftime('%Y-%m-%d')} account = payroll" })
 
         # @team_balance_income_year = @team_tocat.income_account_state - @team_income_transactions.sum{|t| t.total.to_f}
 
@@ -248,6 +248,29 @@ class TocatController < TocatBaseController
     end
     render json: balance_chart
   end
+  def new_payment
+    @users = TocatUser.find(:all, params: { limit: 99999 }).sort_by(&:name)
+    @users_data = {}
+    @users.collect { |t| @users_data[t.id] = t.income_account_state }
+    @users_data = @users_data.to_json
+  end
+  def create_payment
+    user = TocatUser.find(params[:user_id].to_i)
+    status, messages = user.add_payment(params[:comment], params[:total])
+    if status
+      flash[:notice] = l(:notice_transaction_successful_created)
+      respond_to do |format|
+        format.html { redirect_back_or_default({ :controller => 'transactions', :action => 'index'}) }
+      end
+    else
+      respond_to do |format|
+        flash[:error] = JSON.parse(messages.response.body)['errors'].join(', ')
+        format.html { render :action => 'new_payment' }
+      end
+    end
+  end
+
+
 
   private
 
