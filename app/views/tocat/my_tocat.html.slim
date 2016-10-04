@@ -35,11 +35,15 @@ hr/
                 br
                 = link_to l(:label_transfer), new_internal_payment_path(source_account_id: a.id)
 
+h1= l(:label_details)
+
 - if !(@user_tocat.coach? || @user_tocat.tocat_server_role.name == 'Manager')
   .splitcontentleft
-    = render 'transactions', :transactions => @balance_transactions
+    = render 'transactions', :transactions => @balance_transactions, account_name: l(:label_def_balance)
     br/
-    = render 'transactions', :transactions => @income_transactions
+    = render 'transactions', :transactions => @income_transactions, account_name: l(:label_def_payroll)
+    br
+    = render 'transactions', :transactions => @money_transactions, account_name: l(:label_def_money)
   .splitcontentright
     br/
     label

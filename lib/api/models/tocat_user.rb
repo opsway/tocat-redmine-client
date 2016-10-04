@@ -88,6 +88,23 @@ class TocatUser < ActiveResource::Base
   def redmine
     User.where(login: self.login).first
   end
+  
+  def account_by_type(account_type)
+    all_accounts.find{|a| a.account_type == account_type && a.default}
+  end
+  
+  def payroll_account
+    account_by_type 'payroll'
+  end
+
+  def money_account
+    account_by_type 'money'
+  end
+
+  def balance_account
+    account_by_type 'balance'
+  end
+
   protected
 
 end

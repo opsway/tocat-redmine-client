@@ -288,3 +288,7 @@ en:
   view_all_invoices: 'View all'
   view_all_transfer_requests: 'View all'
   created_by: 'Created By'
+  label_details: 'Details'
+  label_def_balance: 'Default Balance account. '
+  label_def_money: 'Default Money account. '
+  label_def_payroll: 'Default Payroll account. '

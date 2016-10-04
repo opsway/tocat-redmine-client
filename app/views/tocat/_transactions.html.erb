@@ -2,7 +2,7 @@
   <%if transactions%>
       <div class="autoscroll">
         <table class="list transactions">
-          <label><%=	l(:label_transactions)  %></label>
+          <label><%= account_name.to_s +	l(:label_transactions)  %></label>
           <thead>
           <tr>
             <th><%=	l(:label_date)  %></th>
