@@ -292,3 +292,4 @@ en:
   label_def_balance: 'Default Balance account. '
   label_def_money: 'Default Money account. '
   label_def_payroll: 'Default Payroll account. '
+  label_usd: 'USD'

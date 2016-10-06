@@ -14,6 +14,7 @@
       = f.hidden_field :source_account_id, value: targets.first.try(:[],'id')
     = f.label :total, l(:label_total)
     = f.text_field :total, size: 6, maxlength: 6, style: "width: auto"
+    = l(:label_usd)
     br
     = f.label :description, l(:label_description), style: "vertical-align: top"
     = f.text_area :description, rows: 12, cols: 50
