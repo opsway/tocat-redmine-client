@@ -216,7 +216,7 @@ en:
   label_transfer_requests: 'Internal Invoices'
   message_request_deletion_ok: 'Internal Invoice removed'
   notice_transfer_request_successful_update: 'Internal Invoice updated'
-  label_pay_status: 'Internal Invoice status'
+  label_pay_status: 'Status'
   label_new_transfer_request: 'New Internal Invoice'
   notice_transfer_request_successful_created: 'Internal Invoice created'
   actions: 'Actions'
