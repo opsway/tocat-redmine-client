@@ -5,7 +5,7 @@
 </div>
 <h3><%= l(:label_permissions) %></h3>
 <div class="box tabular" id="permissions">
-  <fieldset><legend>TOCAT Premissions</legend>
+  <fieldset><legend>TOCAT Permissions</legend>
   <% @permissions.each do |permission| %>
     <fieldset><legend><%= l_or_humanize(permission.first, :prefix => 'permission_') %></legend>
       <% permission.second.each do |r| %>
