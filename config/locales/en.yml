@@ -255,6 +255,7 @@ en:
   add_salary_payment: 'Pay in Cash/Bank'
   salary_check_in: 'Salary Check-in'
   correct_balance: 'Balance correction'
+  correct_balance_salary_check: 'Balance correction / Salary check-in'
   label_payment_dispatch_target: 'Dispatched to'
   label_new_payment_request: 'New'
   label_new_external_payment: 'New External Payment'

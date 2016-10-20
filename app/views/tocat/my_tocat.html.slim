@@ -3,8 +3,8 @@ h2
   - if @user.is_a? User
     = avatar @user, :size => "50"
   = h @user.name
-  = link_to l(:salary_check_in), new_salary_path(user_id: params[:user_id]), class: "tocat-button" if User.current.tocat_allowed_to?(:salary_check_in) && params[:user_id].present?
-  = link_to l(:correct_balance), new_correction_path(user_id: params[:user_id]), class: "tocat-button" if User.current.tocat_allowed_to?(:salary_check_in) && params[:user_id].present?
+  = link_to l(:salary_check_in), new_salary_path(user_id: params[:user_id]), class: "tocat-button" if User.current.tocat_allowed_to?(:correct_balance_salary_check) && params[:user_id].present?
+  = link_to l(:correct_balance), new_correction_path(user_id: params[:user_id]), class: "tocat-button" if User.current.tocat_allowed_to?(:correct_balance_salary_check) && params[:user_id].present?
 hr/
 .content
   h1 = l(:label_accounts)

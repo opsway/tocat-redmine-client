@@ -57,10 +57,10 @@ class TocatRole < ActiveResource::Base
     paths[:tocat][:review_handler] = :can_review_task
     paths[:tocat][:set_expenses] = :set_expenses
     paths[:tocat][:remove_expenses] = :remove_expenses
-    paths[:tocat][:create_salary_checkin] = :salary_check_in
-    paths[:tocat][:new_salary_checkin] = :salary_check_in
-    paths[:tocat][:new_correction] = :correct_balance
-    paths[:tocat][:create_correction] = :correct_balance
+    paths[:tocat][:create_salary_checkin] = :correct_balance_salary_check
+    paths[:tocat][:new_salary_checkin] = :correct_balance_salary_check
+    paths[:tocat][:new_correction] = :correct_balance_salary_check
+    paths[:tocat][:create_correction] = :correct_balance_salary_check
 
     paths[:tickets] = {}
     paths[:tickets][:index] = :show_issues
@@ -144,9 +144,9 @@ class TocatRole < ActiveResource::Base
     data[:orders] = [:create_orders, :show_orders, :edit_orders, :destroy_orders, :complete_orders, :set_internal_orders, :remove_internal_orders, :show_commission, :update_commission]
     data[:invoices] = [:create_invoices, :show_invoices, :destroy_invoices, :paid_invoices, :view_all_invoices]
     data[:issues] = [:modify_accepted, :modify_resolver, :modify_budgets, :show_budgets, :show_issues, :show_aggregated_info, :can_request_review, :can_review_task, :set_expenses, :remove_expenses]
-    data[:transactions] = [:show_transactions, :create_transactions, :salary_check_in]
+    data[:transactions] = [:show_transactions, :create_transactions]
     data[:dashboard] = [:show_tocat_page, :has_protected_page, :can_see_public_pages, :is_admin, :show_status_page, :mark_alerts_as_checked, :show_activity_feed]
-    data[:users] = [:create_user, :update_user, :activate_user, :deactivate_user, :correct_balance]
+    data[:users] = [:create_user, :update_user, :activate_user, :deactivate_user, :correct_balance_salary_check]
     data[:teams] = [:create_team, :update_team, :activate_team, :deactivate_team]
     data[:internal_payments] = [:view_transfers, :create_transfer, :view_all_transfer_requests]
     data[:external_payments] = [:create_payment_request, :cancel_payment_request, :complete_payment_request, :view_payment_requests, :view_all_payment_requests]
