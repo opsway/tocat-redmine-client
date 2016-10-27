@@ -31,6 +31,10 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
         rows.right l(:field_completed), (@order.completed ? image_tag('true.png') : image_tag('false.png')), :class => 'completed'
       end
 
+      if @order.attributes.include? 'reseller'
+        rows.right l(:field_reseller), (@order.reseller ? image_tag('true.png') : image_tag('false.png')), :class => 'reseller'
+      end
+
       if @order.attributes.include? 'team'
         rows.left l(:field_team), @order.get_team.name, :class => 'team'
       end

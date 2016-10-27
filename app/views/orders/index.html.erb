@@ -52,6 +52,10 @@ fieldset#filters table td {
           <th>
             <%= l(:field_internal)%>
           </th>
+
+          <th>
+            <%= l(:label_reseller) %>
+          </th>
           </tr></thead>
 
     <tbody>
@@ -87,6 +91,10 @@ fieldset#filters table td {
 
           <td class = 'internal'>
             <%= order.internal_order ? image_tag('true.png') : image_tag('false.png') %>
+          </td>
+
+          <td class = 'reseller'>
+            <%= order.reseller ? image_tag('true.png') : image_tag('false.png') %>
           </td>
         </tr>
       <% end %>

@@ -121,6 +121,26 @@ class TocatOrder < ActiveResource::Base
     end
   end
 
+  def set_reseller
+    begin
+      connection.post(element_path + '/reseller','',TocatOrder.headers)
+    rescue => error
+      Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
+      return false, error
+    end
+    return true, nil
+  end
+
+  def unset_reseller
+    begin
+      connection.delete(element_path + '/reseller',TocatOrder.headers)
+    rescue => error
+      Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
+      return false, error
+    end
+    return true, nil
+  end
+
   def issues
     issues = []
     budgets = {}

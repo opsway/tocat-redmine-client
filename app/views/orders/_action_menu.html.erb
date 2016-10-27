@@ -21,6 +21,13 @@
         <% end %>
     <% end %>
   <% end %>
+  <% unless @order.completed %>
+    <% if @order.reseller %>
+      <%= link_to l(:button_remove_reseller), order_reseller_path(@order), :data => {:confirm => l(:confirm_reseller_set)}, :method => :delete, :class => 'icon icon-checked' if User.current.tocat_allowed_to?(:reseller_orders) %>
+    <% else %>
+      <%= link_to l(:button_set_reseller), order_reseller_path(@order), :data => {:confirm => l(:confirm_reseller_unset)}, :method => :put, :class => 'icon icon-checked' if User.current.tocat_allowed_to?(:reseller_orders) %>
+    <% end %>
+  <% end %>
 
   <a href=<%= order_export_path(@order)%>>
   <i class='fi-page-export-csv medium'> </i>

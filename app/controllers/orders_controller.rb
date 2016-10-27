@@ -160,6 +160,36 @@ class OrdersController < TocatBaseController
     @parent = @order.parent
   end
 
+  def set_reseller
+    status, payload = @order.set_reseller
+    if status
+      respond_to do |format|
+        flash[:notice] = l(:message_reseller_order_set)
+        format.html { redirect_back_or_default({ :action => 'show', id: @order })}
+      end
+    else
+      respond_to do |format|
+        flash[:error] = l(:message_reseller_order_failed)
+        format.html { redirect_back_or_default({ :action => 'show', id: @order })}
+      end
+    end
+  end
+
+  def unset_reseller
+    status, payload = @order.unset_reseller
+    if status
+      respond_to do |format|
+        flash[:notice] = l(:message_reseller_order_unset)
+        format.html { redirect_back_or_default({ :action => 'show', id: @order })}
+      end
+    else
+      respond_to do |format|
+        flash[:error] = l(:message_reseller_order_failed)
+        format.html { redirect_back_or_default({ :action => 'show', id: @order })}
+      end
+    end
+  end
+
   def set_invoice
     begin
       status, errors = @order.set_invoice(params[:invoice_id].to_i)
