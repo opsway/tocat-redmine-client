@@ -9,7 +9,7 @@
                          :maxlength => 255, :required => true %>
       </p>
       <p><%= label_tag :user %> <%= select_tag :user_id, options_for_select( @users.collect {|t| [t.name, t.id]}), {:include_blank => true, :required => true} %></p>
-      <p><%= label_tag :total %><%= number_field_tag :total, '',:class => 'total', :min => 0, :max => 0, :required => true, :style => 'width:80px' %></p>
+      <p><%= label_tag :total %><%= number_field_tag :total, '',:class => 'total', :min => 0, :max => 0, :required => true, :style => 'width:80px', :placeholder => '99.99' %></p>
     </div>
   </fieldset>
 </div>
