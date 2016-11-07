@@ -23,9 +23,9 @@
   <% end %>
   <% unless @order.completed %>
     <% if @order.reseller %>
-      <%= link_to l(:button_remove_reseller), order_reseller_path(@order), :data => {:confirm => l(:confirm_reseller_set)}, :method => :delete, :class => 'icon icon-checked' if User.current.tocat_allowed_to?(:reseller_orders) %>
+      <%= link_to l(:button_remove_reseller), order_reseller_path(@order), :data => {:confirm => l(:confirm_reseller_set)}, :method => :delete, :class => 'fi-arrow-down' %>
     <% else %>
-      <%= link_to l(:button_set_reseller), order_reseller_path(@order), :data => {:confirm => l(:confirm_reseller_unset)}, :method => :put, :class => 'icon icon-checked' if User.current.tocat_allowed_to?(:reseller_orders) %>
+      <%= link_to l(:button_set_reseller), order_reseller_path(@order), :data => {:confirm => l(:confirm_reseller_unset)}, :method => :put, :class => 'fi-arrow-up' if User.current.tocat_allowed_to?(:set_reseller_orders) %>
     <% end %>
   <% end %>
 

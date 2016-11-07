@@ -26,8 +26,8 @@ class TocatRole < ActiveResource::Base
     paths[:orders][:update] = :edit_orders
     paths[:orders][:destroy] = :destroy_orders
     paths[:orders][:toggle_complete] = :complete_orders
-    paths[:orders][:set_reseller] = :reseller_orders
-    paths[:orders][:unset_reseller] = :reseller_orders
+    paths[:orders][:set_reseller] = :set_reseller_orders
+    paths[:orders][:unset_reseller] = :unset_reseller_orders
     paths[:orders][:set_internal] = :set_internal_orders
     paths[:orders][:remove_internal] = :remove_internal_orders
     paths[:orders][:commission] = :update_commission
@@ -143,7 +143,7 @@ class TocatRole < ActiveResource::Base
 
   def self.permissions #load from config?
     data = {}
-    data[:orders] = [:create_orders, :show_orders, :edit_orders, :destroy_orders, :complete_orders, :set_internal_orders, :remove_internal_orders, :show_commission, :update_commission, :reseller_orders]
+    data[:orders] = [:create_orders, :show_orders, :edit_orders, :destroy_orders, :complete_orders, :set_internal_orders, :remove_internal_orders, :show_commission, :update_commission, :set_reseller_orders, :unset_reseller_orders]
     data[:invoices] = [:create_invoices, :show_invoices, :destroy_invoices, :paid_invoices, :view_all_invoices]
     data[:issues] = [:modify_accepted, :modify_resolver, :modify_budgets, :show_budgets, :show_issues, :show_aggregated_info, :can_request_review, :can_review_task, :set_expenses, :remove_expenses]
     data[:transactions] = [:show_transactions, :create_transactions]
