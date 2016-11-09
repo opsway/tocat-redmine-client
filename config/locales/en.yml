@@ -203,6 +203,12 @@ en:
   activate_user: 'Activate User'
   deactivate_user: 'Deactivate User'
   label_completed: 'Completed'
+  label_user_team: 'Team'
+  label_user_role: 'Role'
+  label_user_status: 'Status'
+  label_search_user: 'Search by Name'
+  label_active_user: 'Active'
+  label_inactive_user: 'Inactive'
   #teams
   label_teams_plural: 'Teams'
   label_team_new: 'New Team'
@@ -305,3 +311,4 @@ en:
   label_def_money: 'Default Money account. '
   label_def_payroll: 'Default Payroll account. '
   label_usd: 'USD'
+  label_total_summary: 'Check you summary Total + Commission 1% but not less than 5$'

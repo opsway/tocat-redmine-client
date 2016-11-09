@@ -6,6 +6,16 @@
   - if User.current.tocat_allowed_to? :create_user
     = link_to l(:label_user_new), new_tocat_user_path, class: 'icon icon-add'
 h2= l(:label_users_plural)
+
+= form_tag("/tocat/users", method: "get") do 
+  = hidden_field_tag 'set_filter', '1' 
+  fieldset#filters.collapsible
+    legend onclick="toggleFieldset(this);"= l(:label_filter_plural)
+    div
+      = render :partial => 'tocat_users/filter'
+      = submit_tag(l(:button_apply))
+      = link_to l(:button_clear), { :set_filter => 1 }, :class => 'icon icon-reload' 
+    hr
 .autoscroll
   table.list
     thead
