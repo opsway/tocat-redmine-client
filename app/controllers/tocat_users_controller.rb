@@ -10,6 +10,8 @@ class TocatUsersController < TocatBaseController
     query_params = {anyuser: true}
     query_params[:limit] = params[:per_page] if params[:per_page].present?
     query_params[:page] = params[:page] if params[:page].present?
+    query_params[:search] = params[:search] if params[:search].present?
+    query_params[:search] = "#{query_params[:search]} active == #{params[:active]}" if params[:active].present?
 
     @users = TocatUser.all(params: query_params)
     @users_count = @users.http_response['X-total'].to_i

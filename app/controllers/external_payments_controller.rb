@@ -25,7 +25,7 @@ class ExternalPaymentsController < TocatBaseController
   
   def new
     @payment_request = PaymentRequest.new
-    @payment_request.description = "Please describe: &#13;&#10; - receiving party (First Name/Last Name) &#13;&#10; - method of payment (Credit Card, Payoneer, etc) &#13;&#10; - details of payment (for example, credit card number); &#13;&#10; any other comments that can help accounting unit to process payment correctly".html_safe
+    #@payment_request.description = "Please describe: &#13;&#10; - receiving party (First Name/Last Name) &#13;&#10; - method of payment (Credit Card, Payoneer, etc) &#13;&#10; - details of payment (for example, credit card number); &#13;&#10; any other comments that can help accounting unit to process payment correctly".html_safe
   end
   
   def show
