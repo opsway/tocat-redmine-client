@@ -15,7 +15,7 @@ class PaymentRequest < ActiveResource::Base
   end
   STATUSES = %w(new completed canceled)
   def self.min_status(user = User.current)
-    STATUSES
+    'new'
   end
 
   %w(cancel complete).each do |m|

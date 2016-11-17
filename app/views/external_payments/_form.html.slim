@@ -13,10 +13,25 @@
       /= f.label targets.first.try :[], 'name'
       = f.hidden_field :source_account_id, value: targets.first.try(:[],'id')
     = f.label :total, l(:label_total)
-    = f.text_field :total, size: 10, maxlength: 10, style: "width: auto", placeholder: '9999.99'
+    = f.text_field :total, id: "total", size: 10, maxlength: 10, style: "width: auto", placeholder: '9999.99'
     = l(:label_usd)
+    input id="total_with_comission" size=10 maxlength=10 style="width: auto" readonly=true
+    = l(:label_amount_deducted)
     br
     = f.label :description, l(:label_description), style: "vertical-align: top"
     = f.text_area :description, rows: 12, cols: 50, placeholder: "Please describe: \n - receiving party (First Name/Last Name) \n - method of payment (Credit Card, Payoneer, etc) \n - details of payment (for example, credit card number) \n any other comments that can help accounting unit to process payment correctly"
     br
     = f.submit 'Save'
+
+javascript:
+  jQuery.noConflict()( document ).ready(function() {
+  jQuery.noConflict()('#total').on('keyup', function() {
+    var total = jQuery.noConflict()('#total').val();
+    var comission = total * 1.0 / 100
+    if (comission < 5.0) {
+      comission = 5.0;
+    }
+    var total_with_comission = (total * 1 + comission).toFixed(2);
+    jQuery.noConflict()('#total_with_comission').val(total_with_comission)
+      });
+  });
