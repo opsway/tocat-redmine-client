@@ -9,7 +9,7 @@
                          :maxlength => 255, :required => true %>
       </p>
       <p><%= label_tag :user %> <%= hidden_field_tag 'user_id', params[:user_id] %> <%= TocatUser.find(params[:user_id]).name %></p>
-      <p><%= label_tag :total %><%= number_field_tag :total, '',:class => 'total', :required => true, :style => 'width:80px', :placeholder => '99.99' %></p>
+      <p><%= label_tag :total %><%= number_field_tag :total, '',:step => 0.01, :class => 'total', :required => true, :style => 'width:80px', :placeholder => '99.99' %></p>
     </div>
   </fieldset>
 </div>
