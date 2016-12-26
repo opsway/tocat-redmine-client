@@ -1,6 +1,7 @@
 class TicketsController < TocatBaseController
   unloadable
   before_filter :check_action
+  before_filter :find_ticket, only: [:destroy]
 
 
   def index
@@ -121,5 +122,17 @@ class TicketsController < TocatBaseController
     end
     @issue_pages = Paginator.new self, @issue_count, @limit, params['page']
   end
+
+  def destroy
+    begin
+      @ticket.destroy
+      flash[:notice] = l(:message_issue_delete)
+      redirect_to :back
+    end
+  end
   private
+
+  def find_ticket
+    @ticket = TocatTicket.find(params[:id])
+  end
 end

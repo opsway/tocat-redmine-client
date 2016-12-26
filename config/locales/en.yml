@@ -94,6 +94,8 @@ en:
   label_resolver: 'Resolver'
   label_reseller: 'Reseller'
   label_accepted_issues: "Accepted & NOT paid tickets:"
+  message_issue_delete: "Issue has been deleted successfully!"
+  label_action: "Action"
   label_not_accepted_issues: "Not accepted tickets:"
   field_accepted: "Accepted"
   field_reseller: 'Reseller'
@@ -176,6 +178,7 @@ en:
   show_activity_feed: 'Show objects history'
   can_request_review: 'Can request issue review'
   can_review_task: 'Can review issues'
+  delete_task: "Delete Issue"
   #activity
   field_budget_update: 'Budgets'
   field_resolver_update: 'Resolver'

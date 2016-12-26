@@ -158,10 +158,12 @@ class TocatOrder < ActiveResource::Base
                                  subject: issue.try(:subject)||task.external_id,
                                  expenses: task.expenses,
                                  accepted: task.accepted,
-                                 paid: task.paid
+                                 paid: task.paid,
+                                 issue_id: task.id
                                )
       else
         issues << OpenStruct.new( id: task.external_id,
+                                  issue_id: task.id,
                                   project: nil,
                                   budget: budgets[task.id],
                                   resolver: resolver,
