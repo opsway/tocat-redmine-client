@@ -24,6 +24,11 @@ h2= l(:label_payment_request)
     strong = l :label_payment_state
     ':    
     = @payment_request.status
+  p
+    strong = l :label_payment_attahment
+    ':
+    - if @payment_request.file_url.present?
+      = link_to @payment_request.file_name,  @payment_request.file_url
 
   p 
     - tocat_id = User.current.try(:tocat).try(:id)
@@ -34,7 +39,7 @@ h2= l(:label_payment_request)
       br
       -if tocat_allow?(:cancel_payment_request) && Account.linked_ids.include?(@payment_request.source_account.id)
         = link_to l(:cancel_payment_request), cancel_external_payment_path(@payment_request)
-      br
+
   h3 History
   p
     ul

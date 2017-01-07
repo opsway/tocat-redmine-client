@@ -12,6 +12,8 @@ class PaymentRequest < ActiveResource::Base
     attribute 'salary_account_id', :integer
     attribute 'bonus', :boolean
     attribute 'source_account_id', :decimal
+    attribute 'file', :text
+    attribute 'file_name', :string
   end
   STATUSES = %w(new completed canceled)
   def self.min_status(user = User.current)

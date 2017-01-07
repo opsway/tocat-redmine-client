@@ -178,7 +178,7 @@ en:
   show_activity_feed: 'Show objects history'
   can_request_review: 'Can request issue review'
   can_review_task: 'Can review issues'
-  delete_task: "Delete Issue"
+  delete_task: 'Delete Issue'
   #activity
   field_budget_update: 'Budgets'
   field_resolver_update: 'Resolver'
@@ -279,6 +279,7 @@ en:
   label_payment_dispatch_target: 'Dispatched to'
   label_new_payment_request: 'New'
   label_new_external_payment: 'New External Payment'
+  label_payment_attahment: 'Attachment'
   pay_in_cash_bank: 'Pay in Cash/Bank'
   label_tocat_zoholink: 'Zoho link for chart'
   create_account: 'Create Account'

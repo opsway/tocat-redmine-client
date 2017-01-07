@@ -33,6 +33,8 @@ class ExternalPaymentsController < TocatBaseController
   
   def create
     begin
+      prepare_base64_file_params
+
       @payment_request = PaymentRequest.new params[:payment_request]
       if @payment_request.save
         flash[:notice] = l(:notice_successful_create)
@@ -50,6 +52,7 @@ class ExternalPaymentsController < TocatBaseController
 
   def update
     begin
+      prepare_base64_file_params
       if @payment_request.update_attributes(params[:payment_request])
         flash[:notice] = l(:notice_payment_request_successful_update)
         redirect_to :action => 'index'
@@ -78,4 +81,17 @@ class ExternalPaymentsController < TocatBaseController
       logger.info e.message
     end
   end
+
+  def prepare_base64_file_params
+    if params[:payment_request].present? && params[:payment_request][:file].present?
+    file = params[:payment_request][:file]
+    filename = File.basename(file.path)
+    content_type = MIME::Types.type_for(filename).first.content_type
+    base64_image = Base64.encode64(File.read(file.path))
+    params[:payment_request][:file] = "data:#{content_type};base64,#{base64_image}"
+    params[:payment_request][:file_name] = file.original_filename
+  end
+
+end
+
 end
