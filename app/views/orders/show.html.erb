@@ -137,7 +137,7 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
   <div id="tasks_tree">
     <!-- <div class="contextual"><%#= link_to l(:button_add), '' if User.current.tocat_allowed_to?(:manage_budgets) %></div> -->
     <p><strong><%=l(:label_issue_plural)%></strong></p>
-    <%= render :partial => 'issues', locals: {issues: @order.issues } if @order.tasks.present? %>
+    <%= render :partial => 'issues', locals: {issues: @order.issues, order: @order } if @order.tasks.present? %>
   </div>
   <% if User.current.tocat_allowed_to?(:show_activity_feed) %>
     <% activities = @order.activity %>

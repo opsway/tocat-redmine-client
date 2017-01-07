@@ -6,7 +6,10 @@
       <td><%= l(:label_tocat_expenses) %></td>
       <td><%= l(:label_accepted) %></td>
       <td><%= l(:label_resolver) %></td>
-      <td><%= l(:label_action) %></td>
+
+      <% if User.current.tocat_allowed_to?(:delete_task) %>
+          <td><%= l(:label_action) %></td>
+      <% end %>
     </tr>
   </thead>
   <tbody>
@@ -34,12 +37,15 @@
           <%= link_to issue.resolver.name, {:controller => 'tocat', :action => 'my_tocat', :user_id => issue.resolver.id}%>
         <% end %>
       </td>
-      <td class = 'delete issue'>
-            <%= link_to 'Delete',  { controller: 'tickets', action: :destroy, id: issue.issue_id },
-                        method: :delete,
-                        class: 'icon icon-del btn button',
-                        data: { confirm: 'Are you sure that you want delete it?' } %>
-      </td>
+      <% if User.current.tocat_allowed_to?(:delete_task) %>
+          <td class = 'delete issue'>
+
+                <%= link_to 'Delete',  { controller: 'orders', action: :delete_task, id: order.id, task_id: issue.issue_id },
+                            method: :delete,
+                            class: 'icon icon-del btn button',
+                            data: { confirm: 'Are you sure that you want delete it?' } %>
+          </td>
+      <% end %>
     </tr>
     <% end %>
   </tbody>

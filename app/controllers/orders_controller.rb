@@ -259,6 +259,24 @@ class OrdersController < TocatBaseController
     end
   end
 
+  def delete_task
+    begin
+      status, errors = @order.delete_task(params[:task_id])
+    rescue ActiveResource::ResourceNotFound
+    end
+    if status
+      respond_to do |format|
+        flash[:notice] = l(:message_issue_delete)
+        format.html { redirect_back_or_default({:action => 'show', id: @order})}
+      end
+    else
+      respond_to do |format|
+        flash[:error] = JSON.parse(errors.response.body)['errors'].join(', ')
+        format.html { redirect_back_or_default({:action => 'show', id: @order})}
+      end
+    end
+  end
+
   def invoices
     @invoices = TocatInvoice.find(:all, params: { search: "paid = 0" })
     return render template: 'orders/invoice_dialog'

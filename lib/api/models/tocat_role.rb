@@ -22,6 +22,7 @@ class TocatRole < ActiveResource::Base
     paths[:orders][:invoices] = :create_invoices
     paths[:orders][:set_invoice] = :create_invoices
     paths[:orders][:delete_invoice] = :create_invoices
+    paths[:orders][:delete_task] = :delete_task
     paths[:orders][:edit] = :edit_orders
     paths[:orders][:update] = :edit_orders
     paths[:orders][:destroy] = :destroy_orders
@@ -66,7 +67,6 @@ class TocatRole < ActiveResource::Base
 
     paths[:tickets] = {}
     paths[:tickets][:index] = :show_issues
-    paths[:tickets][:destroy] = :delete_task
 
     paths[:status] = {}
     paths[:status][:status] = :show_status_page
@@ -145,9 +145,9 @@ class TocatRole < ActiveResource::Base
 
   def self.permissions #load from config?
     data = {}
-    data[:orders] = [:create_orders, :show_orders, :edit_orders, :destroy_orders, :complete_orders, :set_internal_orders, :remove_internal_orders, :show_commission, :update_commission, :set_reseller_orders, :unset_reseller_orders]
+    data[:orders] = [:create_orders, :show_orders, :edit_orders, :destroy_orders, :complete_orders, :set_internal_orders, :remove_internal_orders, :show_commission, :update_commission, :set_reseller_orders, :unset_reseller_orders, :delete_task]
     data[:invoices] = [:create_invoices, :show_invoices, :destroy_invoices, :paid_invoices, :view_all_invoices]
-    data[:issues] = [:modify_accepted, :modify_resolver, :modify_budgets, :show_budgets, :show_issues, :show_aggregated_info, :can_request_review, :can_review_task, :set_expenses, :remove_expenses, :delete_task]
+    data[:issues] = [:modify_accepted, :modify_resolver, :modify_budgets, :show_budgets, :show_issues, :show_aggregated_info, :can_request_review, :can_review_task, :set_expenses, :remove_expenses]
     data[:transactions] = [:show_transactions, :create_transactions]
     data[:dashboard] = [:show_tocat_page, :has_protected_page, :can_see_public_pages, :is_admin, :show_status_page, :mark_alerts_as_checked, :show_activity_feed]
     data[:users] = [:create_user, :update_user, :activate_user, :deactivate_user, :correct_balance_salary_check]

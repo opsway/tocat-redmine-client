@@ -215,6 +215,16 @@ class TocatOrder < ActiveResource::Base
     return true, nil
   end
 
+  def delete_task(task_id)
+    begin
+      connection.delete("#{self.class.prefix}/order/#{self.id}/delete_task?task_id=#{task_id}",TocatOrder.headers)
+    rescue => error
+      Rails.logger.info "\e[31mException in Tocat. #{error.message}, #{error.backtrace.first}\e[0m"
+      return false, error
+    end
+    return true, nil
+  end
+
   def get_invoice
     unless invoice.attributes.empty?
       return TocatInvoice.find(invoice.id)

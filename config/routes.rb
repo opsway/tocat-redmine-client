@@ -22,7 +22,9 @@ end
 resources :tocat_teams, path: '/tocat/teams' do
   delete :makeactive, on: :member
 end
-resources :orders, path: '/tocat/orders'
+resources :orders, path: '/tocat/orders' do
+  delete :delete_task, on: :member
+end
 resources :tickets, path: '/tocat/issues'
 resources :tocat_roles, path: '/tocat/roles'
 resources :transactions, path: '/tocat/transactions'
