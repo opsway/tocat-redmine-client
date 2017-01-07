@@ -7,7 +7,7 @@
       <td><%= l(:label_accepted) %></td>
       <td><%= l(:label_resolver) %></td>
 
-      <% if User.current.tocat_allowed_to?(:delete_task) %>
+      <% if User.current.tocat_allowed_to?(:delete_task) && !@order.completed %>
           <td><%= l(:label_action) %></td>
       <% end %>
     </tr>
@@ -37,7 +37,7 @@
           <%= link_to issue.resolver.name, {:controller => 'tocat', :action => 'my_tocat', :user_id => issue.resolver.id}%>
         <% end %>
       </td>
-      <% if User.current.tocat_allowed_to?(:delete_task) %>
+      <% if User.current.tocat_allowed_to?(:delete_task) && !@order.completed %>
           <td class = 'delete issue'>
 
                 <%= link_to 'Delete',  { controller: 'orders', action: :delete_task, id: order.id, task_id: issue.issue_id },

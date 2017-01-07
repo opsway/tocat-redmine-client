@@ -18,15 +18,17 @@ hr/
     tbody
       - @user_tocat.all_accounts.each do |a|
         tr
-          td= a.name
-          td= a.account_type
-          td
+          td align="center"
+            = a.name
+          td align="center"
+            = a.account_type
+          td align="center"
             - if @user_tocat.coach && User.current.tocat.id == @user_tocat.id && a.account_type == 'money'
               a#zoho data-src="https://reports.zoho.com/ZDBDataSheetView.cc?OBJID=1030771000000199155&STANDALONE=true&WIDTH=800&HEIGHT=600&INTERVAL=-1&REMTOOLBAR=true&INCLUDETITLE=false&INCLUDEDESC=false&ZOHO_CRITERIA=%22FTOCAT%20-%20Money%20account%20transactions%22.%22User%20login%22%3D%27ansam" onClick='check_zoho()' Check in ZohoReports 
               #dialog.hidden
             - else
               = a.balance
-          td
+          td align="center"
             - if a.account_type == 'payroll' && (User.current.tocat.all_accounts.map(&:id).include?(a.id) || Account.linked.map{|a| a['id']}.include?(a.id))&&(a.balance.to_f > 0)
               = link_to l(:label_withdraw), withdraw_tocat_internal_invoices_path(id: a.id)
             - if a.account_type == 'money' 

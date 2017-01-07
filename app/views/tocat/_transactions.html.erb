@@ -13,9 +13,9 @@
           <tbody>
           <% transactions.first(10).each do |t|%>
               <tr class="<%= cycle("odd", "even") %>">
-                <td> <%= Time.parse(t.date)%> </td>
-                <td> <%= t.comment%> </td>
-                <td nowrap> <%= t.total%> </td>
+                <td align="center"> <%= Time.parse(t.date)%> </td>
+                <td align="center"> <%= t.comment%> </td>
+                <td align="center" nowrap> <%= t.total%> </td>
               </tr>
           <% end %>
           </tbody>

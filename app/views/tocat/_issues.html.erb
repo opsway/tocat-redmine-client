@@ -12,10 +12,10 @@
       <tbody>
         <% issues.last(10).each do |i|%>
         <tr class="<%= cycle("odd", "even") %>">
-          <td><%= link_to i.project, project_path(i.project_id) %> </td>
-          <td><%= link_to i.id, issue_path(i.id) %> </td>
-          <td><%= link_to truncate(i.subject, :length => 50, :omission => '...'), issue_path(i.id) %> </td>
-          <td nowrap><%= i.budget %> </td>
+          <td align="center"><%= link_to i.project, project_path(i.project_id) %> </td>
+          <td align="center"><%= link_to i.id, issue_path(i.id) %> </td>
+          <td align="center"><%= link_to truncate(i.subject, :length => 50, :omission => '...'), issue_path(i.id) %> </td>
+          <td align="center" nowrap><%= i.budget %> </td>
         </tr>
         <% end %>
       </tbody>
