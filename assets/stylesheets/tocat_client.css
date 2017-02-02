@@ -3,38 +3,149 @@
 }
 
 a.fi-arrows-in.green{
-    color: green !important;
+  color: green !important;
 }
 a.fi-arrows-out.red{
-    color: red;
+  color: red;
 }
 .box.users label{
-    min-width: 7%;
-    display: inline-block;
+  min-width: 7%;
+  display: inline-block;
 }
 .box.users input{
-    width: 30%;
+  width: 30%;
 }
 
 .box.users select{
-    width: 20%;
+  width: 20%;
 }
 
- .tocat-button {
-    background-color: #e7e7e7; /* Green */
-    border: none;
-    color: black !important;
-    padding: 10px 22px;
-    text-align: center;
+a.button1:active {
+  top: 1px;
+  box-shadow: none;
+}
+a.button1:hover {
+  transition: .5s linear;
+  background-position: -200% 0, 0 0;
+}
+
+.tocat-button {
+  display: inline-block;
+  padding: 0.25em 0.4em;
+  font-size: 75%;
+  font-weight: bold;
+  line-height: 1;
+  color: #000;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+  float: right;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.25em 0.4em;
+  font-size: 75%;
+  font-weight: bold;
+  line-height: 1;
+  color: #000;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+}
+
+.tocat-info {
+    background-color: #5bc0de;
+}
+
+.tocat-info[href]:focus, .tocat-info[href]:hover {
+    background-color: #31b0d5;
+}
+
+.tocat-button-pill {
+    padding-right: 0.6em;
+    padding-left: 0.6em;
+    border-radius: 10rem;
+}
+
+a.tocat-button:focus, a.tocat-button:hover {
+    color: #fff;
     text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    float: right;
-    margin: 5px;
-    border-radius: 5px;
+    cursor: pointer;
 }
 
-/* 
+.badge:empty {
+  display: none;
+}
+
+.btn .badge {
+  position: relative;
+  top: -1px;
+}
+
+a.badge:focus, a.badge:hover {
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.badge-pill {
+  padding-right: 0.6em;
+  padding-left: 0.6em;
+  border-radius: 10rem;
+}
+
+.badge-default {
+  background-color: #636c72;
+}
+
+.badge-default[href]:focus, .badge-default[href]:hover {
+  background-color: #4b5257;
+}
+
+.badge-primary {
+  background-color: #0275d8;
+}
+
+.badge-primary[href]:focus, .badge-primary[href]:hover {
+  background-color: #025aa5;
+}
+
+.badge-success {
+  background-color: #5cb85c;
+}
+
+.badge-success[href]:focus, .badge-success[href]:hover {
+  background-color: #449d44;
+}
+
+.badge-info {
+  background-color: #5bc0de;
+}
+
+.badge-info[href]:focus, .badge-info[href]:hover {
+  background-color: #31b0d5;
+}
+
+.badge-warning {
+  background-color: #f0ad4e;
+}
+
+.badge-warning[href]:focus, .badge-warning[href]:hover {
+  background-color: #ec971f;
+}
+
+.badge-danger {
+  background-color: #d9534f;
+}
+
+.badge-danger[href]:focus, .badge-danger[href]:hover {
+  background-color: #c9302c;
+}
+
+/*
  * Foundation Icons v 3.0
  * Made by ZURB 2013 http://zurb.com/playground/foundation-icon-fonts-3
  * MIT License
@@ -44,9 +155,9 @@ a.fi-arrows-out.red{
   font-family: "foundation-icons";
   src: url("foundation-icons.eot");
   src: url("foundation-icons.eot?#iefix") format("embedded-opentype"),
-       url("foundation-icons.woff") format("woff"),
-       url("foundation-icons.ttf") format("truetype"),
-       url("foundation-icons.svg#fontcustom") format("svg");
+  url("foundation-icons.woff") format("woff"),
+  url("foundation-icons.ttf") format("truetype"),
+  url("foundation-icons.svg#fontcustom") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -630,10 +741,10 @@ a.fi-arrows-out.red{
 .fi-zoom-out:before { content: "\f21a"; }
 
 .fi-lock.green.medium {
-    font-size: 1.1rem;
-    color: green;
+  font-size: 1.1rem;
+  color: green;
 }
 .fi-unlock.red.medium {
-    font-size: 1.1rem;
-    color: red;
+  font-size: 1.1rem;
+  color: red;
 }

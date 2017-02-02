@@ -44,7 +44,7 @@
     </div>
     <% end %>
 
-    <h1>TOCAT</h1>
+    <h1 class="tocat-title"><%= link_to 'TOCAT', { :controller => 'tocat', :action => 'my_tocat' } %></h1>
 
     <div id="main-menu">
       <%= render_menu(:tocat_menu)%>
