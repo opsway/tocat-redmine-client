@@ -42,7 +42,7 @@ class InternalInvoicesController < TocatBaseController
     end
     return redirect_back_or_default({:action => 'show', id: @transfer_request.id})
   end
-  
+
   def destroy
     begin
       if @transfer_request.destroy
@@ -86,7 +86,12 @@ class InternalInvoicesController < TocatBaseController
   private
   
   def find_request
-    @transfer_request = TransferRequest.find(params[:id])
+    begin
+      @transfer_request = TransferRequest.find(params[:id])
+    rescue ActiveResource::ResourceNotFound
+      flash[:error] = l(:notice_internal_invoice_was_canceled)
+      return redirect_to({:action => 'index'})
+    end
   end
 
 end

@@ -239,6 +239,7 @@ en:
   label_pay_status: 'Status'
   label_new_transfer_request: 'New Internal Invoice'
   notice_transfer_request_successful_created: 'Internal Invoice created'
+  notice_internal_invoice_was_canceled: 'Internal invoice has been canceled and now does not exist!'
   actions: 'Actions'
   label_transfer_request: 'Internal Invoice'
   label_transfer_state: 'State'
