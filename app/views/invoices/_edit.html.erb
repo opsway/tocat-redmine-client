@@ -24,6 +24,5 @@
       </fieldset>
     </div>
     <%= submit_tag l(:button_submit) %>
-    | <%= link_to l(:button_cancel), {},
-                    :onclick => "jQuery.noConflict()('#update').hide(); return false;" %>
+    | <%= link_to l(:button_cancel), {controller: :invoices, action: :index} %>
 <% end %>

@@ -14,8 +14,7 @@
   </fieldset>
 </div>
 <%= submit_tag l(:button_submit) %>
-| <%= link_to l(:button_cancel), {},
-                :onclick => "jQuery.noConflict()('#update').hide(); return false;" %>
+| <%= link_to l(:button_cancel), {controller: :transactions, action: :index} %>
 <% end %>
 
 <%= hidden_field_tag 'users', @users_data.as_json %>
