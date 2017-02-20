@@ -222,6 +222,7 @@ en:
   deactivate_team: 'Deactivate Team'
   label_default_commission: 'Default Commission '
   #balance transfers
+  notice_balance_transfer_successful_create: 'Internal payment created!'
   view_transfers: 'View Internal Payments'
   create_transfer: 'New'
   label_transfers: 'Internal Payments'
@@ -267,6 +268,7 @@ en:
   label_id: 'Id'
   label_payment_state: 'Status'
   notice_payment_request_successful_update: 'External Payment was updated'
+  notice_payment_request_successful_create: 'External payment created!'
   label_currency: 'Currency'
   payment_request_cancel_success: 'External Payment was canceled'
   payment_request_approve_success: 'External Payment was approved'

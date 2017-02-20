@@ -24,7 +24,7 @@ class InternalPaymentsController < TocatBaseController
     begin
       @balance_transfer = TocatBalanceTransfer.new(params[:tocat_balance_transfer])
       if @balance_transfer.save
-        flash[:notice] = l(:notice_successful_create)
+        flash[:notice] = l(:notice_balance_transfer_successful_create)
         redirect_to :action => 'index'
       else
         render :action => 'new'

@@ -26,6 +26,15 @@ class PaymentRequest < ActiveResource::Base
     end
   end
 
+  def self.pay_in_full(account_id)
+    begin
+      name = JSON.parse(connection.post("/#{collection_name}/pay_in_full",{account_id: account_id}.to_json, TocatUser.headers).body)['name']
+      return name, nil
+    rescue => e
+      return false, e.message
+    end
+  end
+
   def self.available_source
     TocatUser.find(:all, params: {limit: 10000}).map{|u| [u.name, u.email]}
   end
