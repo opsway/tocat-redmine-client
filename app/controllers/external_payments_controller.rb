@@ -2,7 +2,7 @@
 class ExternalPaymentsController < TocatBaseController
   unloadable
   before_filter :check_action
-  before_filter :find_request, except: [:index,:create,:new,:salary_checkin, :pay_in_cash, :pay_in_full]
+  before_filter :find_request, except: [:index,:create,:new,:salary_checkin, :pay_in_cash] #, :pay_in_full]
   around_filter :process_errors_and_render, only: [:approve, :cancel, :reject, :complete]
 
   # def pay_in_full

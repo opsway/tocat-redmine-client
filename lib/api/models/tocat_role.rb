@@ -121,7 +121,7 @@ class TocatRole < ActiveResource::Base
     paths[:external_payments][:create]  = :create_payment_request
     paths[:external_payments][:complete]= :complete_payment_request
     paths[:external_payments][:cancel]  = :cancel_payment_request
-    paths[:external_payments][:pay_in_full]  = :create_payment_request
+    # paths[:external_payments][:pay_in_full]  = :create_payment_request
 
     #accounts
     paths[:accounts] = {}
