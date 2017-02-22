@@ -5,15 +5,15 @@ class ExternalPaymentsController < TocatBaseController
   before_filter :find_request, except: [:index,:create,:new,:salary_checkin, :pay_in_cash, :pay_in_full]
   around_filter :process_errors_and_render, only: [:approve, :cancel, :reject, :complete]
 
-  def pay_in_full
-    payment_request = PaymentRequest.pay_in_full params[:account_id]
-    if payment_request.present?
-      flash[:notice] = l(:notice_payment_request_successful_create)
-    else
-      flash[:notice] = t('Failed with: ', error: error)
-    end
-    return redirect_back_or_default(action: 'my_tocat', controller: 'tocat')
-  end
+  # def pay_in_full
+  #   payment_request = PaymentRequest.pay_in_full params[:account_id]
+  #   if payment_request.present?
+  #     flash[:notice] = l(:notice_payment_request_successful_create)
+  #   else
+  #     flash[:notice] = t('Failed with: ', error: error)
+  #   end
+  #   return redirect_back_or_default(action: 'my_tocat', controller: 'tocat')
+  # end
 
   def index
     query_params = {}

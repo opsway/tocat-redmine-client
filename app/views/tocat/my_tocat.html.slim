@@ -34,8 +34,8 @@ hr/
             - if a.account_type == 'money' 
               - if @user_tocat.coach || a.balance.to_f > 0
                 = link_to l(:label_pay), new_external_payment_path(account_id: a.id)
-                ||
-                = link_to 'Pay in full', pay_in_full_tocat_external_payments_path(account_id: a.id)
+                /||
+                /= link_to 'Pay in full', pay_in_full_tocat_external_payments_path(account_id: a.id)
                 br
                 = link_to l(:label_transfer), new_internal_payment_path(source_account_id: a.id)
 

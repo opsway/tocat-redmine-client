@@ -81,7 +81,7 @@ resources :external_payments, path: 'tocat/external_payments', only: [:index, :s
   end
     get 'pay_in_cash', on: :collection
     get 'salary_checkin', on: :collection
-    get :pay_in_full, on: :collection, as: :pay_in_full_tocat
+    # get :pay_in_full, on: :collection, as: :pay_in_full_tocat
 end
 
 resources :internal_invoices, path: '/tocat/internal_invoices', only: [:index, :show, :create, :new, :destroy] do
