@@ -74,7 +74,6 @@ class InternalInvoicesController < TocatBaseController
     end
   end
 
-
   def new_withdraw
   end
 
@@ -98,5 +97,4 @@ class InternalInvoicesController < TocatBaseController
       return redirect_to({:action => 'index'})
     end
   end
-
 end
