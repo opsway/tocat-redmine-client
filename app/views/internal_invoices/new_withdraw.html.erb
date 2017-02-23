@@ -2,7 +2,7 @@
   <%= form_tag create_withdraw_internal_invoices_path(account_id: id), :method => :post do %>
       <div class="box">
         <fieldset class="tabular">
-          <legend>New Part Withdraw</legend>
+          <legend>New Withdraw</legend>
           <div id="all_attributes">
             <p><%= label_tag :total %><%= number_field_tag :total, "#{User.current.tocat.payroll_account.balance}",:step => 0.01, :class => 'total', :required => true, :style => 'width:80px', :placeholder => '99.99' %></p>
           </div>
