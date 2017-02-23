@@ -2,15 +2,6 @@ class InternalInvoicesController < TocatBaseController
   unloadable
   before_filter :check_action
   before_filter :find_request, only: [:edit, :update, :show, :destroy, :pay]
-  def withdraw
-    coachName, error = TransferRequest.withdraw params[:id]
-    if coachName.present?
-      flash[:notice] = t(:notice_success_withdraw, coachName: coachName)
-    else 
-      flash[:notice] = t(:withdraw_failed, error: error)
-    end
-    return redirect_back_or_default(action: 'my_tocat', controller: 'tocat')
-  end
 
   def index
     params[:state] ||= 'new'
@@ -81,6 +72,20 @@ class InternalInvoicesController < TocatBaseController
         format.html { render :template => 'transfer_request/new' }
       end
     end
+  end
+
+
+  def new_withdraw
+  end
+
+  def create_withdraw
+    coachName, error = TransferRequest.withdraw params[:account_id], params[:total]
+    if coachName.present?
+      flash[:notice] = t(:notice_success_withdraw, coachName: coachName)
+    else
+      flash[:notice] = t(:withdraw_failed, error: error)
+    end
+    return redirect_back_or_default(action: 'my_tocat', controller: 'tocat')
   end
     
   private

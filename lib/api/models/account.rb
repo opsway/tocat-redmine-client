@@ -37,9 +37,11 @@ class Account < ActiveResource::Base
   def self.linked
     JSON.parse connection.get("/#{collection_name}/linked", TocatUser.headers).body
   end
+
   def self.linked_money
     linked.select{|a| a['account_type'] == 'money'} 
   end
+
   def self.linked_ids
     linked.map{|a| a['id']}
   end

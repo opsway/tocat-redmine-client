@@ -15,9 +15,9 @@ class TransferRequest < ActiveResource::Base
     end
   end
   
-  def self.withdraw(account_id)
+  def self.withdraw(account_id, total)
     begin
-      name = JSON.parse(connection.post("/#{collection_name}/withdraw",{account_id: account_id}.to_json, TocatUser.headers).body)['name']
+      name = JSON.parse(connection.post("/#{collection_name}/withdraw",{account_id: account_id, total: total}.to_json, TocatUser.headers).body)['name']
       return name, nil
     rescue => e
       return false, e.message

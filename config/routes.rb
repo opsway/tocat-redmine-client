@@ -86,5 +86,7 @@ end
 
 resources :internal_invoices, path: '/tocat/internal_invoices', only: [:index, :show, :create, :new, :destroy] do
   get :pay, on: :member
-  get :withdraw, on: :collection, as: :withdraw_tocat
+  get :new_withdraw, on: :collection, as: :new_withdraw
+  post :create_withdraw, as: :create_withdraw, on: :collection
 end
+
