@@ -1,25 +1,27 @@
 - if @error.present?
   = @error
-= error_messages_for @payment_request
+  = error_messages_for @payment_request
 .box.users
   = form_for @payment_request, url: @payment_request.persisted? ? external_payment_path(@payment_request) : external_payments_path do |f|
     /= f.label :target, "#{l(:label_payment_source)}: #{User.current.name}"
     - targets = Account.linked_money
     - if targets.length > 1
       = f.label :target, l(:label_from)
-      = f.select :source_account_id, options_for_select(targets.map{|a| [a['name'],a['id']]}, (@payment_request.source.id rescue nil) || params[:account_id]), required: true
+      = f.select :source_account_id, options_for_select(targets.map{ |a| [a['name'], a['id']] }, (@payment_request.source.id rescue nil) || params[:account_id]), required: true
       br
     - else
       /= f.label targets.first.try :[], 'name'
-      = f.hidden_field :source_account_id, value: targets.first.try(:[],'id')
-    = f.label :total, l(:label_total)
-    = f.text_field :total, id: "total", size: 15, maxlength: 15, style: "width: auto", placeholder: '9999.99'
-    = l(:label_usd)
+      = f.hidden_field :source_account_id, value: targets.first.try(:[], 'id')
+      = f.hidden_field :pay_full, id: "all_money", value: User.current.tocat.money_account.balance
+      = f.label :total, l(:label_total)
+      = f.text_field :total, id: "total", size: 15, maxlength: 15, style: "width: auto", placeholder: '9999.99'
+      = l(:label_usd)
     input id="total_with_comission" size=15 maxlength=15 style="width: auto" readonly=true
     = l(:label_amount_deducted)
+    input type="button" id="pay_full" value="Pay out all I have" style="width: auto" class="btn btn-secondary btn-sm"
     br
     = f.label :description, l(:label_description), style: "vertical-align: top"
-    = f.text_area :description, rows: 12, cols: 50, placeholder: "Please describe: \n - receiving party (First Name/Last Name) \n - method of payment (Credit Card, Payoneer, etc) \n - details of payment (for example, credit card number) \n any other comments that can help accounting unit to process payment correctly"
+    = f.text_area :description, id: "describe", rows: 12, cols: 50, placeholder: "Please describe: \n - receiving party (First Name/Last Name) \n - method of payment (Credit Card, Payoneer, etc) \n - details of payment (for example, credit card number) \n any other comments that can help accounting unit to process payment correctly"
     br
     = f.label :file, l(:label_payment_attahment)
     = f.file_field :file
@@ -27,14 +29,29 @@
     = f.submit 'Save'
 
 javascript:
-  jQuery.noConflict()( document ).ready(function() {
-  jQuery.noConflict()('#total').on('keyup', function() {
-    var total = jQuery.noConflict()('#total').val();
-    var comission = total * 1.0 / 100
-    if (comission < 5.0) {
-      comission = 5.0;
+  jQuery.noConflict()(document).ready(function () {
+
+    function calculate() {
+      var total = jQuery.noConflict()('#total').val();
+      var comission = total * 1.0 / 100;
+      if (comission < 5.0) {
+        comission = 5.0;
+      }
+      return (total * 1 + comission).toFixed(2);
     }
-    var total_with_comission = (total * 1 + comission).toFixed(2);
-    jQuery.noConflict()('#total_with_comission').val(total_with_comission)
-      });
+
+    jQuery.noConflict()('#total').on('keyup', function () {
+      jQuery.noConflict()('#total_with_comission').val(calculate)
+    });
+
+    jQuery.noConflict()('#describe').on('focus', function () {
+      jQuery.noConflict()('#total_with_comission').val(calculate)
+    });
+
+    jQuery.noConflict()('#pay_full').on('click', function () {
+      var all_money = jQuery.noConflict()('#all_money').val();
+      var pay_full = (all_money / (1 + 1 / 100)).toFixed(2);
+      jQuery.noConflict()('#total').val(pay_full);
+      jQuery.noConflict()('#describe').focus();
+    });
   });
