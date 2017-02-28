@@ -10,12 +10,12 @@
       = f.select :source_account_id, options_for_select(targets.map{ |a| [a['name'], a['id']] }, (@payment_request.source.id rescue nil) || params[:account_id]), required: true
       br
     - else
-      /= f.label targets.first.try :[], 'name'
-      = f.hidden_field :source_account_id, value: targets.first.try(:[], 'id')
-      = f.hidden_field :pay_full, id: "all_money", value: User.current.tocat.money_account.balance
-      = f.label :total, l(:label_total)
-      = f.text_field :total, id: "total", size: 15, maxlength: 15, style: "width: auto", placeholder: '9999.99'
-      = l(:label_usd)
+    /= f.label targets.first.try :[], 'name'
+    = f.hidden_field :source_account_id, value: targets.first.try(:[], 'id')
+    = f.hidden_field :pay_full, id: "all_money", value: User.current.tocat.money_account.balance
+    = f.label :total, l(:label_total)
+    = f.text_field :total, id: "total", size: 15, maxlength: 15, style: "width: auto", placeholder: '9999.99'
+    = l(:label_usd)
     input id="total_with_comission" size=15 maxlength=15 style="width: auto" readonly=true
     = l(:label_amount_deducted)
     input type="button" id="pay_full" value="Pay out all I have" style="width: auto" class="btn btn-secondary btn-sm"
