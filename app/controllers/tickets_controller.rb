@@ -13,8 +13,8 @@ class TicketsController < TocatBaseController
     if params[:resolver].present?
       if params[:resolver] === 'false' || params[:resolver] === 'true'
         params[:resolver] == 'true' ?
-          query_params[:search] = "#{query_params[:search]} set? resolver" :
-          query_params[:search] = "#{query_params[:search]} null? resolver"
+            query_params[:search] = "#{query_params[:search]} set? resolver" :
+            query_params[:search] = "#{query_params[:search]} null? resolver"
       else
         query_params[:search] = "#{query_params[:search]} resolver == #{params[:resolver]}"
       end
@@ -44,80 +44,110 @@ class TicketsController < TocatBaseController
     @limit = per_page_option
     @offset = params[:page]
 
-    if (params[:paid].present? || params[:accepted].present? || params[:resolver].present? || params[:budget].present?  || params[:review].present?) &&
-       (params[:project].present? || params[:status].present? || params[:statuses].present?)
-      tasks = TocatTicket.all(params: query_params)
-      tasks = tasks.each_with_object({}){ |c,h| h[c.internal_id.to_i] = { id:c.id, accepted: c.accepted, paid:c.paid, budget:c.budget, resolver:c.get_resolver, review_requested: c.review_requested } }
-      issues = Issue.joins(:project).joins(:status).where(query)
-      @issues = []
-      issues.each do |issue|
-        task = tasks[issue.id]
-        next unless task.present?
-        @issues << OpenStruct.new(
-                    id: issue.id,
-                    project: issue.project,
-                    status: issue.status,
-                    subject: issue.subject,
-                    review: task[:review_requested],
-                    budget: task[:budget],
-                    resolver: task[:resolver],
-                    accepted: task[:accepted],
-                    paid: task[:paid]
-                  )
-      end
-      @issue_count = @issues.count
-      @limit = per_page_option
-      offset_start = (@limit * (@offset.to_i - 1))
-      offset_start = 0 if offset_start < 0
-      @issues = @issues[offset_start..((@limit * @offset.to_i) + @limit)]
-    elsif params[:project].present? || params[:status].present?
-      @limit = per_page_option
-      @issue_count = Issue.where(query).count
-      issues = Issue.joins(:project).joins(:status).where(query).order('created_on desc').limit(@limit).offset(@offset.to_i * @limit.to_i)
-      @issues = []
-      tasks = TocatTicket.all(params: query_params)
-      tasks = tasks.each_with_object({}){ |c,h| h[c.internal_id.to_i] = { id:c.id, accepted: c.accepted, paid:c.paid, budget:c.budget, resolver:c.get_resolver, review_requested: c.review_requested } }
-      query_params[:limit] = 100
-      issues.each do |issue|
-        task = tasks[issue.id]
-        task = {} unless task.present?
-        @issues << OpenStruct.new(
-                    id: issue.id,
-                    project: issue.project,
-                    status: issue.status,
-                    subject: issue.subject,
-                    review: task[:review_requested],
-                    budget: task[:budget],
-                    resolver: task[:resolver],
-                    accepted: task[:accepted],
-                    paid: task[:paid]
-                  )
-      end
+    if filter_tocat_params_present?
+      filter_include_tocat_params(query,query_params)
+    elsif filter_project_or_status_present?
+      filter_by_project_or_status(query,query_params)
     else
-      query_params[:limit] = @limit
-      query_params[:page] = params[:page] if params[:page].present?
-      tasks = TocatTicket.all(params: query_params)
-      @limit = tasks.http_response['X-Per-Page'].to_i
-      @issue_count = tasks.http_response['X-total'].to_i
-      issues = Issue.joins(:project).joins(:status).where(id: tasks.collect(&:internal_id))
-      tasks = tasks.each_with_object({}){ |c,h| h[c.internal_id.to_i] = { id:c.id, accepted: c.accepted, paid:c.paid, budget:c.budget, resolver:c.get_resolver, review_requested: c.review_requested } }
-      @issues = []
-      issues.each do |issue|
-        task = tasks[issue.id]
-        next unless task.present?
-        @issues << OpenStruct.new(
-                    id: issue.id,
-                    project: issue.project,
-                    status: issue.status,
-                    subject: issue.subject,
-                    review: task[:review_requested],
-                    budget: task[:budget],
-                    resolver: task[:resolver],
-                    accepted: task[:accepted],
-                    paid: task[:paid]
-                  )
-      end
+      filter_with_no_params(query_params)
     end
     @issue_pages = Paginator.new self, @issue_count, @limit, params['page']
+  end
+
+  private
+
+  def filter_include_tocat_params(query, query_params)
+    tasks = TocatTicket.all(params: query_params)
+    tasks = tasks.each_with_object({}){ |c,h| h[c.internal_id.to_i] = { id:c.id, accepted: c.accepted, paid:c.paid, budget:c.budget, resolver:c.get_resolver, review_requested: c.review_requested } }
+    issues = Issue.joins(:project).joins(:status).where(query)
+    @issues = []
+    issues.each do |issue|
+      task = tasks[issue.id]
+      next unless task.present?
+      @issues << OpenStruct.new(
+          id: issue.id,
+          project: issue.project,
+          status: issue.status,
+          subject: issue.subject,
+          review: task[:review_requested],
+          budget: task[:budget],
+          resolver: task[:resolver],
+          accepted: task[:accepted],
+          paid: task[:paid]
+      )
+    end
+    @issue_count = @issues.count
+    @limit = per_page_option
+    offset_start = (@limit * (@offset.to_i - 1))
+    offset_start = 0 if offset_start < 0
+    @issues = @issues[offset_start..((@limit * @offset.to_i) + @limit)]
+  end
+
+  def filter_by_project_or_status(query, query_params)
+    @limit = per_page_option
+    @issue_count = Issue.where(query).count
+    issues = Issue.joins(:project).joins(:status).where(query).order('created_on desc').limit(@limit).offset(@offset.to_i * @limit.to_i)
+    @issues = []
+    tasks = TocatTicket.all(params: query_params)
+    tasks = tasks.each_with_object({}){ |c,h| h[c.internal_id.to_i] = { id:c.id, accepted: c.accepted, paid:c.paid, budget:c.budget, resolver:c.get_resolver, review_requested: c.review_requested } }
+    query_params[:limit] = 100
+    issues.each do |issue|
+      task = tasks[issue.id]
+      task = {} unless task.present?
+      @issues << OpenStruct.new(
+          id: issue.id,
+          project: issue.project,
+          status: issue.status,
+          subject: issue.subject,
+          review: task[:review_requested],
+          budget: task[:budget],
+          resolver: task[:resolver],
+          accepted: task[:accepted],
+          paid: task[:paid]
+      )
+    end
+  end
+
+  def filter_with_no_params(query_params)
+    query_params[:limit] = @limit
+    query_params[:page] = params[:page] if params[:page].present?
+    tasks = TocatTicket.all(params: query_params)
+    @limit = tasks.http_response['X-Per-Page'].to_i
+    @issue_count = tasks.http_response['X-total'].to_i
+    issues = Issue.joins(:project).joins(:status).where(id: tasks.collect(&:internal_id))
+    tasks = tasks.each_with_object({}){ |c,h| h[c.internal_id.to_i] = { id:c.id, accepted: c.accepted, paid:c.paid, budget:c.budget, resolver:c.get_resolver, review_requested: c.review_requested } }
+    @issues = []
+    issues.each do |issue|
+      task = tasks[issue.id]
+      next unless task.present?
+      @issues << OpenStruct.new(
+          id: issue.id,
+          project: issue.project,
+          status: issue.status,
+          subject: issue.subject,
+          review: task[:review_requested],
+          budget: task[:budget],
+          resolver: task[:resolver],
+          accepted: task[:accepted],
+          paid: task[:paid]
+      )
+    end
+  end
+
+  def filter_tocat_params_present?
+    if (params[:paid].present? || params[:accepted].present? || params[:resolver].present? || params[:budget].present?  || params[:review].present?) &&
+        (params[:project].present? || params[:status].present? || params[:statuses].present?)
+      true
+    else
+      false
+    end
+  end
+
+  def filter_project_or_status_present?
+    if params[:project].present? || params[:status].present?
+      true
+    else
+      false
+    end
   end
 end
