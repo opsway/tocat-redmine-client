@@ -1,4 +1,4 @@
-<div class = "transactionsContainer"  style = "height: 350px">
+<div class = "transactionsContainer">
   <%if transactions%>
       <div class="autoscroll">
         <table class="list transactions">
@@ -11,8 +11,8 @@
           </tr>
           </thead>
           <tbody>
-          <% transactions.first(10).each do |t|%>
-              <tr class="<%= cycle("odd", "even") %>">
+          <% transactions.first(30).each_with_index do |t, index|%>
+              <tr class="<%= cycle("odd", "even") %> <%= index > 9 ? 'hidden_tr' : '' %>">
                 <td align="center"> <%= Time.parse(t.date)%> </td>
                 <td align="center"> <%= t.comment%> </td>
                 <td align="center" nowrap> <%= t.total%> </td>
@@ -20,8 +20,30 @@
           <% end %>
           </tbody>
         </table>
+        <button class="show_more_less show_more">Show more</button>
       </div>
   <%else%>
       <div><%=	l(:label_no_data_)  %></div>
   <% end %>
 </div>
+
+<script type="text/javascript" charset="utf-8">
+  jQuery.noConflict()(document).ready(function () {
+    jQuery.noConflict()('button.show_more_less').on('click', function(){
+      var div = jQuery.noConflict()(this).closest('.transactionsContainer');
+      if(jQuery.noConflict()(this).hasClass('show_more')){
+        div.find('tr.hidden_tr').stop().fadeIn('medium');
+        jQuery.noConflict()(this).removeClass('show_more').addClass('show_less');
+        jQuery.noConflict()(this).text('Show less');
+      }
+      else{
+        div.find('tr.hidden_tr').stop().fadeOut('medium');
+        jQuery.noConflict()(this).removeClass('show_less').addClass('show_more');
+        jQuery.noConflict()(this).text('Show more');
+      }
+
+      return false;
+    });
+  });
+
+</script>

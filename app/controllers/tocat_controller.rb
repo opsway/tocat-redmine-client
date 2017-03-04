@@ -212,9 +212,9 @@ class TocatController < TocatBaseController
       begin
         @team_tocat = TocatTeam.find(@user_tocat.tocat_team.id)
 
-        @income_transactions =  TocatTransaction.find(:all, params:{user: @user_tocat.payroll_account.id, limit: 10, search: "created_at > #{3.months.ago.strftime('%Y-%m-%d')} account = payroll" })
-        @balance_transactions = TocatTransaction.find(:all, params:{user: @user_tocat.balance_account.id, limit: 10, search: "account = balance" })
-        @money_transactions = TocatTransaction.find(:all, params:{user: @user_tocat.money_account.id, limit: 10, search: "account = money" })
+        @income_transactions =  TocatTransaction.find(:all, params:{user: @user_tocat.payroll_account.id, limit: 30, search: "created_at > #{3.months.ago.strftime('%Y-%m-%d')} account = payroll" })
+        @balance_transactions = TocatTransaction.find(:all, params:{user: @user_tocat.balance_account.id, limit: 30, search: "account = balance" })
+        @money_transactions = TocatTransaction.find(:all, params:{user: @user_tocat.money_account.id, limit: 30, search: "account = money" })
         
 
         @accepted_tasks = TocatTicket.get_accepted_tasks(true, @user_tocat.id)

@@ -1103,3 +1103,7 @@ fieldset[disabled] a.btn {
   font-size: 1.1rem;
   color: red;
 }
+
+.hidden_tr{
+  display: none;
+}
