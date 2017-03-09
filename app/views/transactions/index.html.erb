@@ -49,7 +49,7 @@ fieldset#filters table td {
             <%= transaction.comment %>
           </td>
           <td class = 'date'>
-            <%= Time.parse(transaction.date) %>
+            <%= transaction.date.nil? ? 'No Date' : Time.parse(transaction.date) %>
           </td>
           <td class = 'total'>
             <%= transaction.total %>

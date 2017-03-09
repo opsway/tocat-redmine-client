@@ -13,7 +13,7 @@
           <tbody>
           <% transactions.first(30).each_with_index do |t, index|%>
               <tr class="<%= cycle("odd", "even") %> <%= index > 9 ? 'hidden_tr' : '' %>">
-                <td align="center"> <%= Time.parse(t.date)%> </td>
+                <td align="center"> <%= t.date.nil? ? 'No Date' : Time.parse(t.date) %> </td>
                 <td align="center"> <%= t.comment%> </td>
                 <td align="center" nowrap> <%= t.total%> </td>
               </tr>
