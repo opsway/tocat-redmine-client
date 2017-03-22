@@ -1,5 +1,5 @@
 - def tocat_allow?(role) User.current.tocat_allowed_to? role end
-h2= l(:label_payment_request)
+h2= l(:label_payment_request) + " #{@payment_request.id}"
 .box
   p
     strong = l(:label_payment_source)
