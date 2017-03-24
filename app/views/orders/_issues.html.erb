@@ -42,7 +42,7 @@
 
                 <%= link_to 'Delete',  { controller: 'orders', action: :delete_task, id: order.id, task_id: issue.issue_id },
                             method: :delete,
-                            class: 'icon icon-del btn button',
+                            class: 'icon icon-del btn btn-sm button',
                             data: { confirm: 'Are you sure that you want delete it?' } %>
           </td>
       <% end %>
