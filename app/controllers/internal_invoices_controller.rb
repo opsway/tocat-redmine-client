@@ -78,9 +78,9 @@ class InternalInvoicesController < TocatBaseController
   end
 
   def create_withdraw
-    coachName, error = TransferRequest.withdraw params[:account_id], params[:total]
-    if coachName.present?
-      flash[:notice] = t(:notice_success_withdraw, coachName: coachName)
+    withdraw_payer_name, error = TransferRequest.withdraw params[:account_id], params[:total]
+    if withdraw_payer_name.present?
+      flash[:notice] = t(:notice_success_withdraw, withdraw_payer_name: withdraw_payer_name)
     else
       flash[:notice] = t(:withdraw_failed, error: error)
     end

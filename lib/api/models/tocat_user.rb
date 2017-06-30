@@ -17,6 +17,7 @@ class TocatUser < ActiveResource::Base
     attribute 'role', :integer
     attribute 'email', :string
     attribute 'coach', :integer
+    attribute 'can_pay_withdraw_invoices', :integer
     attribute 'active', :boolean
     decimal 'daily_rate'
     attribute :tocat_server_role, :integer

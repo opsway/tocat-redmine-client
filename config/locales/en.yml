@@ -306,7 +306,7 @@ en:
   coach: 'Coach'
   label_default_account: 'Default account'
   label_pay_transaction: 'Take commission'
-  notice_success_withdraw: "Internal invoice to %{coachName} was created"
+  notice_success_withdraw: "Internal invoice to %{withdraw_payer_name} was created"
   withdraw_failed: "Withdraw failed by the reason: %{error}"
   view_all_payment_requests: 'View all'
   view_all_transfers: 'View all'
@@ -319,3 +319,4 @@ en:
   label_def_payroll: 'Default Payroll account. '
   label_usd: 'USD'
   label_amount_deducted: 'Total with comission'
+  can_pay_withdraw_invoices: 'Can pay Withdraw-invoices'
