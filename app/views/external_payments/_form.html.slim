@@ -51,7 +51,11 @@ javascript:
     jQuery.noConflict()('#pay_full').on('click', function () {
       var all_money = jQuery.noConflict()('#all_money').val();
       var pay_full = (all_money / (1 + 1 / 100)).toFixed(2);
-      jQuery.noConflict()('#total').val(pay_full);
+      var commission = (all_money - pay_full).toFixed(2);
+      if (commission < 5.0) {
+        commission = 5.0
+      }
+      jQuery.noConflict()('#total').val(all_money - commission);
       jQuery.noConflict()('#describe').focus();
     });
   });
