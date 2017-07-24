@@ -12,8 +12,10 @@ class TocatUsersController < TocatBaseController
     query_params[:page] = params[:page] if params[:page].present?
     query_params[:search] = params[:search] if params[:search].present?
     query_params[:search] = "#{query_params[:search]} active == #{params[:active]}" if params[:active].present?
+    query_params[:search] = "#{query_params[:search]} team == #{params[:team]}" if params[:team].present?
 
     @users = TocatUser.all(params: query_params)
+    @teams = TocatTeam.all
     @users_count = @users.http_response['X-total'].to_i
     @users_pages = Paginator.new self, @users_count, @users.http_response['X-Per-Page'].to_i, params['page']
     @real_users = User.where(login: @users.map(&:login))

@@ -10,3 +10,6 @@ table style="width:100%"
             tr.filter#Status
               td.field= label_tag(:active, l(:label_user_status)) 
               td.operator= select_tag(:active, options_for_select([[l(:label_active_user), 1],[l(:label_inactive_user), 0]], selected: params[:active]), include_blank: true)
+            tr.filter#Team
+              td.field= label_tag(:name, l(:label_user_team))
+              td.operator= select_tag 'team', options_from_collection_for_select(@teams, 'name', 'name'), include_blank: 'All'

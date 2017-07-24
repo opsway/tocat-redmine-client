@@ -209,6 +209,7 @@ en:
   label_user_team: 'Team'
   label_user_role: 'Role'
   label_user_status: 'Status'
+  label_user_team: 'Team'
   label_search_user: 'Search by Name'
   label_active_user: 'Active'
   label_inactive_user: 'Inactive'
