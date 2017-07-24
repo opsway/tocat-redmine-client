@@ -21,19 +21,26 @@ class TocatTeamsController < TocatBaseController
   end
 
   def create
-    @team = TocatTeam.new(params[:tocat_team])
-    unless @team.valid?
-      @team.role = OpenStruct.new(id: @team.role)
-      @team.team = OpenStruct.new(id: @team.team)
-      return render :action => 'new'
-    end
-    if request.post? && @team.save
-      # workflow copy
-      flash[:notice] = l(:notice_successful_create)
-      redirect_to :action => 'index'
-    else
-      @teams= TocatTeam.all
-      render :action => 'new'
+    begin
+      @team = TocatTeam.new(params[:tocat_team])
+      unless @team.valid?
+        @team.role = OpenStruct.new(id: @team.role)
+        @team.team = OpenStruct.new(id: @team.team)
+        return render :action => 'new'
+      end
+      if request.post? && @team.save
+        # workflow copy
+        flash[:notice] = l(:notice_successful_create)
+        redirect_to :action => 'index'
+      else
+        @teams= TocatTeam.all
+        render :action => 'new'
+      end
+    rescue ActiveResource::ClientError => e
+      flash[:error] = JSON.parse(e.response.body)['errors'].join(', ')
+      @error = JSON.parse(e.response.body)['errors'].join(', ')
+      render :new
+      logger.info e.message
     end
   end
 
