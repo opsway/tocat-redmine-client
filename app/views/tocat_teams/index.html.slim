@@ -11,17 +11,29 @@ h2= l(:label_teams_plural)
         th= l(:label_active)
         - if User.current.tocat_allowed_to? :update_team
           th= l(:actions)
+        th
+        th
     tbody
       - @teams.each do |team|
         tr
-          td= team.name
-          td= team.team_manager
-          td= team.default_commission
-          td= team.active ? image_tag('true.png') : image_tag('false.png')
-          - if User.current.tocat_allowed_to? :update_team
-            td= link_to l(:label_edit), edit_tocat_team_path(team)
+          td align='center'
+            = team.name
+          td align='center'
+            = team.team_manager
+          td align='center'
+            = team.default_commission
+          td align='center'
+            = team.active ? image_tag('true.png') : image_tag('false.png')
           - if team.active
-            td= link_to l(:label_make_inactive), tocat_team_path(team), method: :delete, confirm: 'Are you sure?'
+            td align='center'
+              - if User.current.tocat_allowed_to? :update_team
+                = link_to l(:label_edit), edit_tocat_team_path(team)
+            td
+              - if User.current.tocat_allowed_to? :deactivate_team
+                = link_to l(:label_make_inactive), tocat_team_path(team), method: :delete, confirm: 'Are you sure?'
           - else
-            td= link_to l(:label_make_active), makeactive_tocat_team_path(team), method: :delete, confirm: 'Are you sure?'
+            td
+            td
+              - if User.current.tocat_allowed_to? :activate_team
+                = link_to l(:label_make_active), makeactive_tocat_team_path(team), method: :delete, confirm: 'Are you sure?'
 p.pagination= pagination_links_full @teams_pages, @teams_count
