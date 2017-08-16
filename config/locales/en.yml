@@ -198,7 +198,8 @@ en:
   label_edit: 'Edit'
   label_user_new: 'New User'
   label_user_csv: 'Export'
-  error_can_not_remove_user: "Can't make user inactive"
+  error_can_not_remove_user: "Can't make user inactive!"
+  error_can_not_deactivate_team: "Can't make team inactive!"
   label_edit_user: 'Edit User'
   label_loginname: 'Login'
   create_user: 'Create User'

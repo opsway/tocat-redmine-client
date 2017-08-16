@@ -8,6 +8,7 @@ h2= l(:label_teams_plural)
         th= l(:label_name)
         th= l(:label_manager)
         th= l(:label_default_commission)
+        th= l(:label_active)
         - if User.current.tocat_allowed_to? :update_team
           th= l(:actions)
     tbody
@@ -16,6 +17,11 @@ h2= l(:label_teams_plural)
           td= team.name
           td= team.team_manager
           td= team.default_commission
+          td= team.active ? image_tag('true.png') : image_tag('false.png')
           - if User.current.tocat_allowed_to? :update_team
             td= link_to l(:label_edit), edit_tocat_team_path(team)
+          - if team.active
+            td= link_to l(:label_make_inactive), tocat_team_path(team), method: :delete, confirm: 'Are you sure?'
+          - else
+            td= link_to l(:label_make_active), makeactive_tocat_team_path(team), method: :delete, confirm: 'Are you sure?'
 p.pagination= pagination_links_full @teams_pages, @teams_count

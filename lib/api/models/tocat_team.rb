@@ -13,6 +13,7 @@ class TocatTeam < ActiveResource::Base
     attribute 'manager', :integer
     attribute 'default_commission', :integer
     attribute 'parent_id', :integer
+    attribute 'active', :boolean
   end
   validates :name, :default_commission, presence: true
   def to_s
