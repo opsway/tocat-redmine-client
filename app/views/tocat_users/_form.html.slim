@@ -29,4 +29,8 @@ h3= l(:label_user)
     = f.label :can_pay_withdraw_invoices, l(:can_pay_withdraw_invoices)
     = f.check_box :can_pay_withdraw_invoices
     br
+    = f.label :billable, 'Billable'
+    = f.select :billable, [['Non billable', 'non_billable'], ['Billable', 'billable'], ['Half', 'half']]
+
+    br
     = f.submit 'Save'
