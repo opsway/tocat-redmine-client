@@ -1,5 +1,5 @@
 <div class = "transactionsContainer">
-  <%if transactions%>
+  <% if transactions %>
       <div class="autoscroll">
         <table class="list transactions">
           <label><%= account_name.to_s +	l(:label_transactions)  %></label>
@@ -22,7 +22,7 @@
         </table>
         <button class="show_more_less show_more">Show more</button>
       </div>
-  <%else%>
+  <% else %>
       <div><%=	l(:label_no_data_)  %></div>
   <% end %>
 </div>

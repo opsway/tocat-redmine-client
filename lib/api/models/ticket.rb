@@ -273,19 +273,20 @@ class TocatTicket < ActiveResource::Base
     end
     issues = []
     tasks.each do |task|
-      issue = Issue.where(id: task.internal_id).first
-      if issue.present?
-        params = {
-          id:      issue.id,
-          subject: issue.subject,
-          project: issue.project.name,
-          project_id: issue.project.id,
-          budget: task.budget,
-          task_id: task.id
-        }
-        issues << OpenStruct.new(params)
+      # issue = Issue.where(id: task.internal_id).first
+      # if issue.present?
+      params = {
+        id:      task.id,
+        subject: task.external_id,
+        budget: task.budget,
+        accepted: task.accepted,
+        paid: task.paid,
+        review_requested: task.review_requested,
+        task_id: task.id
+      }
+      issues << OpenStruct.new(params)
       end
-    end
+    # end
     issues
   end
 

@@ -1,31 +1,48 @@
-<div class = "transactionsContainer"  style = "height: 350px">
+<div class = "transactionsContainer">
   <div class="autoscroll">
     <table class="list transactions">
       <thead>
-        <tr>
-          <th><%=	l(:label_project)  %></th>
-          <th>#</th>
-          <th><%=	l(:label_issue)  %></th>
-          <th><%=	l(:label_budget)  %></th>
-        </tr>
+      <tr>
+        <th style="font-weight:bold"><%=	l(:label_issue)  %></th>
+        <th style="font-weight:bold"><%=	l(:label_budget)  %></th>
+        <th style="font-weight:bold"><%=	l(:label_accepted)  %></th>
+        <th style="font-weight:bold"><%=	l(:label_paid)  %></th>
+      </tr>
       </thead>
       <tbody>
-        <% issues.last(10).each do |i|%>
-        <tr class="<%= cycle("odd", "even") %>">
-          <td align="center"><%= link_to i.project, project_path(i.project_id) %> </td>
-          <td align="center"><%= link_to i.id, issue_path(i.id) %> </td>
-          <td align="center"><%= link_to truncate(i.subject, :length => 50, :omission => '...'), issue_path(i.id) %> </td>
-          <td align="center" nowrap><%= i.budget %> </td>
-        </tr>
-        <% end %>
+      <% issues.last(15).each_with_index do |i, index|%>
+          <tr class="<%= cycle("odd", "even") %> <%= index > 7 ? 'hidden_tr' : '' %>">
+            <td align="center"><%= link_to truncate(i.subject, :length => 50, :omission => '...'), i.subject %> </td>
+            <td align="center" nowrap><%= i.budget %> </td>
+            <td align="center" nowrap><%= i.accepted ? image_tag('true.png') : image_tag('false.png') %> </td>
+            <td align="center" nowrap><%= i.paid ? image_tag('true.png') : image_tag('false.png') %> </td>
+          </tr>
+      <% end %>
       </tbody>
     </table>
+    <button class="show_more_less show_more">Show more</button>
   </div>
-  <% if User.current.tocat_allowed_to?(:show_issues)%>
-    <% if accepted == 1%>
-      <%= link_to 'See more...', tickets_path(params:{ accepted: 1, paid: 0, resolver: @user_tocat.id, set_filter: 1, commit:'Apply' })%>
-    <% else %>
-      <%= link_to 'See more...', tickets_path(params:{ accepted: 0, resolver: @user_tocat.id, set_filter: 1, commit:'Apply' })%>
-    <% end %>
-  <% end %>
 </div>
+
+
+<script type="text/javascript" charset="utf-8">
+  jQuery.noConflict()(document).ready(function () {
+    jQuery.noConflict()('button.show_more_less').on('click', function(){
+      var div = jQuery.noConflict()(this).closest('.transactionsContainer');
+      if(jQuery.noConflict()(this).hasClass('show_more')){
+        div.find('tr.hidden_tr').stop().fadeIn('medium');
+        jQuery.noConflict()(this).removeClass('show_more').addClass('show_less');
+        jQuery.noConflict()(this).text('Show less');
+      }
+      else{
+        div.find('tr.hidden_tr').stop().fadeOut('medium');
+        jQuery.noConflict()(this).removeClass('show_less').addClass('show_more');
+        jQuery.noConflict()(this).text('Show more');
+      }
+
+      return false;
+    });
+  });
+
+</script>
+
