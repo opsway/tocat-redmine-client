@@ -26,6 +26,7 @@ en:
   message_order_noninternal: 'Order has status Internal removed'
   set_internal_orders: 'Make order internal'
   remove_internal_orders: 'Remove internal from order'
+  show_timelogs: 'Show timelogs'
   field_expenses_update: 'Expenses flag'
   field_expenses_update: 'Expense flag'
   set_expenses: 'Set expenses'

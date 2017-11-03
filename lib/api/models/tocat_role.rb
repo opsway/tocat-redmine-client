@@ -72,6 +72,10 @@ class TocatRole < ActiveResource::Base
     paths[:status][:status] = :show_status_page
     paths[:status][:checked] = :mark_alerts_as_checked
 
+    #timelogs
+    paths[:timelogs] = {}
+    paths[:timelogs][:index] = :show_timelogs
+
     #users
     paths[:tocat_users] = {}
     paths[:tocat_users][:index] = :show_issues
@@ -156,6 +160,7 @@ class TocatRole < ActiveResource::Base
     data[:internal_payments] = [:view_transfers, :create_transfer, :view_all_transfer_requests]
     data[:external_payments] = [:create_payment_request, :cancel_payment_request, :complete_payment_request, :view_payment_requests, :view_all_payment_requests]
     data[:accounts] = [:create_account, :edit_account, :view_linked_accounts, :view_all_accounts]
+    data[:timelogs] = [:show_timelogs]
     return data
   end
 
