@@ -28,6 +28,7 @@ en:
   remove_internal_orders: 'Remove internal from order'
   show_timelogs: 'Show timelogs'
   create_timelogs: 'Approve timelogs'
+  get_issues_summary: 'Issues summary'
   field_expenses_update: 'Expenses flag'
   field_expenses_update: 'Expense flag'
   set_expenses: 'Set expenses'

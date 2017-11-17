@@ -76,6 +76,7 @@ class TocatRole < ActiveResource::Base
     paths[:timelogs] = {}
     paths[:timelogs][:index] = :show_timelogs
     paths[:timelogs][:create] = :create_timelogs
+    paths[:timelogs][:issues_summary] = :get_issues_summary
 
     #users
     paths[:tocat_users] = {}
@@ -161,7 +162,7 @@ class TocatRole < ActiveResource::Base
     data[:internal_payments] = [:view_transfers, :create_transfer, :view_all_transfer_requests]
     data[:external_payments] = [:create_payment_request, :cancel_payment_request, :complete_payment_request, :view_payment_requests, :view_all_payment_requests]
     data[:accounts] = [:create_account, :edit_account, :view_linked_accounts, :view_all_accounts]
-    data[:timelogs] = [:show_timelogs, :create_timelogs]
+    data[:timelogs] = [:show_timelogs, :create_timelogs, :get_issues_summary]
     return data
   end
 
