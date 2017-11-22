@@ -1,0 +1,18 @@
+h2= 'Daily Rate History'
+.autoscroll
+  table.list
+    thead
+      tr
+        td= 'Name'
+        td= 'Daily Rate'
+        td= 'Timestamp From'
+        td= 'Timestamp To'
+    tbody
+      - @daily_rates.each do |rate|
+        tr
+          td= TocatUser.find(rate.user_id).name
+          td= rate.daily_rate
+          td= rate.timestamp_from
+          td= rate.timestamp_to.nil? ? 'current' : rate.timestamp_to
+
+p.pagination= pagination_links_full @daily_rates_pages, @daily_rates_count

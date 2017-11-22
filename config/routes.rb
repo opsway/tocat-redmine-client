@@ -19,6 +19,8 @@ resources :tocat_users, path: '/tocat/users' do
   delete :makeactive, on: :member
 end
 
+resources :history_of_change_daily_rates, path: '/tocat/rates_history'
+
 resources :tocat_teams, path: '/tocat/teams' do
   delete :makeactive, on: :member
 end

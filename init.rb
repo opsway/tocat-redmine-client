@@ -40,6 +40,9 @@ Redmine::Plugin.register :redmine_tocat_client do
     menu.push :accounts, { :controller => 'accounts', :action => 'index' },
               :if => Proc.new{ User.current.tocat_allowed_to?(:view_all_accounts)},
               :caption => :label_accounts
+    menu.push :daily_rates_history, { :controller => 'history_of_change_daily_rates', :action => 'index' },
+              :if => Proc.new{ User.current.tocat_allowed_to?(:show_rates_history)},
+              :caption => :label_daily_rates_history
     menu.push :teams, { :controller => 'tocat_teams', :action => 'index' },
               :caption => 'Teams'
     menu.push :status, { :controller => 'status', :action => 'status' },

@@ -89,6 +89,10 @@ class TocatRole < ActiveResource::Base
     paths[:tocat_users][:makeactive] = :activate_user
     paths[:tocat_users][:csv] = :create_user
 
+    #daily_rates_history
+    paths[:history_of_change_daily_rates] = {}
+    paths[:history_of_change_daily_rates][:index] = :show_rates_history
+
     #teams
     paths[:tocat_teams] = {}
     paths[:tocat_teams][:index] = :show_issues
@@ -158,6 +162,7 @@ class TocatRole < ActiveResource::Base
     data[:transactions] = [:show_transactions, :create_transactions]
     data[:dashboard] = [:show_tocat_page, :has_protected_page, :can_see_public_pages, :is_admin, :show_status_page, :mark_alerts_as_checked, :show_activity_feed]
     data[:users] = [:create_user, :update_user, :activate_user, :deactivate_user, :correct_balance_salary_check]
+    data[:history_of_change_daily_rates] = [:show_rates_history]
     data[:teams] = [:create_team, :update_team, :activate_team, :deactivate_team]
     data[:internal_payments] = [:view_transfers, :create_transfer, :view_all_transfer_requests]
     data[:external_payments] = [:create_payment_request, :cancel_payment_request, :complete_payment_request, :view_payment_requests, :view_all_payment_requests]
