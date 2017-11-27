@@ -220,6 +220,11 @@ en:
   label_search_user: 'Search by Name'
   label_active_user: 'Active'
   label_inactive_user: 'Inactive'
+  #daily_rates_history
+  label_daily_rates_name: 'Username'
+  label_daily_rates_rate: 'Daily Rate'
+  label_daily_rates_tstampfrom: 'Timestamp From'
+  label_daily_rates_tstampto: 'Timestamp To'
   #teams
   label_teams_plural: 'Teams'
   label_team_new: 'New Team'

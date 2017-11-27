@@ -1,18 +1,33 @@
+= form_tag("/tocat/rates_history", method: "get") do
+  = hidden_field_tag 'set_filter', '1'
+  fieldset#filters.collapsible
+    legend onclick="toggleFieldset(this);"= l(:label_filter_plural)
+    div
+      = render :partial => 'history_of_change_daily_rates/filter'
+      = submit_tag(l(:button_apply))
+      = link_to l(:button_clear), { :set_filter => 1 }, :class => 'icon icon-reload'
+    hr
 h2= 'Daily Rate History'
 .autoscroll
   table.list
     thead
       tr
-        td= 'Name'
-        td= 'Daily Rate'
-        td= 'Timestamp From'
-        td= 'Timestamp To'
+        td align="center"
+          b = l(:label_daily_rates_name)
+        td align="center"
+          b = l(:label_daily_rates_rate)
+        td align="center"
+          b = l(:label_daily_rates_tstampfrom)
+        td align="center"
+          b = l(:label_daily_rates_tstampto)
     tbody
       - @daily_rates.each do |rate|
         tr
-          td= TocatUser.find(rate.user_id).name
-          td= rate.daily_rate
-          td= rate.timestamp_from
-          td= rate.timestamp_to.nil? ? 'current' : rate.timestamp_to
-
-p.pagination= pagination_links_full @daily_rates_pages, @daily_rates_count
+          td align="center"
+            = TocatUser.find(rate.user_id).name
+          td align="center"
+            = rate.daily_rate
+          td align="center"
+            = rate.timestamp_from
+          td align="center"
+            = rate.timestamp_to.nil? ? 'current' : rate.timestamp_to

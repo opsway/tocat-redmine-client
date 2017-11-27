@@ -1,0 +1,9 @@
+table style="width:100%"
+  tbody
+    tr
+      td
+        table#filters-table
+          tbody
+            tr.filter#User
+              td.field= label_tag(:owner, l(:label_owner))
+              td.operator= select_tag 'user', options_from_collection_for_select(@users, 'id', 'name'), include_blank: 'All'

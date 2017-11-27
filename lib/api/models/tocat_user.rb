@@ -85,6 +85,10 @@ class TocatUser < ActiveResource::Base
     end
   end
 
+  def self.fetch_all_active_users
+    return TocatUser.find(:all, params:{active: true})
+  end
+
   def self.find_by_name(name)
     return TocatUser.find(:all, params:{search:"#{name}"}).first
   end

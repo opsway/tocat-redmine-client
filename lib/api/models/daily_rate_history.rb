@@ -12,7 +12,4 @@ class TocatDailyRateHistory < ActiveResource::Base
     attribute 'timestamp_from', :date
     attribute 'timestamp_to', :date
   end
-
-  protected
-
 end
