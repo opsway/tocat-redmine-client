@@ -31,3 +31,5 @@ h2= 'Daily Rate History'
             = rate.timestamp_from
           td align="center"
             = rate.timestamp_to.nil? ? 'current' : rate.timestamp_to
+p.pagination= pagination_links_full @daily_rates_pages, @daily_rates_count
+
