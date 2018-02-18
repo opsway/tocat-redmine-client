@@ -24,7 +24,7 @@ class TocatTeam < ActiveResource::Base
     p "team - #{team.id} - #{team.name}"
     couch = couchs.find{|u| u.tocat_team.id == team.id}
     return couch if team.parent_id == team.id
-    unless couch 
+    unless couch
       couch = couch(couchs, team.parent) unless team.id == team.parent_id
     end
     couch
@@ -37,9 +37,16 @@ class TocatTeam < ActiveResource::Base
   def team_manager
     team_users.find { |user| user.tocat_server_role.name == 'Manager' }
   end
-  
+
   def parent
     TocatTeam.find(self.parent_id)
+  end
+
+  def self.active_teams
+    all_teams = TocatTeam.all
+    teams_array = []
+    all_teams.each { |team| teams_array << team if team.active }
+    teams_array
   end
 
   def self.find_by_name(name)

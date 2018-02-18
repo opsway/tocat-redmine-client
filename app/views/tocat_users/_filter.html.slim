@@ -5,10 +5,10 @@ table style="width:100%"
         table#filters-table
           tbody
             tr.filter#comment
-              td.field= label_tag(:search, l(:label_search_user)) 
+              td.field= label_tag(:search, l(:label_search_user))
               td.operator= text_field_tag(:search, params[:search], placeholder: 'Please enter criteria...')
             tr.filter#Status
-              td.field= label_tag(:active, l(:label_user_status)) 
+              td.field= label_tag(:active, l(:label_user_status))
               td.operator= select_tag(:active, options_for_select([[l(:label_active_user), 1],[l(:label_inactive_user), 0]], selected: params[:active]), include_blank: true)
             tr.filter#Team
               td.field= label_tag(:name, l(:label_user_team))
