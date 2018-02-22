@@ -1,3 +1,12 @@
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+  jQuery.noConflict()(document).ready(function () {
+    jQuery.noConflict()( "#datepicker" ).datepicker({dateFormat: "yy-mm-dd"});
+  });
+</script>
 <% url = orders_path %>
 <%= labelled_form_for @order, url: url, :html => {:id => 'order-form', :multipart => true} do |f| %>
     <div class="box">
@@ -7,6 +16,7 @@
           <p><%= f.text_field :name, :size => 80, :maxlength => 255, :required => true %></p>
           <p>
             <%= f.label_for_field :description %>
+
             <%= f.text_area :description,
                             :cols => 60,
                             :rows => 10,
@@ -24,6 +34,9 @@
               <p id="commission-container">
                 <%= f.number_field :commission, required: true, in: 0..100, :step => 1 %>
               </p>
+              <p><%= f.number_field :zohobooks_project_id, required: true %></p>
+              <p><%= f.text_field :accrual_completed_date, id: "datepicker", required: true %></p>
+
             <% end %>
           <% end %>
 

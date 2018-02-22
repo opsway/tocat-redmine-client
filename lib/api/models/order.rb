@@ -11,7 +11,7 @@ class TocatOrder < ActiveResource::Base
       response = self.get(:available_for_invoice, { })
       instantiate_collection(response)
     end
-    
+
     def build(attributes = {})
         attrs = self.format.decode(connection.get("#{new_element_path(attributes)}", headers).body)
         self.new(attrs)
@@ -29,6 +29,8 @@ class TocatOrder < ActiveResource::Base
     decimal 'invoiced_budget', 'allocatable_budget', 'free_budget'
     attribute 'internal_order', :boolean
     attribute 'commission', :integer
+    attribute 'zohobooks_project_id', :string
+    attribute 'accrual_completed_date', :date
   end
 
   def activity

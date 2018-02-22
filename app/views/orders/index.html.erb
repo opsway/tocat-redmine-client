@@ -33,9 +33,21 @@ fieldset#filters table td {
           <th>
             <%= l(:label_suborder)%>
           </th>
+
           <%= sort_header_tag('invoiced_budget', :caption => l(:label_invoiced_budget)) %>
+
           <%= sort_header_tag('allocatable_budget', :caption => l(:label_allocatable_budget)) %>
+
           <%= sort_header_tag('free_budget', :caption => l(:label_free_budget)) %>
+
+          <th>
+            <%= l(:field_zohobooks_project)%>
+          </th>
+
+          <th>
+            <%= l(:field_accrual_completed_date)%>
+          </th>
+
           <th>
             <%= l(:field_team)%>
           </th>
@@ -45,6 +57,7 @@ fieldset#filters table td {
           <th>
             <%= l(:label_paid)%>
           </th>
+
           <th>
             <%= l(:field_completed)%>
           </th>
@@ -75,6 +88,12 @@ fieldset#filters table td {
           </td>
           <td class = 'free_budget'>
             <%= order.free_budget %>
+          </td>
+          <td class = 'zohobooks_project_id'>
+            <%= order.zohobooks_project_id.present? ? order.zohobooks_project_id : image_tag('false.png') %>
+          </td>
+          <td class = 'accrual_completed_date'>
+            <%= order.accrual_completed_date.present? ? order.accrual_completed_date : image_tag('false.png') %>
           </td>
           <td class = 'team'>
             <%= order.team.name %>

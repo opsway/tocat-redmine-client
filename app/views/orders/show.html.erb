@@ -39,6 +39,14 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
         rows.left l(:field_team), @order.get_team.name, :class => 'team'
       end
 
+      if @order.attributes.include? 'zohobooks_project_id'
+        rows.left l(:field_zohobooks_project), @order.zohobooks_project_id.present? ? @order.zohobooks_project_id : image_tag('false.png'), :class => 'zohobooks_project_id'
+      end
+
+      if @order.attributes.include? 'accrual_completed_date'
+        rows.left l(:field_accrual_completed_date), @order.accrual_completed_date.present? ? @order.accrual_completed_date : image_tag('false.png'), :class => 'accrual_completed_date'
+      end
+
       if @order.attributes.include? 'internal_order'
         rows.right l(:field_internal_order), (@order.internal_order ? 'Yes' : 'No'), :class => 'completed'
       end

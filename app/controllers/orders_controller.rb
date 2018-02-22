@@ -8,7 +8,7 @@ class OrdersController < TocatBaseController
   include SortHelper
   before_filter :check_action
 
-  
+
   def csv
     file = Rails.root.join('tmp', "order-#{@order.id}.csv")
     CSV.open(file, "wb", :col_sep => ',', :force_quotes => true, :skip_blanks => false) do |csv|
@@ -28,6 +28,8 @@ class OrdersController < TocatBaseController
     @order.description = params[:description] if params[:description].present?
     @order.allocatable_budget = params[:allocatable_budget] if params[:allocatable_budget].present?
     @order.invoiced_budget = params[:invoiced_budget] if params[:invoiced_budget].present?
+    @order.zohobooks_project_id = params[:zohobooks_project_id] if params[:zohobooks_project_id].present?
+    @order.accrual_completed_date = params[:accrual_completed_date] if params[:accrual_completed_date].present?
     @order.team = params[:team] if params[:team].present?
     @order.invoiced_budget = @parent_order.free_budget if @parent_order
   end
@@ -138,6 +140,9 @@ class OrdersController < TocatBaseController
     query_params[:search] = "#{query_params[:search]} completed == #{params[:completed]}" if params[:completed].present?
     query_params[:search] = "#{query_params[:search]} team == #{params[:team]}" if params[:team].present?
     query_params[:search] = "#{query_params[:search]} internal_order == #{params[:internal_order]}" if params[:internal_order].present?
+    query_params[:search] = "#{query_params[:search]} internal_order == #{params[:internal_order]}" if params[:internal_order].present?
+    query_params[:search] = "#{query_params[:search]} zohobooks_project_id == #{params[:zohobooks_project_id]}" if params[:zohobooks_project_id].present?
+    query_params[:search] = "#{query_params[:search]} accrual_completed_date == #{params[:accrual_completed_date]}" if params[:accrual_completed_date].present?
     if params[:suborder].present?
       params[:suborder].to_i == 1 ?
         query_params[:search] = "#{query_params[:search]} set? parent_id" :
@@ -281,7 +286,7 @@ class OrdersController < TocatBaseController
     @invoices = TocatInvoice.find(:all, params: { search: "paid = 0" })
     return render template: 'orders/invoice_dialog'
   end
-  
+
   def set_internal
     status, payload = @order.set_internal
     if status
@@ -296,7 +301,7 @@ class OrdersController < TocatBaseController
       end
     end
   end
-  
+
   def remove_internal
     status, payload = @order.remove_internal
     if status
