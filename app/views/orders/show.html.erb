@@ -1,10 +1,4 @@
 <%= render partial: 'action_menu' %>
-<script charset="utf-8">
-jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
-  jqXHR.setRequestHeader('X-CSRF-Token', jQuery.noConflict()('meta[name=csrf-token]').attr('content'));
-});
-</script>
-
 <h2><%= l(:label_order_heading) + " #{@order.id}" %> </h2>
 <div class="issue details">
   <div class="subject"><h3><%= @order.name %></h3></div>
@@ -96,6 +90,7 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
             url: "<%= order_invoices_path %>",
             data: data,
             beforeSend: function( xhr ) {
+              xhr.setRequestHeader('X-CSRF-Token', jQuery.noConflict()('meta[name=csrf-token]').attr('content'));
               jQuery.noConflict()('#ajax-indicator').show();
             },
             success: function(data) {
@@ -117,6 +112,7 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
             asynchronous: true,
             method: 'get',
             beforeSend: function( xhr ) {
+              xhr.setRequestHeader('X-CSRF-Token', jQuery.noConflict()('meta[name=csrf-token]').attr('content'));
               jQuery.noConflict()('#ajax-indicator').show();
             },
             success: function(data) {

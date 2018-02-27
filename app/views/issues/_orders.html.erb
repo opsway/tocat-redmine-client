@@ -63,6 +63,7 @@
       asynchronous: true,
       method: 'get',
       beforeSend: function( xhr ) {
+        xhr.setRequestHeader('X-CSRF-Token', jQuery.noConflict()('meta[name=csrf-token]').attr('content'));
         jQuery.noConflict()('#ajax-indicator').show();
       },
       data: {
@@ -88,6 +89,7 @@
           'order_id': +e.parentElement.parentElement.id
         },
         beforeSend: function( xhr ) {
+          xhr.setRequestHeader('X-CSRF-Token', jQuery.noConflict()('meta[name=csrf-token]').attr('content'));
           jQuery.noConflict()('#ajax-indicator').show();
         },
         success: function(data) {

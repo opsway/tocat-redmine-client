@@ -1,9 +1,4 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script charset="utf-8">
-jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
-  jqXHR.setRequestHeader('X-CSRF-Token', jQuery.noConflict()('meta[name=csrf-token]').attr('content'));
-});
-</script>
 <% if User.current.tocat_allowed_to?(:show_budgets)# FIXME manage_tocat instead of show_orders %>
   <hr/>
   <div id="tocat">
@@ -22,6 +17,7 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
       url: "<%= tocat_resolver_path %>",
       data: data,
       beforeSend: function( xhr ) {
+        xhr.setRequestHeader('X-CSRF-Token', jQuery.noConflict()('meta[name=csrf-token]').attr('content'));
         jQuery.noConflict()('#ajax-indicator').show();
       },
       success: function(data) {
@@ -129,6 +125,7 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
         url: "<%= tocat_budget_path %>",
         data: data,
         beforeSend: function( xhr ) {
+          xhr.setRequestHeader('X-CSRF-Token', jQuery.noConflict()('meta[name=csrf-token]').attr('content'));
           jQuery.noConflict()('#ajax-indicator').show();
         },
         success: function(data) {
@@ -154,6 +151,7 @@ jQuery.noConflict().ajaxPrefilter(function (options, originalOptions, jqXHR) {
           'issue_id': <%= @issue.id%>
         },
         beforeSend: function( xhr ) {
+          xhr.setRequestHeader('X-CSRF-Token', jQuery.noConflict()('meta[name=csrf-token]').attr('content'));
           jQuery.noConflict()('#ajax-indicator').show();
         },
         success: function(data) {
