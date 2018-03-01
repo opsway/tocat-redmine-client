@@ -30,7 +30,7 @@ h3= l(:label_user)
     = f.check_box :can_pay_withdraw_invoices
     br
     = f.label :billable, 'Billable'
-    = f.check_box :billable, {}, 'billable', 'non_billable'
+    = f.check_box :billable, {:checked => true}, 'billable', 'non_billable'
     /= f.select :billable, [['Non billable', 'non_billable'], ['Billable', 'billable'], ['Half', 'half']]
 
     br
