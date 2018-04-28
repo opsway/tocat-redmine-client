@@ -23,15 +23,15 @@ class ExternalPaymentsController < TocatBaseController
       return redirect_to external_payment_path(@payment_request)
     end
   end
-  
+
   def new
     @payment_request = PaymentRequest.new
     #@payment_request.description = "Please describe: &#13;&#10; - receiving party (First Name/Last Name) &#13;&#10; - method of payment (Credit Card, Payoneer, etc) &#13;&#10; - details of payment (for example, credit card number); &#13;&#10; any other comments that can help accounting unit to process payment correctly".html_safe
   end
-  
+
   def show
   end
-  
+
   def create
     begin
       prepare_base64_file_params
@@ -69,9 +69,15 @@ class ExternalPaymentsController < TocatBaseController
   end
 
   private
+
   def find_request
-    @payment_request = PaymentRequest.find params[:id]
+    begin
+      @payment_request = PaymentRequest.find params[:id]
+    rescue ActiveResource::ResourceNotFound
+      render_404
+    end
   end
+
   def process_errors_and_render
     begin
       yield

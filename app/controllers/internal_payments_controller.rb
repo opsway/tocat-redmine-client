@@ -15,11 +15,15 @@ class InternalPaymentsController < TocatBaseController
     @transfers_count = @balance_transfers.http_response['X-total'].to_i
     @transfers_pages = Paginator.new self, @transfers_count, @balance_transfers.http_response['X-Per-Page'].to_i, params['page']
   end
-  
+
   def show
-    @balance_transfer = TocatBalanceTransfer.find(params[:id])
+    begin
+      @balance_transfer = TocatBalanceTransfer.find(params[:id])
+    rescue ActiveResource::ResourceNotFound
+      render_404
+    end
   end
-  
+
   def create
     begin
       @balance_transfer = TocatBalanceTransfer.new(params[:tocat_balance_transfer])
@@ -36,11 +40,11 @@ class InternalPaymentsController < TocatBaseController
       logger.info e.message
     end
   end
-  
+
   def new
     @balance_transfer = TocatBalanceTransfer.new(btype: 'base')
   end
-  
+
   private
   def get_admin_name
     @central_office = TocatTeam.all.find{|t| t.id == t.parent_id}

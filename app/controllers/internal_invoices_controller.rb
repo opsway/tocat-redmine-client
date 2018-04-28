@@ -21,11 +21,11 @@ class InternalInvoicesController < TocatBaseController
 
   def show
   end
-  
+
   def new
     @transfer_request = TransferRequest.new
   end
-  
+
   def pay
     result, error = @transfer_request.pay params[:transfer_request][:source_account_id]
     if error
@@ -54,7 +54,7 @@ class InternalInvoicesController < TocatBaseController
       end
     end
   end
-  
+
   def create
     @transfer_request = TransferRequest.new(params[:transfer_request])
 
@@ -86,9 +86,9 @@ class InternalInvoicesController < TocatBaseController
     end
     return redirect_back_or_default(action: 'my_tocat', controller: 'tocat')
   end
-    
+
   private
-  
+
   def find_request
     begin
       @transfer_request = TransferRequest.find(params[:id])

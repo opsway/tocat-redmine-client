@@ -7,14 +7,14 @@
     = link_to l(:label_user_new), new_tocat_user_path, class: 'icon icon-add'
 h2= l(:label_users_plural)
 
-= form_tag("/tocat/users", method: "get") do 
-  = hidden_field_tag 'set_filter', '1' 
+= form_tag("/tocat/users", method: "get") do
+  = hidden_field_tag 'set_filter', '1'
   fieldset#filters.collapsible
     legend onclick="toggleFieldset(this);"= l(:label_filter_plural)
     div
       = render :partial => 'tocat_users/filter'
       = submit_tag(l(:button_apply))
-      = link_to l(:button_clear), { :set_filter => 1 }, :class => 'icon icon-reload' 
+      = link_to l(:button_clear), { :set_filter => 1 }, :class => 'icon icon-reload'
     hr
 .autoscroll
   table.list
@@ -29,7 +29,10 @@ h2= l(:label_users_plural)
     tbody
       - @users.each do |user|
         tr
-          td= link_to user.name, my_tocat_path(user_id: user.id)
+          - if User.current.tocat_allowed_to? :create_user
+            td= link_to user.name, my_tocat_path(user_id: user.id)
+          - else
+            td= user.name
           td= user.tocat_team.try(:name)
           td= user.tocat_server_role.try(:name)
           td= user.active ? image_tag('true.png') : image_tag('false.png')

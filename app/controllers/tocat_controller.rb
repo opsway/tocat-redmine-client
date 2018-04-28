@@ -6,7 +6,7 @@ class TocatController < TocatBaseController
   include QueriesHelper
   before_filter :check_for_setup
   before_filter :check_action, except: [:request_review, :review_handler]
-  
+
   def create_salary_checkin
     user = TocatUser.find(params[:user_id].to_i)
     status, messages = user.add_salary(params[:comment], params[:total])
@@ -22,10 +22,10 @@ class TocatController < TocatBaseController
       end
     end
   end
-  
+
   def new_salary_checkin
   end
-  
+
   def new_correction
   end
   def create_correction
@@ -97,7 +97,7 @@ class TocatController < TocatBaseController
       end
     end
   end
-  
+
   def remove_expenses
     issue = Issue.find(params[:id])
     status, payload = issue.tocat.remove_expenses
@@ -197,35 +197,42 @@ class TocatController < TocatBaseController
   end
 
   def my_tocat
-    if params[:user_id].present? 
-      @user_tocat = TocatUser.find(params[:user_id])
-      if check_permissions(@user_tocat)
-        @user = @user_tocat.redmine || @user_tocat
+    begin
+      if params[:user_id].present?
+        @user_tocat = TocatUser.find(params[:user_id])
+
+        if check_permissions(@user_tocat)
+          @user = @user_tocat.redmine || @user_tocat
+        else
+          return render_403
+        end
       else
-        return render_403
+        @user = User.current
+        @user_tocat = @user.tocat
       end
-    else
-      @user = User.current
-      @user_tocat = @user.tocat
-    end
-    unless @user_tocat.coach? || @user_tocat.tocat_server_role == 'Manager'
-      begin
-        @team_tocat = TocatTeam.find(@user_tocat.tocat_team.id)
 
-        @income_transactions =  TocatTransaction.find(:all, params:{user: @user_tocat.payroll_account.id, limit: 30, search: "created_at > #{3.months.ago.strftime('%Y-%m-%d')} account = payroll" })
-        @balance_transactions = TocatTransaction.find(:all, params:{user: @user_tocat.balance_account.id, limit: 30, search: "account = balance" })
-        @money_transactions = TocatTransaction.find(:all, params:{user: @user_tocat.money_account.id, limit: 30, search: "account = money" })
-        
+      unless @user_tocat.coach? || @user_tocat.tocat_server_role == 'Manager'
+        begin
+          @team_tocat = TocatTeam.find(@user_tocat.tocat_team.id)
 
-        @accepted_tasks = TocatTicket.get_accepted_tasks(true, @user_tocat.id)
-        @not_accepted_tasks = TocatTicket.get_accepted_tasks(false, @user_tocat.id)
-      rescue Exception => e
-        Rails.logger.info "\e[31mException in Tocat. #{e.message}, #{e.backtrace.first}\e[0m"
-        return render_404
+          @income_transactions =  TocatTransaction.find(:all, params:{user: @user_tocat.payroll_account.id, limit: 30, search: "created_at > #{3.months.ago.strftime('%Y-%m-%d')} account = payroll" })
+          @balance_transactions = TocatTransaction.find(:all, params:{user: @user_tocat.balance_account.id, limit: 30, search: "account = balance" })
+          @money_transactions = TocatTransaction.find(:all, params:{user: @user_tocat.money_account.id, limit: 30, search: "account = money" })
+
+          @accepted_tasks = TocatTicket.get_accepted_tasks(true, @user_tocat.id)
+          @not_accepted_tasks = TocatTicket.get_accepted_tasks(false, @user_tocat.id)
+        rescue Exception => e
+          Rails.logger.info "\e[31mException in Tocat. #{e.message}, #{e.backtrace.first}\e[0m"
+          return render_404
+        end
       end
-    end
-    respond_to do |format|
-      format.html { render :template => 'tocat/my_tocat' }
+
+      respond_to do |format|
+        format.html { render :template => 'tocat/my_tocat' }
+      end
+
+    rescue ActiveResource::ResourceNotFound
+      render_404
     end
   end
 
@@ -288,6 +295,4 @@ class TocatController < TocatBaseController
       end
     end
   end
-
-
 end

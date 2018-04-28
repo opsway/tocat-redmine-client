@@ -1,6 +1,6 @@
 class AccountsController < TocatBaseController
   before_filter :check_action
-  before_filter :find_account, only: [:edit,:update,:show, :add_user, :remove_user] 
+  before_filter :find_account, only: [:edit,:update,:show, :add_user, :remove_user]
   def index
     query_params = {anyuser: true}
     query_params[:limit] = params[:per_page] if params[:per_page].present?
@@ -14,11 +14,11 @@ class AccountsController < TocatBaseController
     @accounts_count = @accounts.http_response['X-total'].to_i
     @accounts_pages = Paginator.new self, @accounts_count, @accounts.http_response['X-Per-Page'].to_i, params['page']
   end
-  
+
   def show
   end
-  
-  def new 
+
+  def new
     @account = Account.new
   end
 
@@ -30,12 +30,12 @@ class AccountsController < TocatBaseController
     end
     return redirect_to :back, notice: l(:notice_access_added)
   end
-  
+
   def remove_user
     @account.delete_access params[:user_id]
     return redirect_to :back, notice: l(:notice_access_removed)
   end
-  
+
   def create
     @account= Account.new(params[:account])
     if  @account.save
@@ -45,10 +45,10 @@ class AccountsController < TocatBaseController
       render :action => 'new'
     end
   end
-  
+
   def edit
   end
-  
+
   def update
     begin
       if @account.update_attributes(params[:account])
@@ -66,7 +66,12 @@ class AccountsController < TocatBaseController
   end
 
   private
+
   def find_account
-    @account = Account.find params[:id]
+    begin
+      @account = Account.find params[:id]
+    rescue ActiveResource::ResourceNotFound
+      render_404
+    end
   end
 end
